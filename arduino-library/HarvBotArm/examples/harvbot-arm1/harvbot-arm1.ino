@@ -7,20 +7,30 @@ HarvbotArm1* manipulator;
 void setup() 
 {
   manipulator = new HarvbotArm1();
+
+  manipulator->getBedplate()->write(90);
+  delay(25); 
+  manipulator->getShoulder()->write(45);
+  delay(25); 
+  manipulator->getElbow()->write(0);
+  delay(25); 
+  manipulator->getElbowScrew()->write(0);
+  delay(25); 
+  manipulator->getHand()->write(180);
+  delay(25); 
+  manipulator->getHandScrew()->write(30);
 }
 
 void loop() 
 {
   // Read message.
-  string msg = Serial.readString();
+  String msg = Serial.readString();
 
   // Get command.
-  string cmd = getValue(msg, ':', 1);
+  String cmd = getValue(msg, ':', 1);
   
-  switch(cmd)
+  if(cmd == "pos")
   {
-    case "pos":
-    {
       // Take command parameters.
       int nodeType = getValue(msg, ':', 2).toInt();
 
@@ -28,15 +38,15 @@ void loop()
       HarvbotArmServoNode* node =  getNode(nodeType);
 
       // Set position.
-      var pos = node.read();
+      int pos = node->read();
 
       // Return response.
-      Serial.write("harm:pos:"+pos+":~harm");
-      
-      break;
-    }
-    case "move":
-    {
+      Serial.print("harm:pos:");
+      Serial.print(pos);
+      Serial.println(":~harm");
+  }
+  else if(cmd == "move")
+  {
       // Take command parameters.
       int nodeType = getValue(msg, ':', 2).toInt();
       int degree = getValue(msg, ':', 3).toInt();
@@ -45,13 +55,14 @@ void loop()
       HarvbotArmServoNode* node =  getNode(nodeType);
 
       // Set position.
-      node.write(degree);
+      node->write(degree);
 
       // Return response.
-      Serial.write("harm:move:"+nodeType+":"+degree+":~harm");
-      
-      break;
-    }
+      Serial.print("harm:move:");
+      Serial.print(nodeType);
+      Serial.print(":");
+      Serial.print(degree);
+      Serial.println(":~harm");
   }
 }
 
@@ -83,7 +94,7 @@ HarvbotArmServoNode* getNode(int nodeType)
     {
       return manipulator->getHandScrew();
     }
-    default : return null;
+    default : return NULL;
   }
 }
 

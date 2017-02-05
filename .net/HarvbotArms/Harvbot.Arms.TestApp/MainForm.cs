@@ -71,8 +71,14 @@ namespace HarvbotArms
         {
             if (!this.isControlDisabled)
             {
+                this.arm.MoveBedplate(30);
                 this.currentMouseLocation = e.Location;
             }
+        }
+
+        private void LblControlDescription_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

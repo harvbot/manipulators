@@ -117,6 +117,7 @@
             this.LblControlDescription.TabIndex = 0;
             this.LblControlDescription.Text = "Move mouse under this area to control Harvbot Arm";
             this.LblControlDescription.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.LblControlDescription.Click += new System.EventHandler(this.LblControlDescription_Click);
             this.LblControlDescription.MouseMove += new System.Windows.Forms.MouseEventHandler(this.LblControlDescription_MouseMove);
             // 
             // MainForm
