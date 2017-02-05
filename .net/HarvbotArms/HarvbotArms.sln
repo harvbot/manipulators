@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Harvbot.Arms.Driver", "Harvbot.Arms.Driver\Harvbot.Arms.Driver.csproj", "{75AA82E5-085C-43A8-ACC2-8AA97EB9726A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Harvbot.Arms.TestApp", "Harvbot.Arms.TestApp\Harvbot.Arms.TestApp.csproj", "{B014830E-9107-49A7-A25D-B2768F36AEB3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{75AA82E5-085C-43A8-ACC2-8AA97EB9726A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75AA82E5-085C-43A8-ACC2-8AA97EB9726A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75AA82E5-085C-43A8-ACC2-8AA97EB9726A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75AA82E5-085C-43A8-ACC2-8AA97EB9726A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B014830E-9107-49A7-A25D-B2768F36AEB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B014830E-9107-49A7-A25D-B2768F36AEB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B014830E-9107-49A7-A25D-B2768F36AEB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B014830E-9107-49A7-A25D-B2768F36AEB3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
