@@ -37,7 +37,8 @@ namespace Harvbot.Arms.Driver
         /// <param name="degree">The degree.</param>
         public void Move(int degree)
         {
-            this.Arm.SerialPort.WriteLine($"harm:{(int)this.Type}:{degree}:~harm");
+            this.Arm.SerialPort.WriteLine($"harm:move:{(int)this.Type}:{degree}:~harm");
+            this.Arm.SerialPort.ReadTo("~harm");
         }
 
         /// <summary>
