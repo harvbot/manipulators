@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Harvbot.Arms.Driver
@@ -19,6 +20,7 @@ namespace Harvbot.Arms.Driver
         public HarvbotArmNode(HarvbotArmNodeTypes type, HarvbotArmBase arm)
         {
             this.Arm = arm;
+            this.Type = type;
         }
 
         /// <summary>
@@ -38,7 +40,6 @@ namespace Harvbot.Arms.Driver
         public void Move(int degree)
         {
             this.Arm.SerialPort.WriteLine($"harm:move:{(int)this.Type}:{degree}:~harm");
-            this.Arm.SerialPort.ReadTo("~harm");
         }
 
         /// <summary>
@@ -48,13 +49,14 @@ namespace Harvbot.Arms.Driver
         public int? GetPosition()
         {
             this.Arm.SerialPort.WriteLine($"harm:pos:{(int)this.Type}:~harm");
-            var response = this.Arm.SerialPort.ReadTo("~harm");
+
+            var response = this.Arm.SerialPort.ReadLine();
 
             var parts = response.Split(':');
 
-            if (parts != null && parts.Length == 5)
+            if (parts != null && parts.Length == 4)
             {
-                return int.Parse(parts[3]);
+                return int.Parse(parts[2]);
             }
 
             return new int?();

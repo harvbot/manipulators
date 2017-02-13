@@ -6,8 +6,6 @@ HarvbotArm1* manipulator;
 
 void setup() 
 {
-  Serial.begin(9600);
-  
   manipulator = new HarvbotArm1();
 
   manipulator->getBedplate()->write(90);
@@ -42,12 +40,10 @@ void loop()
       // Set position.
       int pos = node->read();
 
-      String result = "harm:pos:";
-      result += pos;
-      result += ":~harm";
-      
       // Return response.
-      Serial.println(result);
+      Serial.print("harm:pos:");
+      Serial.print(pos);
+      Serial.println(":~harm");
   }
   else if(cmd == "move")
   {
@@ -61,18 +57,12 @@ void loop()
       // Set position.
       node->write(degree);
 
-      String result = "harm:move:";
-      result += nodeType;
-      result += ":";
-      result += degree;
-      result += ":~harm";
-
       // Return response.
-      Serial.println(result);
-  }
-  else if (cmd != "")
-  {
-    Serial.println("harm:error:1:~harm");
+      Serial.print("harm:move:");
+      Serial.print(nodeType);
+      Serial.print(":");
+      Serial.print(degree);
+      Serial.println(":~harm");
   }
 }
 

@@ -16,6 +16,8 @@ namespace HarvbotArms
     {
         private bool isControlDisabled;
 
+        private bool isInProcessing;
+
         private HarvbotArmBase arm;
 
         private Point currentMouseLocation;
@@ -37,7 +39,13 @@ namespace HarvbotArms
                 this.CbPorts.Items.Add(port);
             }
 
+            if (ports.Length > 0)
+            {
+                this.CbPorts.SelectedIndex = 0;
+            }
+
             this.CbArmTypes.Items.Add(HarvbotArmTypes.Type1);
+            this.CbArmTypes.SelectedIndex = 0;
         }
 
         private void BtnStartControl_Click(object sender, EventArgs e)
@@ -47,14 +55,17 @@ namespace HarvbotArms
                 this.arm.Dispose();
             }
 
-            this.arm = HarvbotArmFactory.GetInstance(this.CbPorts.SelectedText,
-                (HarvbotArmTypes)this.CbArmTypes.SelectedItem);
+            if (this.CbPorts.SelectedItem != null && this.CbArmTypes.SelectedItem != null)
+            {
+                this.arm = HarvbotArmFactory.GetInstance(this.CbPorts.SelectedItem.ToString(),
+                    (HarvbotArmTypes)this.CbArmTypes.SelectedItem);
 
-            Cursor.Position = new Point(
-                this.PnlControl.Location.X + this.PnlControl.Width / 2, 
-                this.PnlControl.Location.Y + this.PnlControl.Height / 2);
+                Cursor.Position = new Point(
+                    this.PnlControl.Location.X + this.PnlControl.Width / 2,
+                    this.PnlControl.Location.Y + this.PnlControl.Height / 2);
 
-            this.isControlDisabled = false;
+                this.isControlDisabled = false;
+            }
         }
 
         private void BtnStopControl_Click(object sender, EventArgs e)
@@ -69,10 +80,29 @@ namespace HarvbotArms
 
         private void LblControlDescription_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!this.isControlDisabled)
+            if (!this.isControlDisabled && !this.isInProcessing)
             {
-                this.arm.MoveBedplate(30);
-                this.currentMouseLocation = e.Location;
+                this.isInProcessing = true;
+
+                var deltaX = e.Location.X - this.PnlControl.Location.X - this.PnlControl.Width / 2;
+                if (deltaX < 0)
+                {
+                    this.arm.MoveBedplate(-90);
+                }
+                else if (deltaX > this.PnlControl.Width)
+                {
+                    this.arm.MoveBedplate(90);
+                }
+                else if (deltaX < this.PnlControl.Width / 2)
+                {
+                    this.arm.MoveBedplate(-45);
+                }
+                else if (deltaX > this.PnlControl.Width / 2)
+                {
+                    this.arm.MoveBedplate(45);
+                }
+
+                this.isInProcessing = false;
             }
         }
 

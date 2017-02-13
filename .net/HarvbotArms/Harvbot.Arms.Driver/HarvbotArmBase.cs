@@ -52,6 +52,13 @@ namespace Harvbot.Arms.Driver
             }
 
             this.serial = new SerialPort(comNum, HarvbotArmBase.BaudRate);
+            this.serial.DtrEnable = true;
+            if (!this.serial.IsOpen)
+            {
+                this.serial.Open();
+            }
+
+            this.InitializeNodes();
         }
 
         /// <summary>
@@ -92,6 +99,21 @@ namespace Harvbot.Arms.Driver
         }
 
         /// <summary>
+        /// Gets bedplate position.
+        /// </summary>
+        /// <returns>The bedplate position degree.</returns>
+        public virtual int? GetBedplatePosition()
+        {
+            var bedplate = this.nodes.FirstOrDefault(x => x.Type == HarvbotArmNodeTypes.Bedplate);
+            if (bedplate != null)
+            {
+                return bedplate.GetPosition();
+            }
+
+            return new int?();
+        }
+
+        /// <summary>
         /// Moves bedplate.
         /// </summary>
         /// <param name="degree">The degree.</param>
@@ -102,6 +124,21 @@ namespace Harvbot.Arms.Driver
             {
                 bedplate.Move(degree);
             }
+        }
+
+        /// <summary>
+        /// Gets shoulder position.
+        /// </summary>
+        /// <returns>The shoulder position degree.</returns>
+        public virtual int? GetShoulderPosition()
+        {
+            var shoulder = this.nodes.FirstOrDefault(x => x.Type == HarvbotArmNodeTypes.Shoulder);
+            if (shoulder != null)
+            {
+                return shoulder.GetPosition();
+            }
+
+            return new int?();
         }
 
         /// <summary>
