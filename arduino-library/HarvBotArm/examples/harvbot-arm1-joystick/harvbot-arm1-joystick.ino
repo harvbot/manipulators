@@ -3,6 +3,12 @@
 #include <HarvbotArm1.h>
 
 HarvbotArm1* manipulator;
+int joyPin11 = 0;                 // slider variable connecetd to analog pin 0
+int joyPin12 = 1;                 // slider variable connecetd to analog pin 1
+int button1 = 8;
+int joyPin21 = 2;                 // slider variable connecetd to analog pin 2
+int joyPin22 = 3;                 // slider variable connecetd to analog pin 3
+int button2 = 9;
 
 void setup() 
 {
@@ -23,47 +29,45 @@ void setup()
 
 void loop() 
 {
-  // Read message.
-  String msg = Serial.readString();
+  // reads the value of the variable resistor
+  int deltaX1 = treatValue(analogRead(joyPin11));  
+  // this small pause is needed between reading
+  // analog pins, otherwise we get the same value twice
+  delay(100);            
+  // reads the value of the variable resistor
+  int deltaY1 = treatValue(analogRead(joyPin12));
 
-  // Get command.
-  String cmd = getValue(msg, ':', 1);
+  // reads the value of the variable resistor
+  int deltaX2 = treatValue(analogRead(joyPin21));  
+  // this small pause is needed between reading
+  // analog pins, otherwise we get the same value twice
+  delay(100);            
+  // reads the value of the variable resistor
+  int deltaY2 = treatValue(analogRead(joyPin22));
+
+  changeNodePosition(SERVO_BEDPLATE_PIN, deltaX1);
+  changeNodePosition(SERVO_SHOULDER_PIN, deltaY1);
+
+  changeNodePosition(SERVO_ELBOW_PIN, deltaX2);
+  changeNodePosition(SERVO_ELBOW_SCREW_PIN, deltaY2);
+
+  delay(100);
+}
+
+void changeNodePosition(int nodeType, int delta)
+{
+  if(delta == 0)
+  {
+    return;
+  }
   
-  if(cmd == "pos")
-  {
-      // Take command parameters.
-      int nodeType = getValue(msg, ':', 2).toInt();
-
-      // Get node.
-      HarvbotArmServoNode* node =  getNode(nodeType);
-
-      // Set position.
-      int pos = node->read();
-
-      // Return response.
-      Serial.print("harm:pos:");
-      Serial.print(pos);
-      Serial.println(":~harm");
-  }
-  else if(cmd == "move")
-  {
-      // Take command parameters.
-      int nodeType = getValue(msg, ':', 2).toInt();
-      int degree = getValue(msg, ':', 3).toInt();
-
-      // Get node.
-      HarvbotArmServoNode* node =  getNode(nodeType);
-
-      // Set position.
-      node->write(degree);
-
-      // Return response.
-      Serial.print("harm:move:");
-      Serial.print(nodeType);
-      Serial.print(":");
-      Serial.print(degree);
-      Serial.println(":~harm");
-  }
+  HarvbotArmServoNode* node = getNode(nodeType);
+  
+  int nodePos = node->read();
+  nodePos += delta;
+  
+  node->write(nodePos);
+  delay(100);
 }
 
 HarvbotArmServoNode* getNode(int nodeType)
@@ -98,18 +102,6 @@ HarvbotArmServoNode* getNode(int nodeType)
   }
 }
 
-String getValue(String data, char separator, int index)
-{
-    int found = 0;
-    int strIndex[] = { 0, -1 };
-    int maxIndex = data.length() - 1;
-
-    for (int i = 0; i <= maxIndex && found <= index; i++) {
-        if (data.charAt(i) == separator || i == maxIndex) {
-            found++;
-            strIndex[0] = strIndex[1] + 1;
-            strIndex[1] = (i == maxIndex) ? i+1 : i;
-        }
-    }
-    return found > index ? data.substring(strIndex[0], strIndex[1]) : "";
+int treatValue(int data) {
+  return (data * 9 / 1024)-4;
 }
