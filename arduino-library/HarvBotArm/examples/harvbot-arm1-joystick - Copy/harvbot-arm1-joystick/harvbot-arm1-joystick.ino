@@ -13,6 +13,8 @@ int button2 = 9;
 void setup() 
 {
   manipulator = new HarvbotArm1();
+
+  manipulator->getBedplate()->write(0);
 }
 
 void loop() 

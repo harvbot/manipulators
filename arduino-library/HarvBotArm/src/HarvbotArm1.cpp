@@ -3,12 +3,12 @@
 #include "HarvbotArm1.h"
 
 HarvbotArm1::HarvbotArm1() {
-	this->bedplateNode = new HarvbotArmServoNode(SERVO_BEDPLATE_PIN, 0, 270);
-	this->shoulderNode = new HarvbotArmServoNode(SERVO_SHOULDER_PIN, 0, 180);
-	this->elbowNode = new HarvbotArmServoNode(SERVO_ELBOW_PIN, 0, 180);
-	this->elbowScrewNode = new HarvbotArmServoNode(SERVO_ELBOW_SCREW_PIN, 0, 180);
-	this->handNode = new HarvbotArmServoNode(SERVO_HAND_PIN, 0, 180);
-	this->handScrewNode = new HarvbotArmServoNode(SERVO_HAND_SCREW_PIN, 0, 180);
+	this->bedplateNode = new HarvbotArmServoNode(SERVO_BEDPLATE_PIN, 0, 0, 180);
+	this->shoulderNode = new HarvbotArmServoNode(SERVO_SHOULDER_PIN, 0, 0, 180);
+	this->elbowNode = new HarvbotArmServoNode(SERVO_ELBOW_PIN, 0, 0, 180);
+	this->elbowScrewNode = new HarvbotArmServoNode(SERVO_ELBOW_SCREW_PIN, 0, 0, 180);
+	this->handNode = new HarvbotArmServoNode(SERVO_HAND_PIN, 0, 0, 180);
+	this->handScrewNode = new HarvbotArmServoNode(SERVO_HAND_SCREW_PIN, 0, 0, 180);
 }
 
 HarvbotArm1::~HarvbotArm1() {

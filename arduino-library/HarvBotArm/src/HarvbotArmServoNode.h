@@ -9,14 +9,16 @@
 class HarvbotArmServoNode : public HarvbotArmNode {
 	protected: 
 		int m_pin;
+		int m_pos;
 		int m_minPos;
 		int m_maxPos;
-		Servo servo;
+		Servo* servo;
 	public:
-		HarvbotArmServoNode(int pin, int minPos, int maxPos);
+		HarvbotArmServoNode(int pin, int pos, int minPos, int maxPos);
 		~HarvbotArmServoNode();
 		int read();
 		void write(int pos);
+		void sweep(int pos);
 };
 
 #endif /* GAMServoNode_H_ */
