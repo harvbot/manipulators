@@ -1,0 +1,2 @@
+include ':armapp', ':usbSerialForAndroid', ':arms'
+project(':armapp').projectDir = new File('armapp')
