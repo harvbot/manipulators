@@ -9,18 +9,6 @@ void setup()
   Serial.begin(9600);
   
   manipulator = new HarvbotArm1();
-
-  manipulator->getBedplate()->write(90);
-  delay(25); 
-  manipulator->getShoulder()->write(45);
-  delay(25); 
-  manipulator->getElbow()->write(0);
-  delay(25); 
-  manipulator->getElbowScrew()->write(0);
-  delay(25); 
-  manipulator->getHand()->write(180);
-  delay(25); 
-  manipulator->getHandScrew()->write(30);
 }
 
 void loop() 
@@ -30,49 +18,48 @@ void loop()
 
   // Get command.
   String cmd = getValue(msg, ':', 1);
+
+  // Take command parameters.
+  int nodeType = getValue(msg, ':', 2).toInt();
+
+  // Get node.
+  HarvbotArmServoNode* node =  getNode(nodeType);
   
   if(cmd == "pos")
   {
-      // Take command parameters.
-      int nodeType = getValue(msg, ':', 2).toInt();
-
-      // Get node.
-      HarvbotArmServoNode* node =  getNode(nodeType);
-
       // Set position.
       int pos = node->read();
 
-      String result = "harm:pos:";
-      result += pos;
-      result += ":~harm";
-      
+      String response = getResponse(cmd, nodeType, String(pos));
+
       // Return response.
-      Serial.println(result);
+      Serial.println(response);
   }
   else if(cmd == "move")
   {
       // Take command parameters.
-      int nodeType = getValue(msg, ':', 2).toInt();
       int degree = getValue(msg, ':', 3).toInt();
-
-      // Get node.
-      HarvbotArmServoNode* node =  getNode(nodeType);
-
+      
       // Set position.
       node->write(degree);
 
-      String result = "harm:move:";
-      result += nodeType;
-      result += ":";
-      result += degree;
-      result += ":~harm";
+      String response = getResponse(cmd, nodeType, String(degree));
 
       // Return response.
-      Serial.println(result);
+      Serial.println(response);
   }
-  else if (cmd != "")
+  else if(cmd == "sweep")
   {
-    Serial.println("harm:error:1:~harm");
+      // Take command parameters.
+      int degree = getValue(msg, ':', 3).toInt();
+      
+      // Set position.
+      node->sweep(degree);
+
+      String response = getResponse(cmd, nodeType, String(degree));
+
+      // Return response.
+      Serial.println(response);
   }
 }
 
@@ -106,6 +93,23 @@ HarvbotArmServoNode* getNode(int nodeType)
     }
     default : return NULL;
   }
+}
+
+String getResponse(String command, int nodeType, String data)
+{
+    String result = "harm:";
+    result += command;
+    result += ":";
+    result += nodeType;
+
+    if(data != NULL && data != "")
+    {
+      result += ":";
+      result += data;
+    }
+    
+    result += ":~harm";
+    return result;
 }
 
 String getValue(String data, char separator, int index)

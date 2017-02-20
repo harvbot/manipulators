@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO.Ports;
 using System.Linq;
@@ -84,22 +85,37 @@ namespace HarvbotArms
             {
                 this.isInProcessing = true;
 
-                var deltaX = e.Location.X - this.PnlControl.Location.X - this.PnlControl.Width / 2;
+                var deltaX = e.Location.X * 180 / this.PnlControl.Width;
+                var deltaY = e.Location.Y * 180 / this.PnlControl.Height;
+
+                Trace.WriteLine($"Mouse location {e.Location.ToString()}");
+
+                Trace.WriteLine($"Bedplate delta {deltaX}");
+
                 if (deltaX < 0)
                 {
-                    this.arm.MoveBedplate(-90);
+                    this.arm.MoveBedplate(0);
                 }
                 else if (deltaX > this.PnlControl.Width)
                 {
-                    this.arm.MoveBedplate(90);
+                    this.arm.MoveBedplate(180);
                 }
-                else if (deltaX < this.PnlControl.Width / 2)
+                else
                 {
-                    this.arm.MoveBedplate(-45);
+                    this.arm.MoveBedplate(deltaX);
                 }
-                else if (deltaX > this.PnlControl.Width / 2)
+
+                if (deltaY < 0)
                 {
-                    this.arm.MoveBedplate(45);
+                    this.arm.MoveShoulder(0);
+                }
+                else if (deltaY > this.PnlControl.Width)
+                {
+                    this.arm.MoveShoulder(180);
+                }
+                else
+                {
+                    this.arm.MoveShoulder(deltaY);
                 }
 
                 this.isInProcessing = false;
