@@ -70,22 +70,20 @@ public class HarvbotArmNode
 
         request.append("harm:" + command + ":");
         request.append(String.valueOf(this.type.getNumericType()));
-        if (TextUtils.isEmpty(args))
+        if (!TextUtils.isEmpty(args))
         {
-            request.append(":~harm");
-        }
-        else
-        {
-            request.append(":" + args + ":~harm");
+            request.append(":" + args);
         }
 
-        byte[] requestBytes = request.toString().getBytes("UTF-8");
+        request.append(":~harm\n");
+
+        byte[] requestBytes = request.toString().getBytes("ASCII");
         serailPost.write(requestBytes, Timeout);
 
         byte[] responseBytes = new byte[128];
-        int read = serailPost.read(responseBytes, Timeout);
+        int read = serailPost.read(responseBytes, 100);
 
-        String response = new String(responseBytes, "UTF-8");
+        String response = new String(responseBytes, "ASCII");
 
         String[] segments = response.split(":");
 
