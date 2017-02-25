@@ -96,7 +96,7 @@ namespace HarvbotArms
                 {
                     this.arm.MoveBedplate(0);
                 }
-                else if (deltaX > this.PnlControl.Width)
+                else if (deltaX > 180)
                 {
                     this.arm.MoveBedplate(180);
                 }
@@ -109,7 +109,7 @@ namespace HarvbotArms
                 {
                     this.arm.MoveShoulder(0);
                 }
-                else if (deltaY > this.PnlControl.Width)
+                else if (deltaY > 180)
                 {
                     this.arm.MoveShoulder(180);
                 }

@@ -68,16 +68,14 @@ public class HarvbotArmNode
         UsbSerialPort serailPost = this.arm.getSerialPort();
         StringBuilder request = new StringBuilder();
 
+        request.append("harm:" + command + ":");
+        request.append(String.valueOf(this.type.getNumericType()));
         if (TextUtils.isEmpty(args))
         {
-            request.append("harm:" + command + ":");
-            request.append(String.valueOf(this.type.getNumericType()));
             request.append(":~harm");
         }
         else
         {
-            request.append("harm:" + command + ":");
-            request.append(String.valueOf(this.type.getNumericType()));
             request.append(":" + args + ":~harm");
         }
 

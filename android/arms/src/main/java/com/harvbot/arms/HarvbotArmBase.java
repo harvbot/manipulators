@@ -5,7 +5,10 @@ import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
 import android.text.TextUtils;
 
+import com.hoho.android.usbserial.driver.CdcAcmSerialDriver;
 import com.hoho.android.usbserial.driver.Ch34xSerialDriver;
+import com.hoho.android.usbserial.driver.Cp21xxSerialDriver;
+import com.hoho.android.usbserial.driver.FtdiSerialDriver;
 import com.hoho.android.usbserial.driver.UsbSerialDriver;
 import com.hoho.android.usbserial.driver.UsbSerialPort;
 
@@ -33,7 +36,7 @@ public abstract class HarvbotArmBase
         this.usbManager = usbManager;
 
         this.usbDeviceConnection = usbManager.openDevice(device);
-        this.serial =  new Ch34xSerialDriver(device);
+        this.serial =  new CdcAcmSerialDriver(device);
         this.serialPort = this.serial.getPorts().get(0);
 
         this.initializeNodes();
@@ -56,7 +59,7 @@ public abstract class HarvbotArmBase
         this.serialPort.close();
     }
 
-    public Integer GetBedplatePosition() throws IOException
+    public Integer getBedplatePosition() throws IOException
     {
         HarvbotArmNode bedplate = this.getNodeByType(HarvbotArmNodeTypes.Bedplate);
         if (bedplate != null)
@@ -67,7 +70,7 @@ public abstract class HarvbotArmBase
         return null;
     }
 
-    public void MoveBedplate(int degree) throws IOException
+    public void moveBedplate(int degree) throws IOException
     {
         HarvbotArmNode bedplate = this.getNodeByType(HarvbotArmNodeTypes.Bedplate);
         if (bedplate != null)
