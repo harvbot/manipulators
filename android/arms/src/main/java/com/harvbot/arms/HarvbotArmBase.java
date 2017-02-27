@@ -31,8 +31,7 @@ public abstract class HarvbotArmBase
 
     private UsbManager usbManager;
 
-    public HarvbotArmBase(UsbManager usbManager, UsbDevice device)
-    {
+    public HarvbotArmBase(UsbManager usbManager, UsbDevice device) throws IOException {
         this.usbManager = usbManager;
 
         this.usbDeviceConnection = usbManager.openDevice(device);
@@ -52,6 +51,7 @@ public abstract class HarvbotArmBase
     public void open() throws IOException
     {
         this.serialPort.open(this.usbDeviceConnection);
+        this.serialPort.setDTR(true);
     }
 
     public void close() throws IOException

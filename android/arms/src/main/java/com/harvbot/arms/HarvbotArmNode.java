@@ -28,22 +28,12 @@ public class HarvbotArmNode
 
     public void move(int degree) throws IOException
     {
-        String response = this.sendCommand("move", String.valueOf(degree));
-
-        if (TextUtils.isEmpty(response))
-        {
-            throw new IllegalStateException("Invalid moving: " + String.valueOf(degree));
-        }
+        this.sendCommand("move", String.valueOf(degree));
     }
 
     public void sweep(int degree) throws IOException
     {
-        String response = this.sendCommand("sweep", String.valueOf(degree));
-
-        if (TextUtils.isEmpty(response))
-        {
-            throw new IllegalStateException("Invalid moving: " + String.valueOf(degree));
-        }
+        this.sendCommand("sweep", String.valueOf(degree));
     }
 
     public Integer getPosition() throws IOException
@@ -81,20 +71,24 @@ public class HarvbotArmNode
         serailPost.write(requestBytes, Timeout);
 
         byte[] responseBytes = new byte[128];
-        int read = serailPost.read(responseBytes, 100);
+        int read = serailPost.read(responseBytes, Timeout);
 
         String response = new String(responseBytes, "ASCII");
 
-        String[] segments = response.split(":");
+        response = response.trim();
 
-        if (segments[0].equalsIgnoreCase("harm") &&
-                segments[1].equalsIgnoreCase(command) &&
-                segments[2].equalsIgnoreCase(String.valueOf((int)this.type.getNumericType())) &&
-                segments[segments.length - 1].equalsIgnoreCase("~harm"))
+        if (!TextUtils.isEmpty(response))
         {
-            throw new IllegalStateException("Invalid response: " + response);
+            String[] segments = response.split(":");
+
+            if (segments[0].equalsIgnoreCase("harm") &&
+                    segments[1].equalsIgnoreCase(command) &&
+                    segments[2].equalsIgnoreCase(String.valueOf((int) this.type.getNumericType())) &&
+                    segments[segments.length - 1].equalsIgnoreCase("~harm")) {
+                return segments[3];
+            }
         }
 
-        return segments[3];
+        return "";
     }
 }

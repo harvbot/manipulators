@@ -149,9 +149,9 @@ public class MainActivity extends AppCompatActivity {
                         if(device != null)
                         {
                             //call method to set up device communication
-                            arm = new HarvbotArm1(usbManager, device);
-
-                            try {
+                            try
+                            {
+                                arm = new HarvbotArm1(usbManager, device);
                                 arm.open();
                             } catch (IOException e) {
                                 e.printStackTrace();

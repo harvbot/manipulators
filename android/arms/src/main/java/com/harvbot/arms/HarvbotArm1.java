@@ -3,10 +3,11 @@ package com.harvbot.arms;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 
+import java.io.IOException;
+
 public class HarvbotArm1 extends HarvbotArmBase
 {
-    public HarvbotArm1(UsbManager usbManager, UsbDevice device)
-    {
+    public HarvbotArm1(UsbManager usbManager, UsbDevice device) throws IOException {
         super(usbManager, device);
     }
 
