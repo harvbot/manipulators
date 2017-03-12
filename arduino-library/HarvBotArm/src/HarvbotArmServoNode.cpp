@@ -10,6 +10,7 @@ HarvbotArmServoNode::HarvbotArmServoNode(int pin, int pos, int minPos, int maxPo
 
 	servo = new Servo();
 	servo->attach(pin);
+	servo->write(pos);
 }
 
 HarvbotArmServoNode::~HarvbotArmServoNode(){

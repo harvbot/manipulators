@@ -27,7 +27,7 @@ void loop()
   // reads the value of the variable resistor
   int deltaX1 = getDelta(joyPin11);
 
-  delay(100);
+  delay(10);
   
   // reads the value of the variable resistor
   int deltaY1 = getDelta(joyPin12);
@@ -35,7 +35,7 @@ void loop()
   // reads the value of the variable resistor
   int deltaX2 = getDelta(joyPin21);  
     
-  delay(100);
+  delay(10);
  
   // reads the value of the variable resistor
   int deltaY2 = getDelta(joyPin22);
@@ -45,8 +45,6 @@ void loop()
 
   changeNodePosition(SERVO_ELBOW_PIN, deltaX2);
   changeNodePosition(SERVO_ELBOW_SCREW_PIN, deltaY2);
-
-  delay(100);
 }
 
 void changeNodePosition(int nodeType, int delta)
@@ -55,16 +53,16 @@ void changeNodePosition(int nodeType, int delta)
   {
     return;
   }
-
-  Serial.println(String("Node ") + nodeType + String(" moved on ") + delta);
   
   HarvbotArmServoNode* node = getNode(nodeType);
 
   if(node != NULL)
   {
     int nodePos = node->read();
-
+    
     node->sweep(nodePos+delta);
+
+    Serial.println(String("Node ") + nodeType + String(" moved on ") + delta + String(". Position: ") + node->read());
   }
 }
 
@@ -117,11 +115,11 @@ int getDelta(int pin)
   }
   else if(distance == -6)
   {
-    return -1;  
+    return -4;  
   }
   else if(distance == 6)
   {
-    return 1;
+    return 4;
   }
 
   // return the distance for this axis:
