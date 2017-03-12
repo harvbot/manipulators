@@ -17,17 +17,55 @@ namespace HarvbotArms
     {
         private bool isControlDisabled;
 
-        private bool isInProcessing;
-
         private HarvbotArmBase arm;
 
-        private Point currentMouseLocation;
+        private Timer timer;
+
+        private Keys pressedKey;
 
         public MainForm()
         {
             InitializeComponent();
 
             this.isControlDisabled = true;
+
+            this.timer = new Timer();
+            this.timer.Interval = 300;
+            this.timer.Enabled = false;
+            this.timer.Tick += Timer_Tick;
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            if (this.isControlDisabled)
+            {
+                return;
+            }
+
+            switch (this.pressedKey)
+            {
+                case Keys.A:
+                    {
+                        this.MoveLeft();
+                        break;
+                    }
+                case Keys.D:
+                    {
+                        this.MoveRight();
+                        break;
+                    }
+                case Keys.W:
+                    {
+                        this.MoveUp();
+                        break;
+                    }
+                case Keys.S:
+                    {
+                        this.MoveDown();
+                        break;
+                    }
+                default: break;
+            }
         }
 
         protected override void OnLoad(EventArgs e)
@@ -61,10 +99,6 @@ namespace HarvbotArms
                 this.arm = HarvbotArmFactory.GetInstance(this.CbPorts.SelectedItem.ToString(),
                     (HarvbotArmTypes)this.CbArmTypes.SelectedItem);
 
-                Cursor.Position = new Point(
-                    this.PnlControl.Location.X + this.PnlControl.Width / 2,
-                    this.PnlControl.Location.Y + this.PnlControl.Height / 2);
-
                 this.isControlDisabled = false;
             }
         }
@@ -79,52 +113,66 @@ namespace HarvbotArms
             }
         }
 
-        private void LblControlDescription_MouseMove(object sender, MouseEventArgs e)
+        private void BtnLeft_Click(object sender, EventArgs e)
         {
-            if (!this.isControlDisabled && !this.isInProcessing)
+            this.MoveLeft();
+        }
+
+        private void BtnRight_Click(object sender, EventArgs e)
+        {
+            this.MoveRight();
+        }
+
+        private void BtnUp_Click(object sender, EventArgs e)
+        {
+            this.MoveUp();
+        }
+
+        private void BtnDown_Click(object sender, EventArgs e)
+        {
+            this.MoveDown();
+        }
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.A || e.KeyCode == Keys.D || e.KeyCode == Keys.W || e.KeyCode == Keys.S)
             {
-                this.isInProcessing = true;
-
-                var deltaX = e.Location.X * 180 / this.PnlControl.Width;
-                var deltaY = e.Location.Y * 180 / this.PnlControl.Height;
-
-                Trace.WriteLine($"Mouse location {e.Location.ToString()}");
-
-                Trace.WriteLine($"Bedplate delta {deltaX}");
-
-                if (deltaX < 0)
-                {
-                    this.arm.MoveBedplate(0);
-                }
-                else if (deltaX > 180)
-                {
-                    this.arm.MoveBedplate(180);
-                }
-                else
-                {
-                    this.arm.MoveBedplate(deltaX);
-                }
-
-                if (deltaY < 0)
-                {
-                    this.arm.MoveShoulder(0);
-                }
-                else if (deltaY > 180)
-                {
-                    this.arm.MoveShoulder(180);
-                }
-                else
-                {
-                    this.arm.MoveShoulder(deltaY);
-                }
-
-                this.isInProcessing = false;
+                this.pressedKey = e.KeyCode;
+                this.timer.Enabled = true;
             }
         }
 
-        private void LblControlDescription_Click(object sender, EventArgs e)
+        private void MainForm_KeyUp(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.A || e.KeyCode == Keys.D || e.KeyCode == Keys.W || e.KeyCode == Keys.S)
+            {
+                this.pressedKey = Keys.None;
+                this.timer.Enabled = false;
+            }
+        }
 
+        private void MoveLeft()
+        {
+            var pos = this.arm.GetBedplatePosition().GetValueOrDefault(0) - 1;
+            this.arm.MoveBedplate(pos);
+        }
+
+        private void MoveRight()
+        {
+            var pos = this.arm.GetBedplatePosition().GetValueOrDefault(0) + 1;
+            this.arm.MoveBedplate(pos);
+        }
+
+        private void MoveUp()
+        {
+            var pos = this.arm.GetShoulderPosition().GetValueOrDefault(0) + 1;
+            this.arm.MoveShoulder(pos);
+        }
+
+        private void MoveDown()
+        {
+            var pos = this.arm.GetShoulderPosition().GetValueOrDefault(0) - 1;
+            this.arm.MoveShoulder(pos);
         }
     }
 }

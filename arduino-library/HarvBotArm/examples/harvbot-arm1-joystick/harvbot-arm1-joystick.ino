@@ -10,38 +10,53 @@ int joyPin21 = 2;                 // slider variable connecetd to analog pin 2
 int joyPin22 = 3;                 // slider variable connecetd to analog pin 3
 int button2 = 9;
 
+int range = 12;               // output range of X or Y movement
+int responseDelay = 5;        // response delay of the mouse, in ms
+int threshold = range / 4;    // resting threshold
+int center = range / 2;
+
 void setup() 
 {
+  Serial.begin(9600);
+  
   manipulator = new HarvbotArm1();
 }
 
 void loop() 
 {
   // reads the value of the variable resistor
-  int deltaX1 = treatValue(analogRead(joyPin11));  
+  int deltaX1 = getDelta(joyPin11);
+
+  delay(100);
   
   // reads the value of the variable resistor
-  int deltaY1 = treatValue(analogRead(joyPin12));
-
+  int deltaY1 = getDelta(joyPin12);
+  
   // reads the value of the variable resistor
-  int deltaX2 = treatValue(analogRead(joyPin21));  
-        
+  int deltaX2 = getDelta(joyPin21);  
+    
+  delay(100);
+ 
   // reads the value of the variable resistor
-  int deltaY2 = treatValue(analogRead(joyPin22));
+  int deltaY2 = getDelta(joyPin22);
 
   changeNodePosition(SERVO_BEDPLATE_PIN, deltaX1);
   changeNodePosition(SERVO_SHOULDER_PIN, deltaY1);
 
   changeNodePosition(SERVO_ELBOW_PIN, deltaX2);
   changeNodePosition(SERVO_ELBOW_SCREW_PIN, deltaY2);
+
+  delay(100);
 }
 
 void changeNodePosition(int nodeType, int delta)
 {
-  if(delta == 0)
+  if(delta == 0 || abs(delta)==2)
   {
     return;
   }
+
+  Serial.println(String("Node ") + nodeType + String(" moved on ") + delta);
   
   HarvbotArmServoNode* node = getNode(nodeType);
 
@@ -50,8 +65,6 @@ void changeNodePosition(int nodeType, int delta)
     int nodePos = node->read();
 
     node->sweep(nodePos+delta);
-
-    Serial.println(node->read());
   }
 }
 
@@ -87,6 +100,30 @@ HarvbotArmServoNode* getNode(int nodeType)
   }
 }
 
-int treatValue(int data) {
-  return ((data * 9 / 1024)-4)*2;
+int getDelta(int pin) 
+{  
+  // read the analog input:
+  int reading = analogRead(pin);
+
+  // map the reading from the analog input range to the output range:
+  reading = map(reading, 0, 1023, 0, range);
+
+  // if the output reading is outside from the
+  // rest position threshold,  use it:
+  int distance = reading - center;
+
+  if (abs(distance) < threshold) {
+    distance = 0;
+  }
+  else if(distance == -6)
+  {
+    return -1;  
+  }
+  else if(distance == 6)
+  {
+    return 1;
+  }
+
+  // return the distance for this axis:
+  return 0;
 }

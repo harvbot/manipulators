@@ -34,9 +34,10 @@
             this.CbArmTypes = new System.Windows.Forms.ComboBox();
             this.BtnStartControl = new System.Windows.Forms.Button();
             this.BtnStopControl = new System.Windows.Forms.Button();
-            this.PnlControl = new System.Windows.Forms.Panel();
-            this.LblControlDescription = new System.Windows.Forms.Label();
-            this.PnlControl.SuspendLayout();
+            this.BtnLeft = new System.Windows.Forms.Button();
+            this.BtnRight = new System.Windows.Forms.Button();
+            this.BtnUp = new System.Windows.Forms.Button();
+            this.BtnDown = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // CbPorts
@@ -95,37 +96,55 @@
             this.BtnStopControl.UseVisualStyleBackColor = true;
             this.BtnStopControl.Click += new System.EventHandler(this.BtnStopControl_Click);
             // 
-            // PnlControl
+            // BtnLeft
             // 
-            this.PnlControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.PnlControl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.PnlControl.Controls.Add(this.LblControlDescription);
-            this.PnlControl.Location = new System.Drawing.Point(158, 12);
-            this.PnlControl.Name = "PnlControl";
-            this.PnlControl.Size = new System.Drawing.Size(408, 413);
-            this.PnlControl.TabIndex = 6;
+            this.BtnLeft.Location = new System.Drawing.Point(191, 48);
+            this.BtnLeft.Name = "BtnLeft";
+            this.BtnLeft.Size = new System.Drawing.Size(75, 23);
+            this.BtnLeft.TabIndex = 6;
+            this.BtnLeft.Text = "Left (A)";
+            this.BtnLeft.UseVisualStyleBackColor = true;
+            this.BtnLeft.Click += new System.EventHandler(this.BtnLeft_Click);
             // 
-            // LblControlDescription
+            // BtnRight
             // 
-            this.LblControlDescription.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LblControlDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblControlDescription.Location = new System.Drawing.Point(0, 0);
-            this.LblControlDescription.Name = "LblControlDescription";
-            this.LblControlDescription.Size = new System.Drawing.Size(406, 411);
-            this.LblControlDescription.TabIndex = 0;
-            this.LblControlDescription.Text = "Move mouse under this area to control Harvbot Arm";
-            this.LblControlDescription.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.LblControlDescription.Click += new System.EventHandler(this.LblControlDescription_Click);
-            this.LblControlDescription.MouseMove += new System.Windows.Forms.MouseEventHandler(this.LblControlDescription_MouseMove);
+            this.BtnRight.Location = new System.Drawing.Point(272, 48);
+            this.BtnRight.Name = "BtnRight";
+            this.BtnRight.Size = new System.Drawing.Size(75, 23);
+            this.BtnRight.TabIndex = 7;
+            this.BtnRight.Text = "Right (D)";
+            this.BtnRight.UseVisualStyleBackColor = true;
+            this.BtnRight.Click += new System.EventHandler(this.BtnRight_Click);
+            // 
+            // BtnUp
+            // 
+            this.BtnUp.Location = new System.Drawing.Point(234, 19);
+            this.BtnUp.Name = "BtnUp";
+            this.BtnUp.Size = new System.Drawing.Size(75, 23);
+            this.BtnUp.TabIndex = 8;
+            this.BtnUp.Text = "Up (W)";
+            this.BtnUp.UseVisualStyleBackColor = true;
+            this.BtnUp.Click += new System.EventHandler(this.BtnUp_Click);
+            // 
+            // BtnDown
+            // 
+            this.BtnDown.Location = new System.Drawing.Point(234, 77);
+            this.BtnDown.Name = "BtnDown";
+            this.BtnDown.Size = new System.Drawing.Size(75, 23);
+            this.BtnDown.TabIndex = 9;
+            this.BtnDown.Text = "Down (S)";
+            this.BtnDown.UseVisualStyleBackColor = true;
+            this.BtnDown.Click += new System.EventHandler(this.BtnDown_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(578, 437);
-            this.Controls.Add(this.PnlControl);
+            this.ClientSize = new System.Drawing.Size(367, 188);
+            this.Controls.Add(this.BtnDown);
+            this.Controls.Add(this.BtnUp);
+            this.Controls.Add(this.BtnRight);
+            this.Controls.Add(this.BtnLeft);
             this.Controls.Add(this.BtnStopControl);
             this.Controls.Add(this.BtnStartControl);
             this.Controls.Add(this.LblArmTypes);
@@ -134,7 +153,8 @@
             this.Controls.Add(this.CbPorts);
             this.Name = "MainForm";
             this.Text = "HarvbotArms test application";
-            this.PnlControl.ResumeLayout(false);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyUp);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -148,8 +168,10 @@
         private System.Windows.Forms.ComboBox CbArmTypes;
         private System.Windows.Forms.Button BtnStartControl;
         private System.Windows.Forms.Button BtnStopControl;
-        private System.Windows.Forms.Panel PnlControl;
-        private System.Windows.Forms.Label LblControlDescription;
+        private System.Windows.Forms.Button BtnLeft;
+        private System.Windows.Forms.Button BtnRight;
+        private System.Windows.Forms.Button BtnUp;
+        private System.Windows.Forms.Button BtnDown;
     }
 }
 
