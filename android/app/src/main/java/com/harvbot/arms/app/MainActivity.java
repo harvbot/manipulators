@@ -1,10 +1,11 @@
-package com.harvbot.armapp;
+package com.harvbot.arms.app;
 
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.XmlResourceParser;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.support.v7.app.AppCompatActivity;
@@ -14,9 +15,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import com.harvbot.app.R;
 import com.harvbot.arms.HarvbotArm1;
 import com.harvbot.arms.HarvbotArmBase;
+
+import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -33,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private float prevY;
 
     private static final String ACTION_USB_PERMISSION =
-            "com.harvbot.armapp.USB_PERMISSION";
+            "com.harvbot.arms.app.USB_PERMISSION";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,15 +115,44 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void findArmDevice()
-    {
+    private void findArmDevice() {
+
+        int productId = 0;
+        int vendorId = 0;
+        int eventType = -1;
+        XmlResourceParser document = getResources().getXml(com.harvbot.arms.app.R.xml.device_filter);
+
+        while(eventType != XmlResourceParser.END_DOCUMENT)
+        {
+            String name = document.getText();
+
+            try {
+                if (document.getEventType() == XmlResourceParser.START_TAG) {
+                    String s = document.getName();
+
+                    if (s.equals("usb-device")) {
+                        vendorId = Integer.parseInt(document.getAttributeValue(null, "vendor-id"));
+                        productId = Integer.parseInt(document.getAttributeValue(null, "product-id"));
+                        break;
+                    }
+                }
+
+                eventType = document.next();
+            } catch (XmlPullParserException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         Iterator<UsbDevice> deviceIterator = usbManager.getDeviceList().values().iterator();
 
         while (deviceIterator.hasNext())
         {
             UsbDevice device = deviceIterator.next();
 
-            if(device.getVendorId()==9025 && device.getProductId()==32822)
+            // Find speicified divce.
+            if(device.getVendorId()== vendorId && device.getProductId()==productId)
             {
                 this.armDevice = device;
                 break;
@@ -129,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if(this.armDevice != null) {
+            // Request usb device permission.
             PendingIntent mPermissionIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_USB_PERMISSION), 0);
             IntentFilter filter = new IntentFilter(ACTION_USB_PERMISSION);
             this.registerReceiver(mUsbReceiver, filter);

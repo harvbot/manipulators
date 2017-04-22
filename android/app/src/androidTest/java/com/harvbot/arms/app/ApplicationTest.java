@@ -1,4 +1,4 @@
-package com.harvbot.armapp;
+package com.harvbot.arms.app;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

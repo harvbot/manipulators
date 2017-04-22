@@ -1,4 +1,4 @@
-package com.harvbot.app;
+package com.harvbot.arms.app;
 
 import org.junit.Test;
 
