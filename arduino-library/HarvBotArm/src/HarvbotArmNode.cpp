@@ -1,14 +1,12 @@
 #include "HarvbotArmNode.h"
 
-HarvbotArmNode::HarvbotArmNode() {
+HarvbotArmNode::HarvbotArmNode(int type) {
+	this->type = type;
 }
 
 HarvbotArmNode::~HarvbotArmNode() {
 }
 
-int HarvbotArmNode::read() {
-	return -1;
-}
-
-void HarvbotArmNode::write(int pos) {
+int HarvbotArmNode::getType() {
+	return this->type;
 }

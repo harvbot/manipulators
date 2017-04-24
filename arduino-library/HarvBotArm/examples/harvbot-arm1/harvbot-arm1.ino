@@ -1,14 +1,39 @@
+#include <HarvbotArm.h>
+#include <HarvbotArm1.h>
 #include <HarvbotArmNode.h>
 #include <HarvbotArmServoNode.h>
-#include <HarvbotArm1.h>
 
 HarvbotArm1* manipulator;
 
 void setup() 
 {
   Serial.begin(9600);
+
+  HarvbotArmServoNodePins bedplate;
+  bedplate.Pin = 2;
+  bedplate.InitialPos = 90;
+
+  HarvbotArmServoNodePins shoulder;
+  shoulder.Pin = 3;
+  shoulder.InitialPos = 5; 
+
+  HarvbotArmServoNodePins elbow;
+  elbow.Pin = 4;
+  elbow.InitialPos = 20;
+
+  HarvbotArmServoNodePins elbowScrew;
+  elbowScrew.Pin = 5;
+  elbowScrew.InitialPos = 90;
+
+  HarvbotArmServoNodePins hand;
+  hand.Pin = 6;
+  hand.InitialPos = 90;
+
+  HarvbotArmServoNodePins handScrew;
+  handScrew.Pin = 7;
+  handScrew.InitialPos = 90;
   
-  manipulator = new HarvbotArm1();
+  manipulator = new HarvbotArm1(bedplate, shoulder, elbow, elbowScrew, hand, handScrew);
 }
 
 void loop() 
@@ -23,7 +48,7 @@ void loop()
   int nodeType = getValue(msg, ':', 2).toInt();
 
   // Get node.
-  HarvbotArmServoNode* node =  getNode(nodeType);
+  HarvbotArmServoNode* node = (HarvbotArmServoNode*)manipulator->getNodeByType(nodeType);
   
   if(cmd == "pos")
   {
@@ -61,37 +86,9 @@ void loop()
       // Return response.
       Serial.println(response);
   }
-}
-
-HarvbotArmServoNode* getNode(int nodeType)
-{
-  switch(nodeType)
+  else if(cmd != "")
   {
-    case SERVO_BEDPLATE_PIN:
-    {
-      return manipulator->getBedplate();
-    }
-    case SERVO_SHOULDER_PIN:
-    {
-      return manipulator->getShoulder();
-    }
-    case SERVO_ELBOW_PIN:
-    {
-      return manipulator->getElbow();
-    }
-    case SERVO_ELBOW_SCREW_PIN:
-    {
-      return manipulator->getElbowScrew();
-    }
-    case SERVO_HAND_PIN:
-    {
-      return manipulator->getHand();
-    }
-    case SERVO_HAND_SCREW_PIN:
-    {
-      return manipulator->getHandScrew();
-    }
-    default : return NULL;
+      Serial.println(getResponse("invalid-command", nodeType, cmd));
   }
 }
 

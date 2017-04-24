@@ -1,6 +1,7 @@
+#include <HarvbotArm.h>
+#include <HarvbotArm1.h>
 #include <HarvbotArmNode.h>
 #include <HarvbotArmServoNode.h>
-#include <HarvbotArm1.h>
 
 HarvbotArm1* manipulator;
 int joyPin11 = 0;                 // slider variable connecetd to analog pin 0
@@ -19,7 +20,31 @@ void setup()
 {
   Serial.begin(9600);
   
-  manipulator = new HarvbotArm1();
+  HarvbotArmServoNodePins bedplate;
+  bedplate.Pin = 2;
+  bedplate.InitialPos = 90;
+
+  HarvbotArmServoNodePins shoulder;
+  shoulder.Pin = 3;
+  shoulder.InitialPos = 5; 
+
+  HarvbotArmServoNodePins elbow;
+  elbow.Pin = 4;
+  elbow.InitialPos = 20;
+
+  HarvbotArmServoNodePins elbowScrew;
+  elbowScrew.Pin = 5;
+  elbowScrew.InitialPos = 90;
+
+  HarvbotArmServoNodePins hand;
+  hand.Pin = 6;
+  hand.InitialPos = 90;
+
+  HarvbotArmServoNodePins handScrew;
+  handScrew.Pin = 7;
+  handScrew.InitialPos = 90;
+  
+  manipulator = new HarvbotArm1(bedplate, shoulder, elbow, elbowScrew, hand, handScrew);
 }
 
 void loop() 
@@ -40,11 +65,11 @@ void loop()
   // reads the value of the variable resistor
   int deltaY2 = getDelta(joyPin22);
 
-  changeNodePosition(SERVO_BEDPLATE_PIN, deltaX1);
-  changeNodePosition(SERVO_SHOULDER_PIN, deltaY1);
+  changeNodePosition(HARVBOT_ARM_BEDPLATE_NODE, deltaX1);
+  changeNodePosition(HARVBOT_ARM_SHOULDER_NODE, deltaY1);
 
-  changeNodePosition(SERVO_ELBOW_PIN, deltaX2);
-  changeNodePosition(SERVO_ELBOW_SCREW_PIN, deltaY2);
+  changeNodePosition(HARVBOT_ARM_ELBOW_NODE, deltaX2);
+  changeNodePosition(HARVBOT_ARM_ELBOW_SCREW_NODE, deltaY2);
 }
 
 void changeNodePosition(int nodeType, int delta)
@@ -54,7 +79,7 @@ void changeNodePosition(int nodeType, int delta)
     return;
   }
   
-  HarvbotArmServoNode* node = getNode(nodeType);
+  HarvbotArmServoNode* node = (HarvbotArmServoNode*)manipulator->getNodeByType(nodeType);
 
   if(node != NULL)
   {
@@ -63,38 +88,6 @@ void changeNodePosition(int nodeType, int delta)
     node->sweep(nodePos+delta);
 
     Serial.println(String("Node ") + nodeType + String(" moved on ") + delta + String(". Position: ") + node->read());
-  }
-}
-
-HarvbotArmServoNode* getNode(int nodeType)
-{
-  switch(nodeType)
-  {
-    case SERVO_BEDPLATE_PIN:
-    {
-      return manipulator->getBedplate();
-    }
-    case SERVO_SHOULDER_PIN:
-    {
-      return manipulator->getShoulder();
-    }
-    case SERVO_ELBOW_PIN:
-    {
-      return manipulator->getElbow();
-    }
-    case SERVO_ELBOW_SCREW_PIN:
-    {
-      return manipulator->getElbowScrew();
-    }
-    case SERVO_HAND_PIN:
-    {
-      return manipulator->getHand();
-    }
-    case SERVO_HAND_SCREW_PIN:
-    {
-      return manipulator->getHandScrew();
-    }
-    default : return NULL;
   }
 }
 

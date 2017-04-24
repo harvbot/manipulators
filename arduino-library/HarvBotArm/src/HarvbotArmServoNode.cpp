@@ -2,7 +2,9 @@
 #include "HarvbotArmNode.h"
 #include "HarvbotArmServoNode.h"
 
-HarvbotArmServoNode::HarvbotArmServoNode(int pin, int pos, int minPos, int maxPos) {
+HarvbotArmServoNode::HarvbotArmServoNode(int type, int pin, int pos, int minPos, int maxPos) 
+	: HarvbotArmNode(type)
+{
 	m_pin = pin;
 	m_pos = pos;
 	m_minPos = minPos;

@@ -6,6 +6,12 @@
 
 #include <HarvbotArmNode.h>
 
+struct HarvbotArmServoNodePins
+{
+	int Pin;
+	int InitialPos;
+};
+
 class HarvbotArmServoNode : public HarvbotArmNode {
 	protected: 
 		int m_pin;
@@ -14,7 +20,7 @@ class HarvbotArmServoNode : public HarvbotArmNode {
 		int m_maxPos;
 		Servo* servo;
 	public:
-		HarvbotArmServoNode(int pin, int pos, int minPos, int maxPos);
+		HarvbotArmServoNode(int type, int pin, int pos, int minPos, int maxPos);
 		~HarvbotArmServoNode();
 		int read();
 		void write(int pos);

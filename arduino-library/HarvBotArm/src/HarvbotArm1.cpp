@@ -1,54 +1,40 @@
+#include "HarvbotArm.h"
+#include "HarvbotArm1.h"
 #include "HarvbotArmNode.h"
 #include "HarvbotArmServoNode.h"
-#include "HarvbotArm1.h"
 
-HarvbotArm1::HarvbotArm1() {
-	this->bedplateNode = new HarvbotArmServoNode(SERVO_BEDPLATE_PIN, 90, 0, 180);
-	this->shoulderNode = new HarvbotArmServoNode(SERVO_SHOULDER_PIN, 5, 5, 180);
-	this->elbowNode = new HarvbotArmServoNode(SERVO_ELBOW_PIN, 20, 20, 180);
-	this->elbowScrewNode = new HarvbotArmServoNode(SERVO_ELBOW_SCREW_PIN, 90, 0, 180);
-	this->handNode = new HarvbotArmServoNode(SERVO_HAND_PIN, 90, 0, 180);
-	this->handScrewNode = new HarvbotArmServoNode(SERVO_HAND_SCREW_PIN, 90, 0, 180);
+HarvbotArm1::HarvbotArm1(HarvbotArmServoNodePins beadplate, 
+			HarvbotArmServoNodePins shoulder,
+			HarvbotArmServoNodePins elbow,
+			HarvbotArmServoNodePins elbowScrew,
+			HarvbotArmServoNodePins hand,
+			HarvbotArmServoNodePins handScrew) : HarvbotArm(HARVBOT_ARM_TYPE_1) {
+
+	this->nodes = new HarvbotArmNode*[6];
+
+	this->nodes[0] = new HarvbotArmServoNode(HARVBOT_ARM_BEDPLATE_NODE, beadplate.Pin, beadplate.InitialPos, 0, 180);
+	this->nodes[1] = new HarvbotArmServoNode(HARVBOT_ARM_SHOULDER_NODE, shoulder.Pin, shoulder.InitialPos, 5, 180);
+	this->nodes[2] = new HarvbotArmServoNode(HARVBOT_ARM_ELBOW_NODE, elbow.Pin, elbow.InitialPos, 20, 180);
+	this->nodes[3] = new HarvbotArmServoNode(HARVBOT_ARM_ELBOW_SCREW_NODE, elbowScrew.Pin, elbowScrew.InitialPos, 0, 180);
+	this->nodes[4] = new HarvbotArmServoNode(HARVBOT_ARM_HAND_NODE, hand.Pin, hand.InitialPos, 0, 180);
+	this->nodes[5] = new HarvbotArmServoNode(HARVBOT_ARM_HAND_SCREW_NODE, handScrew.Pin, handScrew.InitialPos, 0, 180);
 }
 
 HarvbotArm1::~HarvbotArm1() {
-	delete this->bedplateNode;
-	delete this->shoulderNode;
-	delete this->elbowNode;
-	delete this->elbowScrewNode;
-	delete this->handNode;
-	delete this->handScrewNode;
+	
 }
 
-void HarvbotArm1::setup() {
-}
-
-HarvbotArmServoNode* HarvbotArm1::getBedplate()
+HarvbotArmNode* HarvbotArm1::getElbowScrew()
 {
-	return this->bedplateNode;
+	return this->getNodeByType(HARVBOT_ARM_ELBOW_SCREW_NODE);
 }
 
-HarvbotArmServoNode* HarvbotArm1::getShoulder()
+HarvbotArmNode* HarvbotArm1::getHand()
 {
-	return this->shoulderNode;
+	return this->getNodeByType(HARVBOT_ARM_HAND_NODE);
 }
 
-HarvbotArmServoNode* HarvbotArm1::getElbow()
+HarvbotArmNode* HarvbotArm1::getHandScrew()
 {
-	return this->elbowNode;
-}
-
-HarvbotArmServoNode* HarvbotArm1::getElbowScrew()
-{
-	return this->elbowScrewNode;
-}
-
-HarvbotArmServoNode* HarvbotArm1::getHand()
-{
-	return this->handNode;
-}
-
-HarvbotArmServoNode* HarvbotArm1::getHandScrew()
-{
-	return this->handScrewNode;
+	return this->getNodeByType(HARVBOT_ARM_HAND_SCREW_NODE);
 }
