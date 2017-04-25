@@ -1,0 +1,43 @@
+#include "HarvbotArmNode.h"
+#include "HarvbotArmStepperNode.h"
+
+HarvbotArmStepperNode::HarvbotArmStepperNode(int type, int pos, int maxStepsCount, int maxFullRotaionCount) 
+	: HarvbotArmNode(type)
+{
+	this->m_pos = pos;
+	this->m_maxStepsCount = maxStepsCount;
+	this->m_maxFullRotaionCount = m_maxFullRotaionCount;
+}
+
+HarvbotArmStepperNode::~HarvbotArmStepperNode()
+{
+}
+
+int HarvbotArmStepperNode::read() 
+{
+	return this->m_pos;
+}
+
+void HarvbotArmStepperNode::rotate(int steps) 
+{
+	if(this->m_pos + steps < 0)
+	{
+		this->m_pos = 0;
+	}
+	else if(this->m_pos + steps < this->m_maxFullRotaionCount * this->m_maxStepsCount)
+	{
+		this->m_pos += steps;
+	}
+	else
+	{
+		this->m_pos = this->m_maxFullRotaionCount * this->m_maxStepsCount;
+	}
+}
+
+int HarvbotArmStepperNode::getSpeed() {
+	return this->m_speed;
+}
+
+void HarvbotArmStepperNode::setSpeed(int speed) {
+	this->m_speed = speed;
+}

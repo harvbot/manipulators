@@ -37,9 +37,7 @@ class HarvbotArmNode {
 	public:
 		HarvbotArmNode(int type);
 		~HarvbotArmNode();
-		virtual int getType();
-		virtual int read() = 0;
-		virtual void write(int angle) = 0;
+		virtual int getType();		
 };
 
 #endif /* HarvbotArmNode_H_ */
