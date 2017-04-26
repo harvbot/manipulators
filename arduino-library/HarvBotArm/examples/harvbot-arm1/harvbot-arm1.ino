@@ -41,6 +41,12 @@ void loop()
   // Read message.
   String msg = Serial.readString();
 
+  if(msg=="")
+  {
+    delay(100);
+    return;
+  }
+
   // Get command.
   String cmd = getValue(msg, ':', 1);
 
@@ -49,6 +55,12 @@ void loop()
 
   // Get node.
   HarvbotArmServoNode* node = (HarvbotArmServoNode*)manipulator->getNodeByType(nodeType);
+
+  if(node == NULL)
+  {
+      Serial.println("Node with " + String(nodeType) + " type doesn't exist");
+      return;
+  }
   
   if(cmd == "pos")
   {
