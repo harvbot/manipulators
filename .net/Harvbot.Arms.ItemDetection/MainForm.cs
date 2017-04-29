@@ -4,12 +4,14 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.IO;
+using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Emgu.CV;
 using Emgu.CV.Structure;
+using Harvbot.Arms.Driver;
 
 namespace Harvbot.Arms.ItemDetection
 {
@@ -20,6 +22,8 @@ namespace Harvbot.Arms.ItemDetection
         private Mat frame;
 
         private CascadeClassifier recognizer;
+
+        private HarvbotArmBase arm;
 
         public MainForm()
         {
@@ -34,6 +38,20 @@ namespace Harvbot.Arms.ItemDetection
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+
+            var ports = SerialPort.GetPortNames();
+            foreach (var port in ports)
+            {
+                this.CbPorts.Items.Add(port);
+            }
+
+            if (ports.Length > 0)
+            {
+                this.CbPorts.SelectedIndex = 0;
+            }
+
+            this.CbArmTypes.Items.Add(HarvbotArmTypes.Type1);
+            this.CbArmTypes.SelectedIndex = 0;
 
             this.ibVideo.Image = this.capture.QueryFrame();
             this.capture.Start();
@@ -79,9 +97,15 @@ namespace Harvbot.Arms.ItemDetection
 
                                 if (detectionResult != null && detectionResult.Length > 0)
                                 {
-                                    foreach (var rect in detectionResult)
+                                    var rect = detectionResult.First();
+                                    imageFrame.Draw(rect, new Bgr(Color.Red), 2);
+
+                                    var deltaX = (imageFrame.Width - rect.Width) / 2 - rect.X;
+                                    var deltaY = (imageFrame.Height - rect.Height) / 2 - rect.Y;
+
+                                    if (this.arm != null)
                                     {
-                                        imageFrame.Draw(rect, new Bgr(Color.Red), 2);
+                                        this.arm.MoveBedplate(deltaX);
                                     }
 
                                     this.ibVideo.Image = imageFrame;
@@ -117,6 +141,17 @@ namespace Harvbot.Arms.ItemDetection
                     }
 
                     this.recognizer = new CascadeClassifier(this.TbCascade.Text);
+
+                    if (this.arm != null)
+                    {
+                        this.arm.Dispose();
+                    }
+
+                    if (this.CbPorts.SelectedItem != null && this.CbArmTypes.SelectedItem != null)
+                    {
+                        this.arm = HarvbotArmFactory.GetInstance(this.CbPorts.SelectedItem.ToString(),
+                            (HarvbotArmTypes)this.CbArmTypes.SelectedItem);
+                    }
                 }
             }
             else
@@ -129,6 +164,11 @@ namespace Harvbot.Arms.ItemDetection
         {
             lock (this)
             {
+                if (this.arm != null)
+                {
+                    this.arm.Dispose();
+                }
+
                 if (this.recognizer != null)
                 {
                     this.recognizer.Dispose();

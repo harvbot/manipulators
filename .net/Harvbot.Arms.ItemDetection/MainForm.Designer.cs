@@ -36,6 +36,10 @@
             this.TbCascade = new System.Windows.Forms.TextBox();
             this.BtnStartRecognition = new System.Windows.Forms.Button();
             this.BtnStopRecognition = new System.Windows.Forms.Button();
+            this.LblArmTypes = new System.Windows.Forms.Label();
+            this.CbArmTypes = new System.Windows.Forms.ComboBox();
+            this.LblPorts = new System.Windows.Forms.Label();
+            this.CbPorts = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.ibVideo)).BeginInit();
             this.SuspendLayout();
             // 
@@ -91,11 +95,51 @@
             this.BtnStopRecognition.UseVisualStyleBackColor = true;
             this.BtnStopRecognition.Click += new System.EventHandler(this.BtnStopRecognition_Click);
             // 
+            // LblArmTypes
+            // 
+            this.LblArmTypes.AutoSize = true;
+            this.LblArmTypes.Location = new System.Drawing.Point(12, 154);
+            this.LblArmTypes.Name = "LblArmTypes";
+            this.LblArmTypes.Size = new System.Drawing.Size(83, 13);
+            this.LblArmTypes.TabIndex = 10;
+            this.LblArmTypes.Text = "Select arm type:";
+            // 
+            // CbArmTypes
+            // 
+            this.CbArmTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.CbArmTypes.FormattingEnabled = true;
+            this.CbArmTypes.Location = new System.Drawing.Point(12, 170);
+            this.CbArmTypes.Name = "CbArmTypes";
+            this.CbArmTypes.Size = new System.Drawing.Size(140, 21);
+            this.CbArmTypes.TabIndex = 9;
+            // 
+            // LblPorts
+            // 
+            this.LblPorts.AutoSize = true;
+            this.LblPorts.Location = new System.Drawing.Point(12, 105);
+            this.LblPorts.Name = "LblPorts";
+            this.LblPorts.Size = new System.Drawing.Size(61, 13);
+            this.LblPorts.TabIndex = 8;
+            this.LblPorts.Text = "Select port:";
+            // 
+            // CbPorts
+            // 
+            this.CbPorts.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.CbPorts.FormattingEnabled = true;
+            this.CbPorts.Location = new System.Drawing.Point(12, 121);
+            this.CbPorts.Name = "CbPorts";
+            this.CbPorts.Size = new System.Drawing.Size(140, 21);
+            this.CbPorts.TabIndex = 7;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(866, 504);
+            this.Controls.Add(this.LblArmTypes);
+            this.Controls.Add(this.CbArmTypes);
+            this.Controls.Add(this.LblPorts);
+            this.Controls.Add(this.CbPorts);
             this.Controls.Add(this.BtnStopRecognition);
             this.Controls.Add(this.BtnStartRecognition);
             this.Controls.Add(this.TbCascade);
@@ -118,6 +162,10 @@
         private System.Windows.Forms.TextBox TbCascade;
         private System.Windows.Forms.Button BtnStartRecognition;
         private System.Windows.Forms.Button BtnStopRecognition;
+        private System.Windows.Forms.Label LblArmTypes;
+        private System.Windows.Forms.ComboBox CbArmTypes;
+        private System.Windows.Forms.Label LblPorts;
+        private System.Windows.Forms.ComboBox CbPorts;
     }
 }
 
