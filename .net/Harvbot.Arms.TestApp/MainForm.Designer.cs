@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.CbPorts = new System.Windows.Forms.ComboBox();
             this.LblPorts = new System.Windows.Forms.Label();
             this.LblArmTypes = new System.Windows.Forms.Label();
@@ -151,6 +152,7 @@
             this.Controls.Add(this.CbArmTypes);
             this.Controls.Add(this.LblPorts);
             this.Controls.Add(this.CbPorts);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "HarvbotArms test application";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
