@@ -8,16 +8,18 @@ namespace Harvbot.Arms.Driver
 {
     public enum HarvbotArmNodeTypes
     {
-        Bedplate = 2,
+        Bedplate = 1,
 
-        Shoulder = 3,
+        Shoulder = 2,
 
-        Elbow = 4,
+        Elbow = 3,
 
-        ElbowScrew = 5,
+        ElbowScrew = 4,
 
-        Hand = 6,
+        Hand = 5,
 
-        HandScrew = 7
+        HandScrew = 6,
+
+        Claw = 7
     }
 }
