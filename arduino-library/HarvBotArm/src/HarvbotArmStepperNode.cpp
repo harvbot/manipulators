@@ -6,7 +6,7 @@ HarvbotArmStepperNode::HarvbotArmStepperNode(int type, int pos, int maxStepsCoun
 {
 	this->m_pos = pos;
 	this->m_maxStepsCount = maxStepsCount;
-	this->m_maxFullRotaionCount = m_maxFullRotaionCount;
+	this->m_maxFullRotaionCount = maxFullRotaionCount;
 }
 
 HarvbotArmStepperNode::~HarvbotArmStepperNode()
@@ -24,13 +24,13 @@ void HarvbotArmStepperNode::rotate(int steps)
 	{
 		this->m_pos = 0;
 	}
-	else if(this->m_pos + steps < this->m_maxFullRotaionCount * this->m_maxStepsCount)
+	else if(this->m_pos + steps >= this->m_maxFullRotaionCount * this->m_maxStepsCount)
 	{
-		this->m_pos += steps;
+		this->m_pos = this->m_maxFullRotaionCount * this->m_maxStepsCount;
 	}
 	else
 	{
-		this->m_pos = this->m_maxFullRotaionCount * this->m_maxStepsCount;
+		this->m_pos += steps;
 	}
 }
 

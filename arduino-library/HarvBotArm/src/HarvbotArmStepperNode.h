@@ -11,7 +11,7 @@ class HarvbotArmStepperNode : public HarvbotArmNode {
 		int m_maxStepsCount;
 		int m_maxFullRotaionCount;
 	public:
-		HarvbotArmStepperNode(int type, int pos, int maxStepsCount, int maxFullRotaionCount);
+		HarvbotArmStepperNode(int type, int pos, int maxStepsCount, int maxFullRotaionCount=HARVBOT_ARM_CLAW_MAX_FULL_ROTATION);
 		~HarvbotArmStepperNode();
 		int read();
 		virtual void rotate(int steps);

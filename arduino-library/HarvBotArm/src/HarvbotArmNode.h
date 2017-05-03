@@ -31,6 +31,10 @@
 #define HARVBOT_ARM_CLAW_NODE 7
 #endif
 
+#ifndef HARVBOT_ARM_CLAW_MAX_FULL_ROTATION
+#define HARVBOT_ARM_CLAW_MAX_FULL_ROTATION 28
+#endif
+
 class HarvbotArmNode {
 	private:
 		int type;

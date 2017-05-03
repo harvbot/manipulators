@@ -26,7 +26,7 @@ void HarvbotArmStepperAdafruitNode::rotate(int steps)
 	{
 		this->stepper->step(abs(currentPos-prevPos), FORWARD, SINGLE);
 	}
-	else
+	else if(currentPos-prevPos < 0)
 	{
 		this->stepper->step(abs(currentPos-prevPos), BACKWARD, SINGLE);
 	}

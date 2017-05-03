@@ -11,7 +11,7 @@ class  HarvbotArmStepperAdafruitNode : public HarvbotArmStepperNode {
 	private:
 		AF_Stepper* stepper;
 	public:
-		HarvbotArmStepperAdafruitNode(int type, int adafruitShieldPort, int pos, int maxStepsCount, int maxFullRotaionCount);
+		HarvbotArmStepperAdafruitNode(int type, int adafruitShieldPort, int pos, int maxStepsCount, int maxFullRotaionCount=HARVBOT_ARM_CLAW_MAX_FULL_ROTATION);
 		~HarvbotArmStepperAdafruitNode();
 		void rotate(int steps);
 		void setSpeed(int speed);
