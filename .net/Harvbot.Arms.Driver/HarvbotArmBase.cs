@@ -122,7 +122,7 @@ namespace Harvbot.Arms.Driver
             var bedplate = this.nodes.FirstOrDefault(x => x.Type == HarvbotArmNodeTypes.Bedplate);
             if (bedplate != null)
             {
-                bedplate.Move(degree);
+                bedplate.Sweep(degree);
             }
         }
 
@@ -150,7 +150,7 @@ namespace Harvbot.Arms.Driver
             var shoulder = this.nodes.FirstOrDefault(x => x.Type == HarvbotArmNodeTypes.Shoulder);
             if (shoulder != null)
             {
-                shoulder.Move(degree);
+                shoulder.Sweep(degree);
             }
         }
 

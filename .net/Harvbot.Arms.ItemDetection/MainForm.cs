@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.IO.Ports;
@@ -30,7 +31,7 @@ namespace Harvbot.Arms.ItemDetection
             InitializeComponent();
 
             CvInvoke.UseOpenCL = false;
-            this.capture = new VideoCapture();
+            this.capture = new VideoCapture(0);
             this.capture.ImageGrabbed += ProcessFrame;
             this.frame = new Mat();
         }
@@ -101,15 +102,18 @@ namespace Harvbot.Arms.ItemDetection
                                     imageFrame.Draw(rect, new Bgr(Color.Red), 2);
 
                                     var deltaX = (imageFrame.Width - rect.Width) / 2 - rect.X;
-                                    var deltaY = (imageFrame.Height - rect.Height) / 2 - rect.Y;
+
+                                    var cX = deltaX * 180 / imageFrame.Width;
 
                                     if (this.arm != null)
                                     {
-                                        this.arm.MoveBedplate(deltaX);
+                                        var pos = this.arm.GetBedplatePosition();
+                                        this.arm.MoveBedplate(pos.GetValueOrDefault(0) + cX);
+                                        Trace.WriteLine($"Move bedplate to {pos.GetValueOrDefault(0) + cX}. Delta {cX}");
                                     }
-
-                                    this.ibVideo.Image = imageFrame;
                                 }
+
+                                this.ibVideo.Image = imageFrame;
                             }
                         }
                     }
