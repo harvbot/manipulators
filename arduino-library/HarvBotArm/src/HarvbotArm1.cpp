@@ -10,6 +10,8 @@ HarvbotArm1::HarvbotArm1(HarvbotArmServoNodePins beadplate,
 			HarvbotArmServoNodePins hand,
 			HarvbotArmServoNodePins handScrew) : HarvbotArm(HARVBOT_ARM_TYPE_1) {
 
+	this->nodesCount = 6;
+	
 	this->nodes = new HarvbotArmNode*[6];
 
 	this->nodes[0] = new HarvbotArmServoNode(HARVBOT_ARM_BEDPLATE_NODE, beadplate.Pin, beadplate.InitialPos, 0, 180);
