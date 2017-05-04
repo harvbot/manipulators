@@ -26,13 +26,15 @@ namespace Harvbot.Arms.ItemDetection
 
         private HarvbotArmBase arm;
 
+        private const int Threshold = 8;
+
         public MainForm()
         {
             InitializeComponent();
 
             CvInvoke.UseOpenCL = false;
-            this.capture = new VideoCapture(0);
-            this.capture.ImageGrabbed += ProcessFrame;
+            this.capture = new VideoCapture();
+            this.capture.ImageGrabbed += this.ProcessFrame;
             this.frame = new Mat();
         }
 
@@ -105,11 +107,11 @@ namespace Harvbot.Arms.ItemDetection
 
                                     var cX = deltaX * 180 / imageFrame.Width;
 
-                                    if (this.arm != null)
+                                    if (this.arm != null && Math.Abs(cX) > Threshold)
                                     {
                                         var pos = this.arm.GetBedplatePosition();
-                                        this.arm.MoveBedplate(pos.GetValueOrDefault(0) + cX);
-                                        Trace.WriteLine($"Move bedplate to {pos.GetValueOrDefault(0) + cX}. Delta {cX}");
+                                        this.arm.MoveBedplate(90 + cX);
+                                        Trace.WriteLine($"Move bedplate to {90 + cX}. Pos {pos}, Delta {deltaX}, Degree {cX}, {rect}");
                                     }
                                 }
 
