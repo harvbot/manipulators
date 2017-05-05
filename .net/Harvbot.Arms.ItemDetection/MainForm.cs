@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,9 +9,11 @@ using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Emgu.CV;
+using Emgu.CV.Cuda;
 using Emgu.CV.Structure;
 using Harvbot.Arms.Driver;
 
@@ -18,6 +21,8 @@ namespace Harvbot.Arms.ItemDetection
 {
     public partial class MainForm : Form
     {
+        private const int Threshold = 8;
+
         private VideoCapture capture;
 
         private Mat frame;
@@ -26,7 +31,9 @@ namespace Harvbot.Arms.ItemDetection
 
         private HarvbotArmBase arm;
 
-        private const int Threshold = 8;
+        private Thread manipulatorThread;
+
+        private ConcurrentQueue<int> commandsQueue;
 
         public MainForm()
         {
@@ -36,6 +43,9 @@ namespace Harvbot.Arms.ItemDetection
             this.capture = new VideoCapture();
             this.capture.ImageGrabbed += this.ProcessFrame;
             this.frame = new Mat();
+
+            this.manipulatorThread = new Thread(new ThreadStart(this.ProcessManipulatorCommand));
+            this.commandsQueue = new ConcurrentQueue<int>();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -58,11 +68,19 @@ namespace Harvbot.Arms.ItemDetection
 
             this.ibVideo.Image = this.capture.QueryFrame();
             this.capture.Start();
+
+            this.manipulatorThread.Start();
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             base.OnFormClosing(e);
+
+            if (this.manipulatorThread != null)
+            {
+                this.manipulatorThread.Abort();
+            }
+
             if (this.capture != null)
             {
                 this.capture.Dispose();
@@ -86,17 +104,17 @@ namespace Harvbot.Arms.ItemDetection
                     {
                         if (this.recognizer != null)
                         {
-                            using (var imageFrame = this.frame.ToImage<Bgr, Byte>())
+                            using (var imageFrame = this.frame.ToImage<Bgr, byte>())
                             using (var grayframe = imageFrame.Convert<Gray, byte>())
                             {
                                 //Detect the faces  from the gray scale image and store the locations as rectangle
                                 //The first dimensional is the channel
                                 //The second dimension is the index of the rectangle in the specific channel                     
                                 var detectionResult = this.recognizer.DetectMultiScale(
-                                   grayframe,
-                                   1.1,
-                                   10,
-                                   new Size(20, 20));
+                                    grayframe,
+                                    1.1,
+                                    10,
+                                    new Size(20, 20));
 
                                 if (detectionResult != null && detectionResult.Length > 0)
                                 {
@@ -107,12 +125,7 @@ namespace Harvbot.Arms.ItemDetection
 
                                     var cX = deltaX * 180 / imageFrame.Width;
 
-                                    if (this.arm != null && Math.Abs(cX) > Threshold)
-                                    {
-                                        var pos = this.arm.GetBedplatePosition();
-                                        this.arm.MoveBedplate(90 + cX);
-                                        Trace.WriteLine($"Move bedplate to {90 + cX}. Pos {pos}, Delta {deltaX}, Degree {cX}, {rect}");
-                                    }
+                                    this.commandsQueue.Enqueue(cX);
                                 }
 
                                 this.ibVideo.Image = imageFrame;
@@ -124,6 +137,42 @@ namespace Harvbot.Arms.ItemDetection
                 {
                     this.ibVideo.Image = this.frame;
                 }
+            }
+        }
+
+        private void ProcessManipulatorCommand()
+        {
+            try
+            {
+                while (true)
+                {
+                    if (this.arm != null)
+                    {
+                        int degree = 0;
+                        int value = 0;
+
+                        // Clean up queue.
+                        while (this.commandsQueue.TryDequeue(out value))
+                        {
+                            // And take the latest version.
+                            degree = value;
+                        }
+
+                        if (this.arm != null && Math.Abs(degree) > Threshold)
+                        {
+                            this.arm.MoveBedplate(90 + degree);
+                        }
+
+                        Thread.Sleep(200);
+                    }
+                    else
+                    {
+                        Thread.Sleep(1000);
+                    }
+                }
+            }
+            catch (ThreadAbortException)
+            {
             }
         }
 
