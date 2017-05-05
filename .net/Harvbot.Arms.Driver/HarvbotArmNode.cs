@@ -9,6 +9,11 @@ namespace Harvbot.Arms.Driver
     public class HarvbotArmNode
     {
         /// <summary>
+        /// Stores current node position.
+        /// </summary>
+        private int? pos;
+
+        /// <summary>
         /// Represents Harvbot Arm node.
         /// </summary>
         /// <param name="type">The node type.</param>
@@ -17,6 +22,7 @@ namespace Harvbot.Arms.Driver
         {
             this.Arm = arm;
             this.Type = type;
+            this.pos = null;
         }
 
         /// <summary>
@@ -41,6 +47,8 @@ namespace Harvbot.Arms.Driver
             {
                 throw new InvalidOperationException($"Invalid moving: {degree}");
             }
+
+            this.pos = int.Parse(response);
         }
 
         /// <summary>
@@ -55,6 +63,8 @@ namespace Harvbot.Arms.Driver
             {
                 throw new InvalidOperationException($"Invalid moving: {degree}");
             }
+
+            this.pos = int.Parse(response);
         }
 
         /// <summary>
@@ -63,14 +73,19 @@ namespace Harvbot.Arms.Driver
         /// <returns>The current node position degree.</returns>
         public int? GetPosition()
         {
-            var response = this.SendCommand("pos");
-
-            if (!string.IsNullOrEmpty(response))
+            if (!this.pos.HasValue)
             {
-                return int.Parse(response);
+                var response = this.SendCommand("pos");
+
+                if (!string.IsNullOrEmpty(response))
+                {
+                    this.pos = int.Parse(response);
+                }
+
+                this.pos = new int?();
             }
 
-            return new int?();
+            return this.pos;
         }
 
         /// <summary>
