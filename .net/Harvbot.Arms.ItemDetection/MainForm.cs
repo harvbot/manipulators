@@ -21,7 +21,7 @@ namespace Harvbot.Arms.ItemDetection
 {
     public partial class MainForm : Form
     {
-        private const int Threshold = 8;
+        private const int Threshold = 1;
 
         private VideoCapture capture;
 
@@ -33,6 +33,10 @@ namespace Harvbot.Arms.ItemDetection
 
         private Thread manipulatorThread;
 
+        private Rectangle prevRecognizedRect;
+
+        private int recognitionCount;
+
         private ConcurrentQueue<int> commandsQueue;
 
         public MainForm()
@@ -40,9 +44,11 @@ namespace Harvbot.Arms.ItemDetection
             InitializeComponent();
 
             CvInvoke.UseOpenCL = false;
-            this.capture = new VideoCapture();
+            this.capture = new VideoCapture(1);
             this.capture.ImageGrabbed += this.ProcessFrame;
             this.frame = new Mat();
+
+            this.prevRecognizedRect = Rectangle.Empty;
 
             this.manipulatorThread = new Thread(new ThreadStart(this.ProcessManipulatorCommand));
             this.commandsQueue = new ConcurrentQueue<int>();
@@ -118,14 +124,43 @@ namespace Harvbot.Arms.ItemDetection
 
                                 if (detectionResult != null && detectionResult.Length > 0)
                                 {
+                                    this.recognitionCount++;
                                     var rect = detectionResult.First();
+
                                     imageFrame.Draw(rect, new Bgr(Color.Red), 2);
 
-                                    var deltaX = (imageFrame.Width - rect.Width) / 2 - rect.X;
+                                    if (this.prevRecognizedRect == Rectangle.Empty)
+                                    {
+                                        this.prevRecognizedRect = rect;
+                                    }
 
-                                    var cX = deltaX * 180 / imageFrame.Width;
+                                    Rectangle intersect = rect;
 
-                                    this.commandsQueue.Enqueue(cX);
+                                    intersect.Intersect(this.prevRecognizedRect);
+
+                                    var area1 = rect.Width * rect.Height;
+                                    var area2 = intersect.Width * intersect.Height;
+
+                                    if (Math.Abs(area1 - area2) < area1 * 0.1 && this.recognitionCount > 4)
+                                    {
+                                        var deltaX = (imageFrame.Width - rect.Width) / 2 - rect.X;
+
+                                        var cX = deltaX * 180 / imageFrame.Width;
+
+                                        cX = cX / 4;
+
+                                        this.recognitionCount = 0;
+
+                                        Trace.WriteLine($"Send bedplate move command: {cX}");
+
+                                        this.commandsQueue.Enqueue(cX);
+                                    }
+
+                                    this.prevRecognizedRect = rect;
+                                }
+                                else
+                                {
+                                    this.recognitionCount = 0;
                                 }
 
                                 this.ibVideo.Image = imageFrame;
@@ -135,6 +170,7 @@ namespace Harvbot.Arms.ItemDetection
                 }
                 else
                 {
+                    this.recognitionCount = 0;
                     this.ibVideo.Image = this.frame;
                 }
             }
@@ -160,7 +196,8 @@ namespace Harvbot.Arms.ItemDetection
 
                         if (this.arm != null && Math.Abs(degree) > Threshold)
                         {
-                            this.arm.MoveBedplate(90 + degree);
+                            var pos = this.arm.GetBedplatePosition();
+                            this.arm.MoveBedplate(pos.GetValueOrDefault(90) + degree);
                         }
 
                         Thread.Sleep(200);

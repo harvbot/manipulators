@@ -15,11 +15,11 @@ void setup()
 
   HarvbotArmServoNodePins shoulder;
   shoulder.Pin = 3;
-  shoulder.InitialPos = 90; 
+  shoulder.InitialPos = 150; 
 
   HarvbotArmServoNodePins elbow;
   elbow.Pin = 4;
-  elbow.InitialPos = 90;
+  elbow.InitialPos = 60;
 
   HarvbotArmServoNodePins elbowScrew;
   elbowScrew.Pin = 5;
