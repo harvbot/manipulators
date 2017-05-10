@@ -21,7 +21,7 @@ namespace Harvbot.Arms.ItemDetection
 {
     public partial class MainForm : Form
     {
-        private const int Threshold = 1;
+        private const int Threshold = 2;
 
         private VideoCapture capture;
 
