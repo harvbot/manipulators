@@ -9,6 +9,7 @@ HarvbotArmServoNode::HarvbotArmServoNode(int type, int pin, int pos, int minPos,
 	m_pos = pos;
 	m_minPos = minPos;
 	m_maxPos = maxPos;
+	m_sweepDelay = 15;
 
 	servo = new Servo();
 	servo->attach(pin);
@@ -51,7 +52,7 @@ void HarvbotArmServoNode::sweep(int pos) {
 			for (int i = m_pos+1; i <= pos; i += 1) {
 				m_pos = i;
 				servo->write(i);
-				delay(15);
+				delay(m_sweepDelay);
 			}
 		}
 		else if (pos < m_pos)
@@ -59,8 +60,18 @@ void HarvbotArmServoNode::sweep(int pos) {
 			for (int i = m_pos-1; i >= pos; i -= 1) {
 				m_pos = i;
 				servo->write(i);
-				delay(15);
+				delay(m_sweepDelay);
 			}
 		}
 	}
+}
+
+int HarvbotArmServoNode::getSweepDelay()
+{
+	return m_sweepDelay;
+}
+		
+void HarvbotArmServoNode::setSweepDelay(int delay)
+{
+	m_sweepDelay = delay;
 }
