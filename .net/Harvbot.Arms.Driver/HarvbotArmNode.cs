@@ -39,7 +39,7 @@ namespace Harvbot.Arms.Driver
         /// Moves node to specified position.
         /// </summary>
         /// <param name="degree">The degree.</param>
-        public void Move(int degree)
+        public int? Move(int degree)
         {
             var response = this.SendCommand("move", degree.ToString());
 
@@ -49,13 +49,15 @@ namespace Harvbot.Arms.Driver
             }
 
             this.pos = int.Parse(response);
+
+            return pos;
         }
 
         /// <summary>
         /// Sweep node to specified position.
         /// </summary>
         /// <param name="degree">The degree.</param>
-        public void Sweep(int degree)
+        public int? Sweep(int degree)
         {
             var response = this.SendCommand("sweep", degree.ToString());
 
@@ -65,6 +67,8 @@ namespace Harvbot.Arms.Driver
             }
 
             this.pos = int.Parse(response);
+
+            return pos;
         }
 
         /// <summary>

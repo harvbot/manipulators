@@ -37,7 +37,7 @@ namespace Harvbot.Arms.ItemDetection
 
         private int recognitionCount;
 
-        private ConcurrentQueue<int> commandsQueue;
+        private ConcurrentQueue<NodeOffset> commandsQueue;
 
         public MainForm()
         {
@@ -51,7 +51,7 @@ namespace Harvbot.Arms.ItemDetection
             this.prevRecognizedRect = Rectangle.Empty;
 
             this.manipulatorThread = new Thread(new ThreadStart(this.ProcessManipulatorCommand));
-            this.commandsQueue = new ConcurrentQueue<int>();
+            this.commandsQueue = new ConcurrentQueue<NodeOffset>();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -144,16 +144,25 @@ namespace Harvbot.Arms.ItemDetection
                                     if (Math.Abs(area1 - area2) < area1 * 0.1 && this.recognitionCount > 4)
                                     {
                                         var deltaX = (imageFrame.Width - rect.Width) / 2 - rect.X;
+                                        var deltaY = (imageFrame.Height - rect.Height) / 2 - rect.Y;
 
-                                        var cX = deltaX * 180 / imageFrame.Width;
-
-                                        cX = cX / 4;
+                                        var cx = deltaX * 180 / imageFrame.Width / 4;
+                                        var cy = deltaY * 180 / imageFrame.Height / 4;
 
                                         this.recognitionCount = 0;
 
-                                        Trace.WriteLine($"Send bedplate move command: {cX}");
+                                        Trace.WriteLine($"Send bedplate move command: {cx};{cy}");
 
-                                        this.commandsQueue.Enqueue(cX);
+                                        this.commandsQueue.Enqueue(new NodeOffset()
+                                        {
+                                            NodeType = HarvbotArmNodeTypes.Bedplate,
+                                            Offset = cx
+                                        });
+                                        this.commandsQueue.Enqueue(new NodeOffset()
+                                        {
+                                            NodeType = HarvbotArmNodeTypes.Elbow,
+                                            Offset = -cy
+                                        });
                                     }
 
                                     this.prevRecognizedRect = rect;
@@ -184,27 +193,25 @@ namespace Harvbot.Arms.ItemDetection
                 {
                     if (this.arm != null)
                     {
-                        int degree = 0;
-                        int value = 0;
+                        NodeOffset value = null;
+                        var offsets = new List<NodeOffset>();
 
                         // Clean up queue.
                         while (this.commandsQueue.TryDequeue(out value))
                         {
-                            // And take the latest version.
-                            degree = value;
+                            offsets.Add(value);
                         }
 
-                        if (this.arm != null && Math.Abs(degree) > Threshold)
+                        foreach (var nodeGroup in offsets.GroupBy(x => x.NodeType))
                         {
-                            var pos = this.arm.GetBedplatePosition();
-                            this.arm.MoveBedplate(pos.GetValueOrDefault(90) + degree);
+                            var nodeOffset = nodeGroup.Last();
+                            var pos = this.arm.GetNodePosition(nodeOffset.NodeType);
+                            this.arm.MoveNode(nodeOffset.NodeType, pos.GetValueOrDefault(90) + nodeOffset.Offset);
                         }
-
-                        Thread.Sleep(200);
                     }
                     else
                     {
-                        Thread.Sleep(1000);
+                        Thread.Sleep(200);
                     }
                 }
             }
