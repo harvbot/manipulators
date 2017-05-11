@@ -6,13 +6,8 @@ namespace Harvbot.Arms.Driver
     /// <summary>
     /// Represents Harvbot Arm node.
     /// </summary>
-    public class HarvbotArmNode
+    public abstract class HarvbotArmNode
     {
-        /// <summary>
-        /// Stores current node position.
-        /// </summary>
-        private int? pos;
-
         /// <summary>
         /// Represents Harvbot Arm node.
         /// </summary>
@@ -22,7 +17,6 @@ namespace Harvbot.Arms.Driver
         {
             this.Arm = arm;
             this.Type = type;
-            this.pos = null;
         }
 
         /// <summary>
@@ -34,63 +28,6 @@ namespace Harvbot.Arms.Driver
         /// Gets the node type.
         /// </summary>
         public HarvbotArmNodeTypes Type { get; private set; }
-
-        /// <summary>
-        /// Moves node to specified position.
-        /// </summary>
-        /// <param name="degree">The degree.</param>
-        public int? Move(int degree)
-        {
-            var response = this.SendCommand("move", degree.ToString());
-
-            if (string.IsNullOrEmpty(response))
-            {
-                throw new InvalidOperationException($"Invalid moving: {degree}");
-            }
-
-            this.pos = int.Parse(response);
-
-            return pos;
-        }
-
-        /// <summary>
-        /// Sweep node to specified position.
-        /// </summary>
-        /// <param name="degree">The degree.</param>
-        public int? Sweep(int degree)
-        {
-            var response = this.SendCommand("sweep", degree.ToString());
-
-            if (string.IsNullOrEmpty(response))
-            {
-                throw new InvalidOperationException($"Invalid moving: {degree}");
-            }
-
-            this.pos = int.Parse(response);
-
-            return pos;
-        }
-
-        /// <summary>
-        /// Gets current node position.
-        /// </summary>
-        /// <returns>The current node position degree.</returns>
-        public int? GetPosition()
-        {
-            if (!this.pos.HasValue)
-            {
-                var response = this.SendCommand("pos");
-
-                if (!string.IsNullOrEmpty(response))
-                {
-                    this.pos = int.Parse(response);
-                }
-
-                this.pos = new int?();
-            }
-
-            return this.pos;
-        }
 
         /// <summary>
         /// Sends commands to controller.
