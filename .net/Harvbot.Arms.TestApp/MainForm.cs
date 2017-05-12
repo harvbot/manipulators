@@ -84,6 +84,7 @@ namespace HarvbotArms
             }
 
             this.CbArmTypes.Items.Add(HarvbotArmTypes.Type1);
+            this.CbArmTypes.Items.Add(HarvbotArmTypes.Type2);
             this.CbArmTypes.SelectedIndex = 0;
         }
 
@@ -173,6 +174,22 @@ namespace HarvbotArms
         {
             var pos = this.arm.GetShoulderPosition().GetValueOrDefault(0) - 1;
             this.arm.MoveShoulder(pos);
+        }
+
+        private void BtnOpenClaw_Click(object sender, EventArgs e)
+        {
+            ((HarvbotArm2)this.arm).Claw.RevolutionForward();
+        }
+
+        private void BtnCloseClaw_Click(object sender, EventArgs e)
+        {
+            ((HarvbotArm2)this.arm).Claw.RevolutionBackward();
+        }
+
+        private void CbArmTypes_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var armType = (HarvbotArmTypes)this.CbArmTypes.SelectedItem;
+            this.BtnCloseClaw.Enabled = this.BtnOpenClaw.Enabled = armType != HarvbotArmTypes.Type1;
         }
     }
 }

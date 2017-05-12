@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Harvbot.Arms.Driver
 {
     /// <summary>
-    /// Represents Harvbot Arm node.
+    /// Represents arm base node.
     /// </summary>
     public abstract class HarvbotArmNode
     {
         /// <summary>
-        /// Represents Harvbot Arm node.
+        /// Initializes a new instance of the <see cref="HarvbotArmNode"/> class.
         /// </summary>
         /// <param name="type">The node type.</param>
         /// <param name="arm">The owner.</param>
@@ -37,16 +38,21 @@ namespace Harvbot.Arms.Driver
         /// <returns>The response.</returns>
         protected string SendCommand(string command, string args = null)
         {
+            var request = string.Empty;
             if (string.IsNullOrEmpty(args))
             {
-                this.Arm.SerialPort.WriteLine($"harm:{command}:{(int)this.Type}:~harm");
+                request = $"harm:{command}:{(int)this.Type}:~harm";
             }
             else
             {
-                this.Arm.SerialPort.WriteLine($"harm:{command}:{(int)this.Type}:{args}:~harm");
+                request = $"harm:{command}:{(int)this.Type}:{args}:~harm";
             }
 
+            Trace.WriteLine(request);
+            this.Arm.SerialPort.WriteLine(request);
+
             var response = this.Arm.SerialPort.ReadLine();
+            Trace.WriteLine(response);
 
             var segments = response.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
 

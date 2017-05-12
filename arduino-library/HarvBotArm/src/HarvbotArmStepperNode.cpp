@@ -13,7 +13,7 @@ HarvbotArmStepperNode::~HarvbotArmStepperNode()
 {
 }
 
-int HarvbotArmStepperNode::read() 
+int HarvbotArmStepperNode::getSteps() 
 {
 	return this->m_pos;
 }
@@ -40,4 +40,16 @@ int HarvbotArmStepperNode::getSpeed() {
 
 void HarvbotArmStepperNode::setSpeed(int speed) {
 	this->m_speed = speed;
+}
+
+void HarvbotArmStepperNode::revolution(int direction) {
+
+	if(direction == 1)
+	{
+		this->rotate(this->m_maxStepsCount);
+	}
+	else
+	{
+		this->rotate(-this->m_maxStepsCount);
+	}
 }

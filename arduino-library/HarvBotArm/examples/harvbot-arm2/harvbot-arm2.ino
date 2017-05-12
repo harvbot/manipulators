@@ -1,9 +1,11 @@
 #include <HarvbotArm.h>
-#include <HarvbotArm1.h>
+#include <HarvbotArm2.h>
 #include <HarvbotArmNode.h>
 #include <HarvbotArmServoNode.h>
+#include <HarvbotArmStepperNode.h>
+#include <HarvbotArmStepperAdafruitNode.h>
 
-HarvbotArm1* manipulator;
+HarvbotArm2* manipulator;
 
 void setup() 
 {
@@ -20,8 +22,11 @@ void setup()
   HarvbotArmServoNodePins elbow;
   elbow.Pin = 24;
   elbow.InitialPos = 60;
+
+  HarvbotArmStepperAdafruitNode* claw = new HarvbotArmStepperAdafruitNode(HARVBOT_ARM_CLAW_NODE, 2, 0, 200);
+  claw->setSpeed(50);
   
-  manipulator = new HarvbotArm2(bedplate, shoulder, elbow, elbowScrew, hand, handScrew);
+  manipulator = new HarvbotArm2(bedplate, shoulder, elbow, claw);
 }
 
 void loop() 
@@ -40,9 +45,9 @@ void loop()
 
   // Take command parameters.
   int nodeType = getValue(msg, ':', 2).toInt();
-
+  
   // Get node.
-  HarvbotArmServoNode* node = (HarvbotArmServoNode*)manipulator->getNodeByType(nodeType);
+  HarvbotArmNode* node = manipulator->getNodeByType(nodeType);
 
   if(node == NULL)
   {
@@ -53,7 +58,7 @@ void loop()
   if(cmd == "pos")
   {
       // Set position.
-      int pos = node->read();
+      int pos = ((HarvbotArmServoNode*)node)->read();
 
       String response = getResponse(cmd, nodeType, String(pos));
 
@@ -66,9 +71,9 @@ void loop()
       int degree = getValue(msg, ':', 3).toInt();
       
       // Set position.
-      node->write(degree);
+      ((HarvbotArmServoNode*)node)->write(degree);
 
-      String response = getResponse(cmd, nodeType, String(degree));
+      String response = getResponse(cmd, nodeType, String(((HarvbotArmServoNode*)node)->read()));
 
       // Return response.
       Serial.println(response);
@@ -79,9 +84,68 @@ void loop()
       int degree = getValue(msg, ':', 3).toInt();
       
       // Set position.
-      node->sweep(degree);
+      ((HarvbotArmServoNode*)node)->sweep(degree);
 
       String response = getResponse(cmd, nodeType, String(degree));
+
+      // Return response.
+      Serial.println(response);
+  }
+  else if(cmd == "steps")
+  {
+      // Set position.
+      int steps = ((HarvbotArmStepperNode*)node)->getSteps();
+
+      String response = getResponse(cmd, nodeType, String(steps));
+
+      // Return response.
+      Serial.println(response);
+  }
+  else if(cmd == "rotate-steps")
+  {
+      float steps = getValue(msg, ':', 3).toFloat();
+    
+      // Rotate.
+      ((HarvbotArmStepperNode*)node)->rotate((int)steps);
+
+      int currentSteps = ((HarvbotArmStepperNode*)node)->getSteps();
+
+      String response = getResponse(cmd, nodeType, String(currentSteps));
+
+      // Return response.
+      Serial.println(response);
+  }
+  else if(cmd == "rotate-steps")
+  {
+      float steps = getValue(msg, ':', 3).toFloat();
+    
+      // Rotate.
+      ((HarvbotArmStepperNode*)node)->rotate((int)steps);
+
+      int currentSteps = ((HarvbotArmStepperNode*)node)->getSteps();
+
+      String response = getResponse(cmd, nodeType, String(currentSteps));
+
+      // Return response.
+      Serial.println(response);
+  }
+  else if(cmd == "revolution")
+  {
+      String direction = getValue(msg, ':', 3);
+    
+      // revolution.
+      if(direction == "forward")
+      {
+        ((HarvbotArmStepperNode*)node)->revolution(1);
+      }
+      else if(direction == "backward")
+      {
+        ((HarvbotArmStepperNode*)node)->revolution(-1);
+      }
+      
+      int currentSteps = ((HarvbotArmStepperNode*)node)->getSteps();
+
+      String response = getResponse(cmd, nodeType, String(currentSteps));
 
       // Return response.
       Serial.println(response);

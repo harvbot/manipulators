@@ -43,12 +43,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HarvbotArm2.cs" />
     <Compile Include="HarvbotArm1.cs" />
     <Compile Include="HarvbotArmBase.cs" />
     <Compile Include="HarvbotArmFactory.cs" />
     <Compile Include="HarvbotArmNode.cs" />
     <Compile Include="HarvbotArmNodeTypes.cs" />
     <Compile Include="HarvbotArmServoNode.cs" />
+    <Compile Include="HarvbotArmStepperNode.cs" />
     <Compile Include="HarvbotArmTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -18,9 +18,9 @@ HarvbotArmStepperAdafruitNode::~HarvbotArmStepperAdafruitNode()
 
 void HarvbotArmStepperAdafruitNode::rotate(int steps) 
 {
-	int prevPos = HarvbotArmStepperNode::read();
+	int prevPos = HarvbotArmStepperNode::getSteps();
 	HarvbotArmStepperNode::rotate(steps);
-	int currentPos = HarvbotArmStepperNode::read();
+	int currentPos = HarvbotArmStepperNode::getSteps();
 
 	if(currentPos-prevPos > 0)
 	{

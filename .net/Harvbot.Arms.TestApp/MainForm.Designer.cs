@@ -39,6 +39,8 @@
             this.BtnRight = new System.Windows.Forms.Button();
             this.BtnUp = new System.Windows.Forms.Button();
             this.BtnDown = new System.Windows.Forms.Button();
+            this.BtnOpenClaw = new System.Windows.Forms.Button();
+            this.BtnCloseClaw = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // CbPorts
@@ -76,6 +78,7 @@
             this.CbArmTypes.Name = "CbArmTypes";
             this.CbArmTypes.Size = new System.Drawing.Size(140, 21);
             this.CbArmTypes.TabIndex = 2;
+            this.CbArmTypes.SelectedIndexChanged += new System.EventHandler(this.CbArmTypes_SelectedIndexChanged);
             // 
             // BtnStartControl
             // 
@@ -137,11 +140,33 @@
             this.BtnDown.UseVisualStyleBackColor = true;
             this.BtnDown.Click += new System.EventHandler(this.BtnDown_Click);
             // 
+            // BtnOpenClaw
+            // 
+            this.BtnOpenClaw.Location = new System.Drawing.Point(191, 142);
+            this.BtnOpenClaw.Name = "BtnOpenClaw";
+            this.BtnOpenClaw.Size = new System.Drawing.Size(75, 23);
+            this.BtnOpenClaw.TabIndex = 10;
+            this.BtnOpenClaw.Text = "Open Claw";
+            this.BtnOpenClaw.UseVisualStyleBackColor = true;
+            this.BtnOpenClaw.Click += new System.EventHandler(this.BtnOpenClaw_Click);
+            // 
+            // BtnCloseClaw
+            // 
+            this.BtnCloseClaw.Location = new System.Drawing.Point(272, 142);
+            this.BtnCloseClaw.Name = "BtnCloseClaw";
+            this.BtnCloseClaw.Size = new System.Drawing.Size(75, 23);
+            this.BtnCloseClaw.TabIndex = 11;
+            this.BtnCloseClaw.Text = "Close Claw";
+            this.BtnCloseClaw.UseVisualStyleBackColor = true;
+            this.BtnCloseClaw.Click += new System.EventHandler(this.BtnCloseClaw_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(367, 188);
+            this.Controls.Add(this.BtnCloseClaw);
+            this.Controls.Add(this.BtnOpenClaw);
             this.Controls.Add(this.BtnDown);
             this.Controls.Add(this.BtnUp);
             this.Controls.Add(this.BtnRight);
@@ -174,6 +199,8 @@
         private System.Windows.Forms.Button BtnRight;
         private System.Windows.Forms.Button BtnUp;
         private System.Windows.Forms.Button BtnDown;
+        private System.Windows.Forms.Button BtnOpenClaw;
+        private System.Windows.Forms.Button BtnCloseClaw;
     }
 }
 

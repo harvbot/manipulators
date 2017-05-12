@@ -25,6 +25,10 @@ namespace Harvbot.Arms.Driver
                     {
                         return new HarvbotArm1(comNum);
                     }
+                case HarvbotArmTypes.Type2:
+                    {
+                        return new HarvbotArm2(comNum);
+                    }
                 default:
                     {
                         throw new NotSupportedException("Specified arm type is not supported.");

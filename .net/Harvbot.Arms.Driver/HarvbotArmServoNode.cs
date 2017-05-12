@@ -3,7 +3,7 @@
 namespace Harvbot.Arms.Driver
 {
     /// <summary>
-    /// Represents servo node.
+    /// Represents arm servo node.
     /// </summary>
     public class HarvbotArmServoNode : HarvbotArmNode
     {

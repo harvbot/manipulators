@@ -21,8 +21,6 @@ namespace Harvbot.Arms.ItemDetection
 {
     public partial class MainForm : Form
     {
-        private const int Threshold = 2;
-
         private VideoCapture capture;
 
         private Mat frame;
@@ -156,12 +154,12 @@ namespace Harvbot.Arms.ItemDetection
                                         this.commandsQueue.Enqueue(new NodeOffset()
                                         {
                                             NodeType = HarvbotArmNodeTypes.Bedplate,
-                                            Offset = cx
+                                            Offset = cx / Math.Abs(cx) * 2
                                         });
                                         this.commandsQueue.Enqueue(new NodeOffset()
                                         {
                                             NodeType = HarvbotArmNodeTypes.Elbow,
-                                            Offset = -cy
+                                            Offset = -cy / Math.Abs(cy) * 2
                                         });
                                     }
 
@@ -205,13 +203,13 @@ namespace Harvbot.Arms.ItemDetection
                         foreach (var nodeGroup in offsets.GroupBy(x => x.NodeType))
                         {
                             var nodeOffset = nodeGroup.Last();
-                            var pos = this.arm.GetNodePosition(nodeOffset.NodeType);
-                            this.arm.MoveNode(nodeOffset.NodeType, pos.GetValueOrDefault(90) + nodeOffset.Offset);
+                            var pos = this.arm.GetServoNodePosition(nodeOffset.NodeType);
+                            this.arm.MoveServoNode(nodeOffset.NodeType, pos.GetValueOrDefault(90) + nodeOffset.Offset);
                         }
                     }
                     else
                     {
-                        Thread.Sleep(200);
+                        Thread.Sleep(50);
                     }
                 }
             }
