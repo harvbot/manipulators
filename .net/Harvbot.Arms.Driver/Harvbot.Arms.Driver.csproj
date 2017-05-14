@@ -43,6 +43,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HarvbotArmCommands.cs" />
+    <Compile Include="HarvbotArmRequest.cs" />
+    <Compile Include="HarvbotArmResponse.cs" />
+    <Compile Include="HarvbotArmSerialProvider.cs" />
     <Compile Include="HarvbotArm2.cs" />
     <Compile Include="HarvbotArm1.cs" />
     <Compile Include="HarvbotArmBase.cs" />
@@ -51,7 +55,9 @@
     <Compile Include="HarvbotArmNodeTypes.cs" />
     <Compile Include="HarvbotArmServoNode.cs" />
     <Compile Include="HarvbotArmStepperNode.cs" />
+    <Compile Include="HarvbotArmStepperDirections.cs" />
     <Compile Include="HarvbotArmTypes.cs" />
+    <Compile Include="IHarvbotArmProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

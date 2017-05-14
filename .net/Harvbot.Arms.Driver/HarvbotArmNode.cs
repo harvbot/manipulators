@@ -17,7 +17,7 @@ namespace Harvbot.Arms.Driver
         public HarvbotArmNode(HarvbotArmNodeTypes type, HarvbotArmBase arm)
         {
             this.Arm = arm;
-            this.Type = type;
+            this.Node = type;
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace Harvbot.Arms.Driver
         /// <summary>
         /// Gets the node type.
         /// </summary>
-        public HarvbotArmNodeTypes Type { get; private set; }
+        public HarvbotArmNodeTypes Node { get; private set; }
 
         /// <summary>
         /// Sends commands to controller.
@@ -36,35 +36,16 @@ namespace Harvbot.Arms.Driver
         /// <param name="command">The command.</param>
         /// <param name="args">The command arguments.</param>
         /// <returns>The response.</returns>
-        protected string SendCommand(string command, string args = null)
+        protected string SendCommand(HarvbotArmCommands command, params object[] args)
         {
-            var request = string.Empty;
-            if (string.IsNullOrEmpty(args))
+            var response = this.Arm.Provider.SendRequest(new HarvbotArmRequest()
             {
-                request = $"harm:{command}:{(int)this.Type}:~harm";
-            }
-            else
-            {
-                request = $"harm:{command}:{(int)this.Type}:{args}:~harm";
-            }
+                Command = command,
+                Node = this.Node,
+                Arguments = new object[] { args }
+            });
 
-            Trace.WriteLine(request);
-            this.Arm.SerialPort.WriteLine(request);
-
-            var response = this.Arm.SerialPort.ReadLine();
-            Trace.WriteLine(response);
-
-            var segments = response.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
-
-            if (segments[0].Equals("harm", StringComparison.InvariantCultureIgnoreCase) &&
-                segments[1].Equals(command, StringComparison.InvariantCultureIgnoreCase) &&
-                segments[2].Equals(((int)this.Type).ToString(), StringComparison.InvariantCultureIgnoreCase) &&
-                segments.Last().Equals("~harm", StringComparison.InvariantCultureIgnoreCase))
-            {
-                throw new InvalidOperationException($"Invalid response: {response}");
-            }
-
-            return segments[3];
+            return response.Data;
         }
     }
 }

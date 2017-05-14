@@ -28,7 +28,7 @@ namespace Harvbot.Arms.Driver
         /// <param name="degree">The degree.</param>
         public int? Move(int degree)
         {
-            var response = this.SendCommand("move", degree.ToString());
+            var response = this.SendCommand(HarvbotArmCommands.Move, degree.ToString());
 
             if (string.IsNullOrEmpty(response))
             {
@@ -46,7 +46,7 @@ namespace Harvbot.Arms.Driver
         /// <param name="degree">The degree.</param>
         public int? Sweep(int degree)
         {
-            var response = this.SendCommand("sweep", degree.ToString());
+            var response = this.SendCommand(HarvbotArmCommands.Sweep, degree.ToString());
 
             if (string.IsNullOrEmpty(response))
             {
@@ -66,7 +66,7 @@ namespace Harvbot.Arms.Driver
         {
             if (!this.pos.HasValue)
             {
-                var response = this.SendCommand("pos");
+                var response = this.SendCommand(HarvbotArmCommands.Position);
 
                 if (!string.IsNullOrEmpty(response))
                 {

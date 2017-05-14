@@ -31,9 +31,9 @@ namespace Harvbot.Arms.Driver
         private bool isDisposed;
 
         /// <summary>
-        /// Stores serial port instance.
+        /// Stores arm provider instance.
         /// </summary>
-        private SerialPort serial;
+        private IHarvbotArmProvider provider;
 
         #endregion
 
@@ -41,20 +41,17 @@ namespace Harvbot.Arms.Driver
         /// Initializes a new instance of the <see cref="HarvbotArmBase"/> class.
         /// </summary>
         /// <param name="comNum">The COM number.</param>
-        public HarvbotArmBase(string comNum)
+        public HarvbotArmBase(string comNum) : this(new HarvbotArmSerialProvider(comNum))
         {
-            if (string.IsNullOrEmpty(comNum))
-            {
-                throw new ArgumentNullException("comNum");
-            }
+        }
 
-            this.serial = new SerialPort(comNum, HarvbotArmBase.BaudRate);
-            this.serial.DtrEnable = true;
-            if (!this.serial.IsOpen)
-            {
-                this.serial.Open();
-            }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HarvbotArmBase"/> class.
+        /// </summary>
+        /// <param name="provider">The arm controller provider.</param>
+        public HarvbotArmBase(IHarvbotArmProvider provider)
+        {
+            this.provider = provider;
             this.InitializeNodes();
         }
 
@@ -66,33 +63,17 @@ namespace Harvbot.Arms.Driver
         /// <summary>
         /// Gets serial port instance.
         /// </summary>
-        internal SerialPort SerialPort
+        internal IHarvbotArmProvider Provider
         {
             get
             {
-                return this.serial;
+                return this.provider;
             }
         }
 
         ~HarvbotArmBase()
         {
             this.Dispose(false);
-        }
-
-        /// <summary>
-        /// Opens rangefinder to start measurement.
-        /// </summary>
-        public void Open()
-        {
-            this.serial.Open();
-        }
-
-        /// <summary>
-        /// Closes rangefinder.
-        /// </summary>
-        public void Close()
-        {
-            this.serial.Close();
         }
 
         /// <summary>
@@ -156,7 +137,7 @@ namespace Harvbot.Arms.Driver
         /// <returns>The node position.</returns>
         public virtual int? GetServoNodePosition(HarvbotArmNodeTypes nodeType)
         {
-            var node = this.nodes.FirstOrDefault(x => x.Type == nodeType) as HarvbotArmServoNode;
+            var node = this.nodes.FirstOrDefault(x => x.Node == nodeType) as HarvbotArmServoNode;
             if (node != null)
             {
                 return node.GetPosition();
@@ -174,7 +155,7 @@ namespace Harvbot.Arms.Driver
         /// <param name="degree">The degree.</param>
         public virtual int? MoveServoNode(HarvbotArmNodeTypes nodeType, int degree)
         {
-            var shoulder = this.nodes.FirstOrDefault(x => x.Type == nodeType) as HarvbotArmServoNode;
+            var shoulder = this.nodes.FirstOrDefault(x => x.Node == nodeType) as HarvbotArmServoNode;
             if (shoulder != null)
             {
                 return shoulder.Move(degree);
@@ -192,7 +173,7 @@ namespace Harvbot.Arms.Driver
         /// <param name="degree">The degree.</param>
         public virtual int? SweepServoNode(HarvbotArmNodeTypes nodeType, int degree)
         {
-            var shoulder = this.nodes.FirstOrDefault(x => x.Type == nodeType) as HarvbotArmServoNode;
+            var shoulder = this.nodes.FirstOrDefault(x => x.Node == nodeType) as HarvbotArmServoNode;
             if (shoulder != null)
             {
                 return shoulder.Sweep(degree);
@@ -216,7 +197,7 @@ namespace Harvbot.Arms.Driver
         {
             if (!this.isDisposed)
             {
-                this.serial.Dispose();
+                this.provider.Dispose();
                 this.isDisposed = true;
             }
         }

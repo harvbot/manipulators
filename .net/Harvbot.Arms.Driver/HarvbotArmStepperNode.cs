@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Harvbot.Arms.Driver
 {
@@ -29,7 +25,7 @@ namespace Harvbot.Arms.Driver
         {
             if (!this.steps.HasValue)
             {
-                var response = this.SendCommand("steps");
+                var response = this.SendCommand(HarvbotArmCommands.Steps);
 
                 if (!string.IsNullOrEmpty(response))
                 {
@@ -44,7 +40,7 @@ namespace Harvbot.Arms.Driver
 
         public double Rotate(double steps)
         {
-            var response = this.SendCommand("rotate-steps", steps.ToString());
+            var response = this.SendCommand(HarvbotArmCommands.RotateOnSteps, steps);
 
             if (!string.IsNullOrEmpty(response))
             {
@@ -58,7 +54,7 @@ namespace Harvbot.Arms.Driver
 
         public double RotateOnAngle(double degree)
         {
-            var response = this.SendCommand("rotate-angle", degree.ToString());
+            var response = this.SendCommand(HarvbotArmCommands.RotateOnAngle, degree);
 
             if (!string.IsNullOrEmpty(response))
             {
@@ -72,7 +68,7 @@ namespace Harvbot.Arms.Driver
 
         public double GetCurrentAngle()
         {
-            var response = this.SendCommand("angle");
+            var response = this.SendCommand(HarvbotArmCommands.Angle);
 
             if (!string.IsNullOrEmpty(response))
             {
@@ -86,7 +82,7 @@ namespace Harvbot.Arms.Driver
 
         public double RevolutionForward()
         {
-            var response = this.SendCommand("revolution", "forward");
+            var response = this.SendCommand(HarvbotArmCommands.Revolution, HarvbotArmStepperDirections.Forward);
 
             if (!string.IsNullOrEmpty(response))
             {
@@ -100,7 +96,7 @@ namespace Harvbot.Arms.Driver
 
         public double RevolutionBackward()
         {
-            var response = this.SendCommand("revolution", "backward");
+            var response = this.SendCommand(HarvbotArmCommands.Revolution, HarvbotArmStepperDirections.Backward);
 
             if (!string.IsNullOrEmpty(response))
             {

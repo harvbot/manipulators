@@ -20,6 +20,14 @@ namespace Harvbot.Arms.Driver
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="HarvbotArm1"/> class.
+        /// </summary>
+        /// <param name="provider">The arm controller provider.</param>
+        public HarvbotArm1(IHarvbotArmProvider provider) : base(provider)
+        {
+        }
+
+        /// <summary>
         /// Gets the arm type.
         /// </summary>
         public override HarvbotArmTypes ArmType
