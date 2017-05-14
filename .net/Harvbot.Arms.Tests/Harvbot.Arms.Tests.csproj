@@ -68,11 +68,17 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="UnitTests\Arm1Test.cs" />
+    <Compile Include="UnitTests\ArmTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Harvbot.Arms.Driver\Harvbot.Arms.Driver.csproj">
+      <Project>{75aa82e5-085c-43a8-acc2-8aa97eb9726a}</Project>
+      <Name>Harvbot.Arms.Driver</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
