@@ -152,6 +152,22 @@ namespace HarvbotArms
             }
         }
 
+        private void BtnOpenClaw_Click(object sender, EventArgs e)
+        {
+            this.OpenClaw();
+        }
+
+        private void BtnCloseClaw_Click(object sender, EventArgs e)
+        {
+            this.CloseClaw();
+        }
+
+        private void CbArmTypes_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var armType = (HarvbotArmTypes)this.CbArmTypes.SelectedItem;
+            this.BtnCloseClaw.Enabled = this.BtnOpenClaw.Enabled = armType != HarvbotArmTypes.Type1;
+        }
+
         private void MoveLeft()
         {
             var pos = this.arm.GetBedplatePosition().GetValueOrDefault(0) - 1;
@@ -176,20 +192,14 @@ namespace HarvbotArms
             this.arm.MoveShoulder(pos);
         }
 
-        private void BtnOpenClaw_Click(object sender, EventArgs e)
+        private void OpenClaw()
         {
             ((HarvbotArm2)this.arm).Claw.RevolutionForward();
         }
 
-        private void BtnCloseClaw_Click(object sender, EventArgs e)
+        private void CloseClaw()
         {
             ((HarvbotArm2)this.arm).Claw.RevolutionBackward();
-        }
-
-        private void CbArmTypes_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            var armType = (HarvbotArmTypes)this.CbArmTypes.SelectedItem;
-            this.BtnCloseClaw.Enabled = this.BtnOpenClaw.Enabled = armType != HarvbotArmTypes.Type1;
         }
     }
 }

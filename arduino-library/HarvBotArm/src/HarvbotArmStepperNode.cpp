@@ -1,7 +1,7 @@
 #include "HarvbotArmNode.h"
 #include "HarvbotArmStepperNode.h"
 
-HarvbotArmStepperNode::HarvbotArmStepperNode(int type, int pos, int maxStepsCount, int maxFullRotaionCount) 
+HarvbotArmStepperNode::HarvbotArmStepperNode(int type, float pos, int maxStepsCount, int maxFullRotaionCount) 
 	: HarvbotArmNode(type)
 {
 	this->m_pos = pos;
@@ -13,12 +13,12 @@ HarvbotArmStepperNode::~HarvbotArmStepperNode()
 {
 }
 
-int HarvbotArmStepperNode::getSteps() 
+float HarvbotArmStepperNode::getSteps() 
 {
 	return this->m_pos;
 }
 
-void HarvbotArmStepperNode::rotate(int steps) 
+float HarvbotArmStepperNode::rotate(float steps) 
 {
 	if(this->m_pos + steps < 0)
 	{
@@ -32,6 +32,8 @@ void HarvbotArmStepperNode::rotate(int steps)
 	{
 		this->m_pos += steps;
 	}
+
+	return this->m_pos;
 }
 
 int HarvbotArmStepperNode::getSpeed() {
@@ -42,14 +44,22 @@ void HarvbotArmStepperNode::setSpeed(int speed) {
 	this->m_speed = speed;
 }
 
-void HarvbotArmStepperNode::revolution(int direction) {
+float HarvbotArmStepperNode::revolution(int direction) {
 
 	if(direction == 1)
 	{
-		this->rotate(this->m_maxStepsCount);
+		return this->rotate(this->m_maxStepsCount);
 	}
 	else
 	{
-		this->rotate(-this->m_maxStepsCount);
+		return this->rotate(-this->m_maxStepsCount);
 	}
+}
+
+float HarvbotArmStepperNode::getCurrentAngle()
+{
+	int fullRotation = round(this->m_pos) / this->m_maxStepsCount;
+	float pos = this->m_pos - fullRotation * this->m_maxStepsCount;
+	float anglePerStep = 360.0 / this->m_maxStepsCount;
+	return pos * anglePerStep;
 }

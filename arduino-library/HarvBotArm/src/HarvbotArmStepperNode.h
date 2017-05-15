@@ -6,18 +6,19 @@
 
 class HarvbotArmStepperNode : public HarvbotArmNode {
 	protected: 
-		int m_pos;
+		float m_pos;
 		int m_speed;
 		int m_maxStepsCount;
 		int m_maxFullRotaionCount;
 	public:
-		HarvbotArmStepperNode(int type, int pos, int maxStepsCount, int maxFullRotaionCount=HARVBOT_ARM_CLAW_MAX_FULL_ROTATION);
+		HarvbotArmStepperNode(int type, float pos, int maxStepsCount, int maxFullRotaionCount=HARVBOT_ARM_CLAW_MAX_FULL_ROTATION);
 		~HarvbotArmStepperNode();
-		int getSteps();
-		virtual void rotate(int steps);
+		float getSteps();
+		virtual float rotate(float steps);
 		int getSpeed();
 		virtual void setSpeed(int speed);
-		virtual void revolution(int direction);
+		virtual float revolution(int direction);
+		virtual float getCurrentAngle();
 };
 
 #endif /* HarvbotArmStepperNode_H_ */

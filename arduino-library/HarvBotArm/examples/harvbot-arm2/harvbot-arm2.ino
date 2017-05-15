@@ -94,9 +94,19 @@ void loop()
   else if(cmd == "steps")
   {
       // Set position.
-      int steps = ((HarvbotArmStepperNode*)node)->getSteps();
+      float steps = ((HarvbotArmStepperNode*)node)->getSteps();
 
       String response = getResponse(cmd, nodeType, String(steps));
+
+      // Return response.
+      Serial.println(response);
+  }
+  else if(cmd == "angle")
+  {
+      // Set position.
+      float angle = ((HarvbotArmStepperNode*)node)->getCurrentAngle();
+
+      String response = getResponse(cmd, nodeType, String(angle));
 
       // Return response.
       Serial.println(response);
@@ -106,7 +116,7 @@ void loop()
       float steps = getValue(msg, ':', 3).toFloat();
     
       // Rotate.
-      ((HarvbotArmStepperNode*)node)->rotate((int)steps);
+      ((HarvbotArmStepperNode*)node)->rotate(steps);
 
       int currentSteps = ((HarvbotArmStepperNode*)node)->getSteps();
 
@@ -115,15 +125,13 @@ void loop()
       // Return response.
       Serial.println(response);
   }
-  else if(cmd == "rotate-steps")
+  else if(cmd == "rotate-angle")
   {
-      float steps = getValue(msg, ':', 3).toFloat();
+      float angle = getValue(msg, ':', 3).toFloat();
     
       // Rotate.
-      ((HarvbotArmStepperNode*)node)->rotate((int)steps);
-
-      int currentSteps = ((HarvbotArmStepperNode*)node)->getSteps();
-
+      float currentSteps = ((HarvbotArmStepperNode*)node)->rotate(angle);
+      
       String response = getResponse(cmd, nodeType, String(currentSteps));
 
       // Return response.

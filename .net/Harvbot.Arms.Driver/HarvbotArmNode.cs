@@ -42,7 +42,7 @@ namespace Harvbot.Arms.Driver
             {
                 Command = command,
                 Node = this.Node,
-                Arguments = new object[] { args }
+                Arguments = args
             });
 
             return response.Data;

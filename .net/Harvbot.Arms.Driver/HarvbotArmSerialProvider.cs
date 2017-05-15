@@ -60,18 +60,19 @@ namespace Harvbot.Arms.Driver
 
             if (request.Arguments == null || request.Arguments.Length == 0)
             {
-                requestData = $"harm:{command}:{request.Node}:~harm";
+                requestData = $"harm:{command}:{(int)request.Node}:~harm";
             }
             else
             {
-                requestData = $"harm:{command}:{request.Node}:{string.Join(":", request.Arguments)}:~harm";
+                var args = string.Join(":", request.Arguments.Select(x => x.ToString().ToLower()).ToArray());
+                requestData = $"harm:{command}:{(int)request.Node}:{args}:~harm";
             }
 
             Trace.WriteLine(requestData);
             this.serial.WriteLine(requestData);
 
             var response = this.serial.ReadLine();
-            Trace.WriteLine(requestData);
+            Trace.WriteLine(response);
 
             var segments = response.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
 
