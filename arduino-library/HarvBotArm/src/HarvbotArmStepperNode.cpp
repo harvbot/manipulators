@@ -60,6 +60,11 @@ float HarvbotArmStepperNode::getCurrentAngle()
 {
 	int fullRotation = round(this->m_pos) / this->m_maxStepsCount;
 	float pos = this->m_pos - fullRotation * this->m_maxStepsCount;
-	float anglePerStep = 360.0 / this->m_maxStepsCount;
+	float anglePerStep = this->getAnglePerStep();
 	return pos * anglePerStep;
+}
+
+float HarvbotArmStepperNode::getAnglePerStep()
+{
+	return 360.0 / this->m_maxStepsCount;
 }

@@ -23,27 +23,26 @@ float HarvbotArmStepperAdafruitNode::rotate(float steps)
 	HarvbotArmStepperNode::rotate(steps);
 	float currentPos = HarvbotArmStepperNode::getSteps();
 
+	// Get the full step count.
 	float fullSteps = floor(abs(currentPos-prevPos));
-	float partSteps = floor(((abs(currentPos-prevPos) - fullSteps) * 100) / MICROSTEPS);
 
-	if(currentPos-prevPos > 0)
+	// Get the microstep count.
+	float microSteps = floor((abs(currentPos-prevPos) - fullSteps) * MICROSTEPS);
+
+	// Get direction
+	int direction = currentPos-prevPos > 0 ? FORWARD : BACKWARD;
+
+	// Rotate
+	this->stepper->step(fullSteps, direction, SINGLE);
+	if(microSteps > 0)
 	{
-		this->stepper->step(fullSteps, FORWARD, SINGLE);
-		if(partSteps > 0)
-		{
-			this->stepper->step(partSteps, FORWARD, MICROSTEP);
-		}
-	}
-	else if(currentPos-prevPos < 0)
-	{
-		this->stepper->step(fullSteps, BACKWARD, SINGLE);
-		if(partSteps > 0)
-		{
-			this->stepper->step(partSteps, FORWARD, MICROSTEP);
-		}
+		this->stepper->step(microSteps, direction, MICROSTEP);
 	}
 
-	return currentPos;
+	// Reset current position.
+	this->m_pos=prevPos + (fullSteps+microSteps/(float)MICROSTEPS) * (direction == FORWARD ? 1 : -1);
+
+	return this->m_pos;
 }
 
 void HarvbotArmStepperAdafruitNode::setSpeed(int speed) {

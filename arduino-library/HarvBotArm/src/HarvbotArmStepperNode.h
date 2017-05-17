@@ -18,6 +18,7 @@ class HarvbotArmStepperNode : public HarvbotArmNode {
 		int getSpeed();
 		virtual void setSpeed(int speed);
 		virtual float revolution(int direction);
+		virtual float getAnglePerStep();
 		virtual float getCurrentAngle();
 };
 

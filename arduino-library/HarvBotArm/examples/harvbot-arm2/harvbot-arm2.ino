@@ -118,7 +118,7 @@ void loop()
       // Rotate.
       ((HarvbotArmStepperNode*)node)->rotate(steps);
 
-      int currentSteps = ((HarvbotArmStepperNode*)node)->getSteps();
+      float currentSteps = ((HarvbotArmStepperNode*)node)->getSteps();
 
       String response = getResponse(cmd, nodeType, String(currentSteps));
 
@@ -128,9 +128,11 @@ void loop()
   else if(cmd == "rotate-angle")
   {
       float angle = getValue(msg, ':', 3).toFloat();
+
+      float steps = angle / ((HarvbotArmStepperNode*)node)->getAnglePerStep();
     
       // Rotate.
-      float currentSteps = ((HarvbotArmStepperNode*)node)->rotate(angle);
+      float currentSteps = ((HarvbotArmStepperNode*)node)->rotate(steps);
       
       String response = getResponse(cmd, nodeType, String(currentSteps));
 
