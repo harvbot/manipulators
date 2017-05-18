@@ -37,7 +37,7 @@ namespace Harvbot.Arms.Driver
 
             this.pos = int.Parse(response);
 
-            return pos;
+            return this.pos;
         }
 
         /// <summary>
@@ -72,8 +72,6 @@ namespace Harvbot.Arms.Driver
                 {
                     this.pos = int.Parse(response);
                 }
-
-                this.pos = new int?();
             }
 
             return this.pos;
