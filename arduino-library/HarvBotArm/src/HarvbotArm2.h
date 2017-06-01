@@ -4,16 +4,18 @@
 #include <Arduino.h>
 #include <HarvbotArm.h>
 #include <HarvbotArmNode.h>
-#include <HarvbotArmStepperNode.h>
+#include <HarvbotArmCircleNode.h>
+#include <HarvbotArmScrewNode.h>
+#include <HarvbotArmServoNode.h>
 
 class HarvbotArm2 : public HarvbotArm {
 	public:
 		HarvbotArm2(HarvbotArmServoNodePins beadplate, 
-			HarvbotArmServoNodePins shoulder,
-			HarvbotArmServoNodePins elbow,
-			HarvbotArmStepperNode* claw);
+			HarvbotArmServoNodePins shoulder, 
+			HarvbotArmServoNodePins elbow, 
+			HarvbotArmScrewNode* claw);
 		~HarvbotArm2();
-		HarvbotArmStepperNode* getClaw();
+		HarvbotArmScrewNode* getClaw();
 };
 
 #endif /* HarvbotArm2_H_ */

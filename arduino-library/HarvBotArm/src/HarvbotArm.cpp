@@ -1,5 +1,6 @@
 #include "HarvbotArm.h"
 #include "HarvbotArmNode.h"
+#include "HarvbotArmCircleNode.h"
 
 HarvbotArm::HarvbotArm(int armType) 
 {
@@ -19,17 +20,17 @@ int HarvbotArm::getType()
 	return this->armType;
 }
 
-HarvbotArmNode* HarvbotArm::getBedplate()
+HarvbotArmCircleNode* HarvbotArm::getBedplate()
 {
 	return this->getNodeByType(HARVBOT_ARM_BEDPLATE_NODE);
 }
 
-HarvbotArmNode* HarvbotArm::getShoulder()
+HarvbotArmCircleNode* HarvbotArm::getShoulder()
 {
 	return this->getNodeByType(HARVBOT_ARM_SHOULDER_NODE);
 }
 
-HarvbotArmNode* HarvbotArm::getElbow()
+HarvbotArmCircleNode* HarvbotArm::getElbow()
 {
 	return this->getNodeByType(HARVBOT_ARM_ELBOW_NODE);
 }

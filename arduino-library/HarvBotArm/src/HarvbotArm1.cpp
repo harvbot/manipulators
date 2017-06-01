@@ -2,6 +2,7 @@
 #include "HarvbotArm1.h"
 #include "HarvbotArmNode.h"
 #include "HarvbotArmServoNode.h"
+#include "HarvbotArmScrewNode.h"
 
 HarvbotArm1::HarvbotArm1(HarvbotArmServoNodePins beadplate, 
 			HarvbotArmServoNodePins shoulder,
@@ -26,17 +27,17 @@ HarvbotArm1::~HarvbotArm1() {
 	
 }
 
-HarvbotArmNode* HarvbotArm1::getElbowScrew()
+HarvbotArmCircleNode* HarvbotArm1::getElbowScrew()
 {
 	return this->getNodeByType(HARVBOT_ARM_ELBOW_SCREW_NODE);
 }
 
-HarvbotArmNode* HarvbotArm1::getHand()
+HarvbotArmCircleNode* HarvbotArm1::getHand()
 {
 	return this->getNodeByType(HARVBOT_ARM_HAND_NODE);
 }
 
-HarvbotArmNode* HarvbotArm1::getHandScrew()
+HarvbotArmCircleNode* HarvbotArm1::getHandScrew()
 {
 	return this->getNodeByType(HARVBOT_ARM_HAND_SCREW_NODE);
 }

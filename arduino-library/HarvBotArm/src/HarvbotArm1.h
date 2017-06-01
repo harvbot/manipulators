@@ -4,6 +4,9 @@
 #include <Arduino.h>
 #include <HarvbotArm.h>
 #include <HarvbotArmNode.h>
+#include <HarvbotArmCircleNode.h>
+#include <HarvbotArmScrewNode.h>
+#include <HarvbotArmServoNode.h>
 
 class HarvbotArm1 : public HarvbotArm {
 	public:
@@ -14,9 +17,9 @@ class HarvbotArm1 : public HarvbotArm {
 			HarvbotArmServoNodePins hand,
 			HarvbotArmServoNodePins handScrew);
 		~HarvbotArm1();
-		HarvbotArmNode* getElbowScrew();
-		HarvbotArmNode* getHand();
-		HarvbotArmNode* getHandScrew();
+		HarvbotArmCircleNode* getElbowScrew();
+		HarvbotArmCircleNode* getHand();
+		HarvbotArmCircleNode* getHandScrew();
 };
 
 #endif /* HarvbotArm1_H_ */

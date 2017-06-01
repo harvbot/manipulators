@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include <Servo.h>
 
-#include <HarvbotArmNode.h>
+#include <HarvbotArmCircleNode.h>
 
 struct HarvbotArmServoNodePins
 {
@@ -12,22 +12,17 @@ struct HarvbotArmServoNodePins
 	int InitialPos;
 };
 
-class HarvbotArmServoNode : public HarvbotArmNode {
+class HarvbotArmServoNode : public HarvbotArmCircleNode {
 	protected: 
 		int m_pin;
-		int m_pos;
-		int m_minPos;
-		int m_maxPos;
 		int m_sweepDelay;
 		Servo* servo;
 	public:
-		HarvbotArmServoNode(int type, int pin, int pos, int minPos, int maxPos);
+		HarvbotArmServoNode(int nodeType, int pin, float pos, float minPos, float maxPos);
 		~HarvbotArmServoNode();
-		int read();
-		void write(int pos);
-		void sweep(int pos);
+		float write(float pos);
 		int getSweepDelay();
 		void setSweepDelay(int delay);
 };
 
-#endif /* GAMServoNode_H_ */
+#endif /* HarvbotArmServoNode_H_ */

@@ -2,26 +2,26 @@
 
 #include <AFMotor.h>
 #include <math.h>
-#include "HarvbotArmStepperNode.h"
-#include "HarvbotArmStepperAdafruitNode.h"
+#include "HarvbotArmScrewNode.h"
+#include "HarvbotArmAFMotorScrewNode.h"
 
-HarvbotArmStepperAdafruitNode::HarvbotArmStepperAdafruitNode(int type, int adafruitShieldPort, 
+HarvbotArmAFMotorScrewNode::HarvbotArmAFMotorScrewNode(int nodeType, int adafruitShieldPort, 
 	float pos, int maxStepsCount, int maxFullRotaionCount) 
-	: HarvbotArmStepperNode(type, pos, maxStepsCount, maxFullRotaionCount)
+	: HarvbotArmScrewNode(nodeType, pos, maxStepsCount, maxFullRotaionCount, 1)
 {
 	this->stepper = new AF_Stepper(maxStepsCount, adafruitShieldPort);
 }
 
-HarvbotArmStepperAdafruitNode::~HarvbotArmStepperAdafruitNode()
+HarvbotArmAFMotorScrewNode::~HarvbotArmAFMotorScrewNode()
 {
 	delete this->stepper;
 }
 
-float HarvbotArmStepperAdafruitNode::rotate(float steps) 
+float HarvbotArmAFMotorScrewNode::rotate(float steps) 
 {
-	float prevPos = HarvbotArmStepperNode::getSteps();
-	HarvbotArmStepperNode::rotate(steps);
-	float currentPos = HarvbotArmStepperNode::getSteps();
+	float prevPos = HarvbotArmScrewNode::getSteps();
+	HarvbotArmScrewNode::rotate(steps);
+	float currentPos = HarvbotArmScrewNode::getSteps();
 
 	// Get the full step count.
 	float fullSteps = floor(abs(currentPos-prevPos));
@@ -29,10 +29,10 @@ float HarvbotArmStepperAdafruitNode::rotate(float steps)
 	// Get the microstep count.
 	float microSteps = floor((abs(currentPos-prevPos) - fullSteps) * MICROSTEPS);
 
-	// Get direction
+	// Get direction.
 	int direction = currentPos-prevPos > 0 ? FORWARD : BACKWARD;
 
-	// Rotate
+	// Rotate.
 	this->stepper->step(fullSteps, direction, SINGLE);
 	if(microSteps > 0)
 	{
@@ -45,8 +45,8 @@ float HarvbotArmStepperAdafruitNode::rotate(float steps)
 	return this->m_pos;
 }
 
-void HarvbotArmStepperAdafruitNode::setSpeed(int speed) {
-	HarvbotArmStepperNode::setSpeed(speed);
+void HarvbotArmAFMotorScrewNode::setSpeed(int speed) {
+	HarvbotArmScrewNode::setSpeed(speed);
 
 	this->stepper->setSpeed(speed);
 }

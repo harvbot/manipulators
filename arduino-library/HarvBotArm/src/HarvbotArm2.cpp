@@ -2,12 +2,12 @@
 #include "HarvbotArm2.h"
 #include "HarvbotArmNode.h"
 #include "HarvbotArmServoNode.h"
-#include "HarvbotArmStepperNode.h"
+#include "HarvbotArmScrewNode.h"
 
 HarvbotArm2::HarvbotArm2(HarvbotArmServoNodePins beadplate, 
 			HarvbotArmServoNodePins shoulder,
 			HarvbotArmServoNodePins elbow,
-			HarvbotArmStepperNode* claw) : HarvbotArm(HARVBOT_ARM_TYPE_2) {
+			HarvbotArmScrewNode* claw) : HarvbotArm(HARVBOT_ARM_TYPE_2) {
 
 	this->nodesCount = 4;
 	
@@ -23,7 +23,7 @@ HarvbotArm2::~HarvbotArm2() {
 	
 }
 
-HarvbotArmStepperNode* HarvbotArm2::getClaw()
+HarvbotArmScrewNode* HarvbotArm2::getClaw()
 {
-	return (HarvbotArmStepperNode*)this->getNodeByType(HARVBOT_ARM_CLAW_NODE);
+	return (HarvbotArmScrewNode*)this->getNodeByType(HARVBOT_ARM_CLAW_NODE);
 }

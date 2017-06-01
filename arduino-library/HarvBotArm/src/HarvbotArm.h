@@ -3,7 +3,8 @@
 
 #include <Arduino.h>
 #include <HarvbotArmNode.h>
-#include <HarvbotArmServoNode.h>
+#include <HarvbotArmCircleNode.h>
+#include <HarvbotArmScrewNode.h>
 
 #ifndef HARVBOT_ARM_TYPE_1
 #define HARVBOT_ARM_TYPE_1 1
@@ -27,9 +28,9 @@ class HarvbotArm {
 		HarvbotArm(int armType);
 		~HarvbotArm();
 		int getType();
-		virtual HarvbotArmNode* getBedplate();
-		virtual HarvbotArmNode* getShoulder();
-		virtual HarvbotArmNode* getElbow();
+		virtual HarvbotArmCircleNode* getBedplate();
+		virtual HarvbotArmCircleNode* getShoulder();
+		virtual HarvbotArmCircleNode* getElbow();
 		virtual HarvbotArmNode* getNodeByType(int type);
 };
 

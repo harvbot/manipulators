@@ -1,69 +1,50 @@
-#include <Servo.h>
-#include "HarvbotArmNode.h"
+#include <math.h>
+#include "HarvbotArmCircleNode.h"
 #include "HarvbotArmServoNode.h"
 
-HarvbotArmServoNode::HarvbotArmServoNode(int type, int pin, int pos, int minPos, int maxPos) 
-	: HarvbotArmNode(type)
+HarvbotArmServoNode::HarvbotArmServoNode(int nodeType, int pin, float pos, float minPos, float maxPos) 
+	: HarvbotArmCircleNode(nodeType, pos, minPos, maxPos)
 {
 	m_pin = pin;
-	m_pos = pos;
-	m_minPos = minPos;
-	m_maxPos = maxPos;
 	m_sweepDelay = 15;
 
 	servo = new Servo();
 	servo->attach(pin);
-	servo->write(pos);
+	servo->write((int)floor(pos));
 }
 
 HarvbotArmServoNode::~HarvbotArmServoNode(){
 	servo->detach();
+	delete servo;
 }
 
-int HarvbotArmServoNode::read() {
-	return m_pos;
-}
+float HarvbotArmServoNode::write(float pos) {
 
-void HarvbotArmServoNode::write(int pos) {
+	int currentPos = (int)read();
 
-	if (m_minPos <= pos && pos <= m_maxPos)
+	pos = floor(pos);
+	
+	if (currentPos != pos)
 	{
-		m_pos = pos;
-		servo->write(pos);
-	}
-}
-
-void HarvbotArmServoNode::sweep(int pos) {
-
-	if (m_minPos > pos)
-	{
-		pos = m_minPos;
-	}
-
-	if (m_maxPos < pos)
-	{
-		pos = m_maxPos;
-	}
-
-	if (m_pos != pos)
-	{
-		if (pos > m_pos)
+		if (pos > currentPos)
 		{
-			for (int i = m_pos+1; i <= pos; i += 1) {
-				m_pos = i;
+			for (int i = currentPos+1; i <= (int)pos; i += 1) {
 				servo->write(i);
 				delay(m_sweepDelay);
 			}
 		}
-		else if (pos < m_pos)
+		else if (currentPos < m_pos)
 		{
-			for (int i = m_pos-1; i >= pos; i -= 1) {
-				m_pos = i;
+			for (int i = currentPos-1; i >= (int)pos; i -= 1) {
 				servo->write(i);
 				delay(m_sweepDelay);
 			}
 		}
+
+		HarvbotArmCircleNode::write(pos);
 	}
+
+	return pos;
 }
 
 int HarvbotArmServoNode::getSweepDelay()

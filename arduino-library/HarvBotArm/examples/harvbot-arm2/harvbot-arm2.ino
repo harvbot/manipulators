@@ -2,8 +2,8 @@
 #include <HarvbotArm2.h>
 #include <HarvbotArmNode.h>
 #include <HarvbotArmServoNode.h>
-#include <HarvbotArmStepperNode.h>
-#include <HarvbotArmStepperAdafruitNode.h>
+#include <HarvbotArmScrewNode.h>
+#include <HarvbotArmAFMotorScrewNode.h>
 
 HarvbotArm2* manipulator;
 
@@ -23,7 +23,7 @@ void setup()
   elbow.Pin = 24;
   elbow.InitialPos = 60;
 
-  HarvbotArmStepperAdafruitNode* claw = new HarvbotArmStepperAdafruitNode(HARVBOT_ARM_CLAW_NODE, 2, 0, 200);
+  HarvbotArmAFMotorScrewNode* claw = new HarvbotArmAFMotorScrewNode(HARVBOT_ARM_CLAW_NODE, 2, 0, 200);
   claw->setSpeed(50);
   
   manipulator = new HarvbotArm2(bedplate, shoulder, elbow, claw);
@@ -84,7 +84,7 @@ void loop()
       int degree = getValue(msg, ':', 3).toInt();
       
       // Set position.
-      ((HarvbotArmServoNode*)node)->sweep(degree);
+      ((HarvbotArmServoNode*)node)->write(degree);
 
       String response = getResponse(cmd, nodeType, String(degree));
 
@@ -94,7 +94,7 @@ void loop()
   else if(cmd == "steps")
   {
       // Set position.
-      float steps = ((HarvbotArmStepperNode*)node)->getSteps();
+      float steps = ((HarvbotArmScrewNode*)node)->getSteps();
 
       String response = getResponse(cmd, nodeType, String(steps));
 
@@ -104,7 +104,7 @@ void loop()
   else if(cmd == "angle")
   {
       // Set position.
-      float angle = ((HarvbotArmStepperNode*)node)->getCurrentAngle();
+      float angle = ((HarvbotArmScrewNode*)node)->getCurrentAngle();
 
       String response = getResponse(cmd, nodeType, String(angle));
 
@@ -116,9 +116,9 @@ void loop()
       float steps = getValue(msg, ':', 3).toFloat();
     
       // Rotate.
-      ((HarvbotArmStepperNode*)node)->rotate(steps);
+      ((HarvbotArmScrewNode*)node)->rotate(steps);
 
-      float currentSteps = ((HarvbotArmStepperNode*)node)->getSteps();
+      float currentSteps = ((HarvbotArmScrewNode*)node)->getSteps();
 
       String response = getResponse(cmd, nodeType, String(currentSteps));
 
@@ -129,10 +129,10 @@ void loop()
   {
       float angle = getValue(msg, ':', 3).toFloat();
 
-      float steps = angle / ((HarvbotArmStepperNode*)node)->getAnglePerStep();
+      float steps = angle / ((HarvbotArmScrewNode*)node)->getAnglePerStep();
     
       // Rotate.
-      float currentSteps = ((HarvbotArmStepperNode*)node)->rotate(steps);
+      float currentSteps = ((HarvbotArmScrewNode*)node)->rotate(steps);
       
       String response = getResponse(cmd, nodeType, String(currentSteps));
 
@@ -146,14 +146,14 @@ void loop()
       // revolution.
       if(direction == "forward")
       {
-        ((HarvbotArmStepperNode*)node)->revolution(1);
+        ((HarvbotArmScrewNode*)node)->revolution(1);
       }
       else if(direction == "backward")
       {
-        ((HarvbotArmStepperNode*)node)->revolution(-1);
+        ((HarvbotArmScrewNode*)node)->revolution(-1);
       }
       
-      int currentSteps = ((HarvbotArmStepperNode*)node)->getSteps();
+      int currentSteps = ((HarvbotArmScrewNode*)node)->getSteps();
 
       String response = getResponse(cmd, nodeType, String(currentSteps));
 

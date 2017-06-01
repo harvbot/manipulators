@@ -1,24 +1,25 @@
 #include "HarvbotArmNode.h"
-#include "HarvbotArmStepperNode.h"
+#include "HarvbotArmScrewNode.h"
 
-HarvbotArmStepperNode::HarvbotArmStepperNode(int type, float pos, int maxStepsCount, int maxFullRotaionCount) 
-	: HarvbotArmNode(type)
+HarvbotArmScrewNode::HarvbotArmScrewNode(int nodeType, float pos, int maxStepsCount, int maxFullRotaionCount, int reductorGear) 
+	: HarvbotArmNode(nodeType)
 {
 	this->m_pos = pos;
 	this->m_maxStepsCount = maxStepsCount;
 	this->m_maxFullRotaionCount = maxFullRotaionCount;
+	this->m_reductorGear = reductorGear;
 }
 
-HarvbotArmStepperNode::~HarvbotArmStepperNode()
+HarvbotArmScrewNode::~HarvbotArmScrewNode()
 {
 }
 
-float HarvbotArmStepperNode::getSteps() 
+float HarvbotArmScrewNode::getSteps() 
 {
 	return this->m_pos;
 }
 
-float HarvbotArmStepperNode::rotate(float steps) 
+float HarvbotArmScrewNode::rotate(float steps) 
 {
 	if(this->m_pos + steps < 0)
 	{
@@ -36,15 +37,15 @@ float HarvbotArmStepperNode::rotate(float steps)
 	return this->m_pos;
 }
 
-int HarvbotArmStepperNode::getSpeed() {
+int HarvbotArmScrewNode::getSpeed() {
 	return this->m_speed;
 }
 
-void HarvbotArmStepperNode::setSpeed(int speed) {
+void HarvbotArmScrewNode::setSpeed(int speed) {
 	this->m_speed = speed;
 }
 
-float HarvbotArmStepperNode::revolution(int direction) {
+float HarvbotArmScrewNode::revolution(int direction) {
 
 	if(direction == 1)
 	{
@@ -56,15 +57,26 @@ float HarvbotArmStepperNode::revolution(int direction) {
 	}
 }
 
-float HarvbotArmStepperNode::getCurrentAngle()
+float HarvbotArmScrewNode::getCurrentAngle()
 {
+	// Calculate the number of revolutions which were done on screw.
 	int fullRotation = round(this->m_pos) / this->m_maxStepsCount;
+	
+	// Get the position on current revolution.
 	float pos = this->m_pos - fullRotation * this->m_maxStepsCount;
+
 	float anglePerStep = this->getAnglePerStep();
+
+	// Calculate current angle.
 	return pos * anglePerStep;
 }
 
-float HarvbotArmStepperNode::getAnglePerStep()
+float HarvbotArmScrewNode::getAnglePerStep()
 {
 	return 360.0 / this->m_maxStepsCount;
+}
+
+int HarvbotArmScrewNode::getType()
+{
+	return HARVBOT_ARM_SCREW_NODE_TYPE;
 }
