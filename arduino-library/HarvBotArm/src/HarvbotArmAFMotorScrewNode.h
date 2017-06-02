@@ -6,6 +6,7 @@
 #include <Arduino.h>
 #include <AFMotor.h>
 #include <HarvbotArmScrewNode.h>
+#include <HarvbotArmConstants.h>
 
 class  HarvbotArmAFMotorScrewNode : public HarvbotArmScrewNode {
 	private:

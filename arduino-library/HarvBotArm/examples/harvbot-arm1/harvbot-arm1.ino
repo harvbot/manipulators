@@ -2,8 +2,11 @@
 #include <HarvbotArm1.h>
 #include <HarvbotArmNode.h>
 #include <HarvbotArmServoNode.h>
+#include <HarvbotArmProtocol.h>
+#include <HarvbotArmSerialProtocol.h>
 
 HarvbotArm1* manipulator;
+HarvbotArmProtocol* protocol;
 
 void setup() 
 {
@@ -37,92 +40,10 @@ void setup()
   handScrew.InitialPos = 90;
   
   manipulator = new HarvbotArm1(bedplate, shoulder, elbow, elbowScrew, hand, handScrew);
+  protocol = new HarvbotArmSerialProtocol(manipulator);
 }
 
 void loop() 
 {
-  // Read message.
-  String msg = Serial.readString();
-
-  if(msg=="")
-  {
-    delay(100);
-    return;
-  }
-
-  // Get command.
-  String cmd = getValue(msg, ':', 1);
-
-  // Take command parameters.
-  int nodeType = getValue(msg, ':', 2).toInt();
-
-  // Get node.
-  HarvbotArmServoNode* node = (HarvbotArmServoNode*)manipulator->getNodeByType(nodeType);
-
-  if(node == NULL)
-  {
-      Serial.println("Node with " + String(nodeType) + " type doesn't exist");
-      return;
-  }
-  
-  if(cmd == "pos")
-  {
-      // Set position.
-      int pos = node->read();
-
-      String response = getResponse(cmd, nodeType, String(pos));
-
-      // Return response.
-      Serial.println(response);
-  }
-  else if(cmd == "move")
-  {
-      // Take command parameters.
-      int degree = getValue(msg, ':', 3).toInt();
-      
-      // Set position.
-      node->write(degree);
-
-      String response = getResponse(cmd, nodeType, String(degree));
-
-      // Return response.
-      Serial.println(response);
-  }
-  else if(cmd != "")
-  {
-      Serial.println(getResponse("invalid-command", nodeType, cmd));
-  }
-}
-
-String getResponse(String command, int nodeType, String data)
-{
-    String result = "harm:";
-    result += command;
-    result += ":";
-    result += nodeType;
-
-    if(data != NULL && data != "")
-    {
-      result += ":";
-      result += data;
-    }
-    
-    result += ":~harm";
-    return result;
-}
-
-String getValue(String data, char separator, int index)
-{
-    int found = 0;
-    int strIndex[] = { 0, -1 };
-    int maxIndex = data.length() - 1;
-
-    for (int i = 0; i <= maxIndex && found <= index; i++) {
-        if (data.charAt(i) == separator || i == maxIndex) {
-            found++;
-            strIndex[0] = strIndex[1] + 1;
-            strIndex[1] = (i == maxIndex) ? i+1 : i;
-        }
-    }
-    return found > index ? data.substring(strIndex[0], strIndex[1]) : "";
+    protocol->run();
 }

@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <HarvbotArmNode.h>
+#include <HarvbotArmConstants.h>
 
 class HarvbotArmScrewNode : public HarvbotArmNode {
 	protected: 

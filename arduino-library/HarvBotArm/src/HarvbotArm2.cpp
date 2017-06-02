@@ -3,6 +3,7 @@
 #include "HarvbotArmNode.h"
 #include "HarvbotArmServoNode.h"
 #include "HarvbotArmScrewNode.h"
+#include "HarvbotArmConstants.h"
 
 HarvbotArm2::HarvbotArm2(HarvbotArmServoNodePins beadplate, 
 			HarvbotArmServoNodePins shoulder,
