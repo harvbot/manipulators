@@ -85,7 +85,7 @@ void changeNodePosition(int nodeType, int delta)
   {
     int nodePos = node->read();
     
-    node->sweep(nodePos+delta);
+    node->write(nodePos+delta);
 
     Serial.println(String("Node ") + nodeType + String(" moved on ") + delta + String(". Position: ") + node->read());
   }

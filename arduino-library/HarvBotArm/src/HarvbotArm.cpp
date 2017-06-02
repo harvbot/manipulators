@@ -35,11 +35,11 @@ HarvbotArmCircleNode* HarvbotArm::getElbow()
 	return this->getNodeByType(HARVBOT_ARM_ELBOW_NODE);
 }
 
-HarvbotArmNode* HarvbotArm::getNodeByType(int type)
+HarvbotArmNode* HarvbotArm::getNodeByType(int nodeType)
 {
 	for(int i=0;i<nodesCount;i++)
 	{
-		if(this->nodes[i]->getType() == type)
+		if(this->nodes[i]->getNodeType() == nodeType)
 		{
 			return this->nodes[i];
 		}

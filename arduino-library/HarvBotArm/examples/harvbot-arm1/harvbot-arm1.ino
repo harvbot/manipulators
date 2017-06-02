@@ -10,18 +10,33 @@ void setup()
   Serial.begin(9600);
 
   HarvbotArmServoNodePins bedplate;
+  bedplate.Pin = 2;
   bedplate.Pin = 22;
   bedplate.InitialPos = 90;
 
   HarvbotArmServoNodePins shoulder;
+  shoulder.Pin = 3;
   shoulder.Pin = 23;
   shoulder.InitialPos = 150; 
 
   HarvbotArmServoNodePins elbow;
+  elbow.Pin = 4;
   elbow.Pin = 24;
   elbow.InitialPos = 60;
+
+  HarvbotArmServoNodePins elbowScrew;
+  elbowScrew.Pin = 5;
+  elbowScrew.InitialPos = 90;
+
+  HarvbotArmServoNodePins hand;
+  hand.Pin = 6;
+  hand.InitialPos = 90;
+
+  HarvbotArmServoNodePins handScrew;
+  handScrew.Pin = 7;
+  handScrew.InitialPos = 90;
   
-  manipulator = new HarvbotArm2(bedplate, shoulder, elbow, elbowScrew, hand, handScrew);
+  manipulator = new HarvbotArm1(bedplate, shoulder, elbow, elbowScrew, hand, handScrew);
 }
 
 void loop() 
@@ -67,19 +82,6 @@ void loop()
       
       // Set position.
       node->write(degree);
-
-      String response = getResponse(cmd, nodeType, String(degree));
-
-      // Return response.
-      Serial.println(response);
-  }
-  else if(cmd == "sweep")
-  {
-      // Take command parameters.
-      int degree = getValue(msg, ':', 3).toInt();
-      
-      // Set position.
-      node->sweep(degree);
 
       String response = getResponse(cmd, nodeType, String(degree));
 

@@ -31,7 +31,7 @@ class HarvbotArm {
 		virtual HarvbotArmCircleNode* getBedplate();
 		virtual HarvbotArmCircleNode* getShoulder();
 		virtual HarvbotArmCircleNode* getElbow();
-		virtual HarvbotArmNode* getNodeByType(int type);
+		virtual HarvbotArmNode* getNodeByType(int nodeType);
 };
 
 #endif /* HarvbotArm_H_ */

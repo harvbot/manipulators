@@ -1,7 +1,7 @@
 #include <HarvbotArmNode.h>
-#include <HarvbotArmStepperAdafruitNode.h>
+#include <HarvbotArmAFMotorScrewNode.h>
 
-HarvbotArmStepperAdafruitNode* claw;
+HarvbotArmAFMotorScrewNode* claw;
 
 int joyPinX = 8;
 
@@ -14,7 +14,7 @@ void setup()
 {
   Serial.begin(9600);
 
-  claw = new HarvbotArmStepperAdafruitNode(HARVBOT_ARM_CLAW_NODE, 2, 0, 200);
+  claw = new HarvbotArmAFMotorScrewNode(HARVBOT_ARM_CLAW_NODE, 2, 0, 200);
  
   // Do not forget to setup speed, otherwise stepper won't work.
   claw->setSpeed(60);
@@ -36,7 +36,7 @@ void loop()
     }
 
     // Rotate claw for 1 step;
-    Serial.println("Claw was rotated. Current pos: " + String(claw->read()));
+    Serial.println("Claw was rotated. Current pos: " + String(claw->getSteps()));
   }
 }
 
