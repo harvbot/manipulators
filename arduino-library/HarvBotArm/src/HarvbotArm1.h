@@ -1,12 +1,12 @@
 #ifndef HarvbotArm1_H_
 #define HarvbotArm1_H_
 
-#include <Arduino.h>
 #include <HarvbotArm.h>
 #include <HarvbotArmNode.h>
 #include <HarvbotArmCircleNode.h>
 #include <HarvbotArmScrewNode.h>
 #include <HarvbotArmServoNode.h>
+#include <HarvbotArmConstants.h>
 
 class HarvbotArm1 : public HarvbotArm {
 	public:

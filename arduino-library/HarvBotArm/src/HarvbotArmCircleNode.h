@@ -1,9 +1,8 @@
 #ifndef HarvbotArmCircleNode_H_
 #define HarvbotArmCircleNode_H_
 
-#include <Arduino.h>
-
 #include <HarvbotArmNode.h>
+#include <HarvbotArmConstants.h>
 
 class HarvbotArmCircleNode : public HarvbotArmNode {
 	protected:

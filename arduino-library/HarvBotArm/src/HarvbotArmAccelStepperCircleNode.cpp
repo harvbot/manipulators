@@ -1,4 +1,5 @@
 #include <math.h>
+#include "HarvbotArmConstants.h"
 #include "HarvbotArmCircleNode.h"
 #include "HarvbotArmAccelStepperCircleNode.h"
 
@@ -8,10 +9,15 @@ HarvbotArmAccelStepperCircleNode::HarvbotArmAccelStepperCircleNode(
 	int pinStep, 
 	float pos, 
 	float minPos, 
-	float maxPos) 
+	float maxPos,
+	int maxStepCount,
+	int reductorGear) 
 	: HarvbotArmCircleNode(nodeType, pos, minPos, maxPos)
 {
 	this->stepper = new AccelStepper(1, pinDir, pinStep);
+	this->m_maxStepCount = maxStepCount;
+	this->m_reductorGear = reductorGear;
+	this->setSpeed(HARVBOT_DEFAULT_STEPPER_SPEED);
 }
 
 HarvbotArmAccelStepperCircleNode::~HarvbotArmAccelStepperCircleNode(){
@@ -20,15 +26,35 @@ HarvbotArmAccelStepperCircleNode::~HarvbotArmAccelStepperCircleNode(){
 
 float HarvbotArmAccelStepperCircleNode::write(float pos) {
 
-	int currentPos = (int)read();
+	float currentPos = this->read();
 
-	pos = floor(pos);
-	
+	if(pos < this->m_minPos)
+	{
+		pos = this->m_minPos;
+	}
+
+	if(pos < this->m_maxPos)
+	{
+		pos = this->m_maxPos;
+	}
+
 	if (currentPos != pos)
 	{
-		this->stepper->move((int)pos-currentPos);
+		int steps = round((pos-currentPos)*this->m_maxStepCount * this->m_reductorGear / 360.0);
+		this->stepper->move(steps);
 		this->stepper->run();
 	}
 
 	return pos;
+}
+
+int HarvbotArmAccelStepperCircleNode::getSpeed() 
+{
+	return this->m_speed;
+}
+
+void HarvbotArmAccelStepperCircleNode::setSpeed(int speed) 
+{
+	this->m_speed=speed;
+	this->stepper->setSpeed(speed);
 }

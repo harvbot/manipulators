@@ -1,7 +1,7 @@
 #ifndef HarvbotArmProtocol_H_
 #define HarvbotArmProtocol_H_
 
-#include <Arduino.h>
+#include <HarvbotArmConstants.h>
 #include <HarvbotArm.h>
 
 class HarvbotArmProtocol {

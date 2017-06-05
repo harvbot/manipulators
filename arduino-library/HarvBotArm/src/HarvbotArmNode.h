@@ -1,8 +1,6 @@
 #ifndef HarvbotArmNode_H_
 #define HarvbotArmNode_H_
 
-#include <Arduino.h>
-
 class HarvbotArmNode {
 	private:
 

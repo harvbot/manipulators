@@ -1,7 +1,6 @@
 #ifndef HarvbotArmAccelStepperScrewNode_H_
 #define HarvbotArmAccelStepperScrewNode_H_
 
-#include <Arduino.h>
 #include <AccelStepper.h>
 #include <HarvbotArmScrewNode.h>
 #include <HarvbotArmConstants.h>

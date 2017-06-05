@@ -1,5 +1,6 @@
 #include <AccelStepper.h>
 #include <math.h>
+#include "HarvbotArmConstants.h"
 #include "HarvbotArmScrewNode.h"
 #include "HarvbotArmAccelStepperScrewNode.h"
 
@@ -14,6 +15,7 @@ HarvbotArmAccelStepperScrewNode::HarvbotArmAccelStepperScrewNode(
 	: HarvbotArmScrewNode(nodeType, pos, maxStepsCount, maxFullRotaionCount, reductorGear)
 {
 	this->stepper = new AccelStepper(1, pinDir, pinStep);
+	this->setSpeed(HARVBOT_DEFAULT_STEPPER_SPEED);
 }
 
 HarvbotArmAccelStepperScrewNode::~HarvbotArmAccelStepperScrewNode()
@@ -46,7 +48,8 @@ float HarvbotArmAccelStepperScrewNode::rotate(float steps)
 	return this->m_pos;
 }
 
-void HarvbotArmAccelStepperScrewNode::setSpeed(int speed) {
+void HarvbotArmAccelStepperScrewNode::setSpeed(int speed) 
+{
 	HarvbotArmScrewNode::setSpeed(speed);
 
 	this->stepper->setSpeed(speed);

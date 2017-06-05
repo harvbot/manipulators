@@ -1,7 +1,7 @@
 #ifndef HarvbotArm_H_
 #define HarvbotArm_H_
 
-#include <Arduino.h>
+#include <HarvbotArmConstants.h>
 #include <HarvbotArmNode.h>
 #include <HarvbotArmCircleNode.h>
 #include <HarvbotArmScrewNode.h>
@@ -16,9 +16,25 @@ class HarvbotArm {
 		HarvbotArm(int armType);
 		~HarvbotArm();
 		int getType();
+
+		/**
+			Gets bedplate node.
+		*/
 		virtual HarvbotArmCircleNode* getBedplate();
+
+		/**
+			Gets shoulder node.
+		*/
 		virtual HarvbotArmCircleNode* getShoulder();
+
+		/**
+			Gets elbow node.
+		*/
 		virtual HarvbotArmCircleNode* getElbow();
+
+		/**
+			Gets node by node type.
+		*/
 		virtual HarvbotArmNode* getNodeByType(int nodeType);
 };
 

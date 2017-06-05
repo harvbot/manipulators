@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 // Arm nodes.
 #ifndef HARVBOT_ARM_BEDPLATE_NODE
 #define HARVBOT_ARM_BEDPLATE_NODE 1
@@ -52,4 +54,9 @@
 
 #ifndef HARVBOT_ARM_TYPE_3
 #define HARVBOT_ARM_TYPE_3 3
+#endif
+
+// Default stepper motor speed
+#ifndef HARVBOT_DEFAULT_STEPPER_SPEED
+#define HARVBOT_DEFAULT_STEPPER_SPEED 50
 #endif

@@ -3,7 +3,6 @@
 #ifndef HarvbotArmAFMotorScrewNode_H_
 #define HarvbotArmAFMotorScrewNode_H_
 
-#include <Arduino.h>
 #include <AFMotor.h>
 #include <HarvbotArmScrewNode.h>
 #include <HarvbotArmConstants.h>

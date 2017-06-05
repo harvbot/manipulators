@@ -1,7 +1,6 @@
 #ifndef HarvbotArmScrewNode_H_
 #define HarvbotArmScrewNode_H_
 
-#include <Arduino.h>
 #include <HarvbotArmNode.h>
 #include <HarvbotArmConstants.h>
 

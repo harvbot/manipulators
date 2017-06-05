@@ -1,4 +1,4 @@
-#include <Arduino.h>
+#include "HarvbotArmConstants.h"
 #include "HarvbotArmProtocol.h"
 
 HarvbotArmProtocol::HarvbotArmProtocol(HarvbotArm* arm) {
@@ -86,7 +86,7 @@ String HarvbotArmProtocol::process(String requestData)
 		HarvbotArmCircleNode* circleNode = ((HarvbotArmCircleNode*)node);
 		
 		// Set position.
-		int pos = circleNode->read();
+		float pos = circleNode->read();
 
 		return this->buildResponse(cmd, nodeType, String(pos));
 	}

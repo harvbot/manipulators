@@ -1,9 +1,8 @@
 #ifndef HarvbotArmServoNode_H_
 #define HarvbotArmServoNode_H_
 
-#include <Arduino.h>
 #include <Servo.h>
-
+#include <HarvbotArmConstants.h>
 #include <HarvbotArmCircleNode.h>
 
 struct HarvbotArmServoNodePins

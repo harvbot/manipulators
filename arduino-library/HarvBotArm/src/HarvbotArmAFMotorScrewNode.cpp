@@ -2,6 +2,7 @@
 
 #include <AFMotor.h>
 #include <math.h>
+#include "HarvbotArmConstants.h"
 #include "HarvbotArmScrewNode.h"
 #include "HarvbotArmAFMotorScrewNode.h"
 
@@ -10,6 +11,7 @@ HarvbotArmAFMotorScrewNode::HarvbotArmAFMotorScrewNode(int nodeType, int adafrui
 	: HarvbotArmScrewNode(nodeType, pos, maxStepsCount, maxFullRotaionCount, 1)
 {
 	this->stepper = new AF_Stepper(maxStepsCount, adafruitShieldPort);
+	this->setSpeed(HARVBOT_DEFAULT_STEPPER_SPEED);
 }
 
 HarvbotArmAFMotorScrewNode::~HarvbotArmAFMotorScrewNode()
