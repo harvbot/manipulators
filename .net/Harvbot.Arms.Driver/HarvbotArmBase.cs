@@ -80,54 +80,54 @@ namespace Harvbot.Arms.Driver
         /// Gets bedplate position.
         /// </summary>
         /// <returns>The bedplate position degree.</returns>
-        public virtual int? GetBedplatePosition()
+        public virtual float? GetBedplatePosition()
         {
-            return this.GetServoNodePosition(HarvbotArmNodeTypes.Bedplate);
+            return this.GetServoNodePosition(HarvbotArmNodeIdentifiers.Bedplate);
         }
 
         /// <summary>
         /// Moves bedplate.
         /// </summary>
         /// <param name="degree">The degree.</param>
-        public virtual int? MoveBedplate(int degree)
+        public virtual float? MoveBedplate(float degree)
         {
-            return this.MoveServoNode(HarvbotArmNodeTypes.Bedplate, degree);
+            return this.MoveServoNode(HarvbotArmNodeIdentifiers.Bedplate, degree);
         }
 
         /// <summary>
         /// Gets shoulder position.
         /// </summary>
         /// <returns>The shoulder position degree.</returns>
-        public virtual int? GetShoulderPosition()
+        public virtual float? GetShoulderPosition()
         {
-            return this.GetServoNodePosition(HarvbotArmNodeTypes.Shoulder);
+            return this.GetServoNodePosition(HarvbotArmNodeIdentifiers.Shoulder);
         }
 
         /// <summary>
         /// Moves shoulder.
         /// </summary>
         /// <param name="degree">The degree.</param>
-        public virtual int? MoveShoulder(int degree)
+        public virtual float? MoveShoulder(float degree)
         {
-            return this.MoveServoNode(HarvbotArmNodeTypes.Shoulder, degree);
+            return this.MoveServoNode(HarvbotArmNodeIdentifiers.Shoulder, degree);
         }
 
         /// <summary>
         /// Gets elbow position.
         /// </summary>
         /// <returns>The elbow position degree.</returns>
-        public virtual int? GetElbowPosition()
+        public virtual float? GetElbowPosition()
         {
-            return this.GetServoNodePosition(HarvbotArmNodeTypes.Elbow);
+            return this.GetServoNodePosition(HarvbotArmNodeIdentifiers.Elbow);
         }
 
         /// <summary>
         /// Moves elbow.
         /// </summary>
         /// <param name="degree">The degree.</param>
-        public virtual int? MoveElbow(int degree)
+        public virtual float? MoveElbow(float degree)
         {
-            return this.MoveServoNode(HarvbotArmNodeTypes.Elbow, degree);
+            return this.MoveServoNode(HarvbotArmNodeIdentifiers.Elbow, degree);
         }
 
         /// <summary>
@@ -135,9 +135,9 @@ namespace Harvbot.Arms.Driver
         /// </summary>
         /// <param name="nodeType">The node type.</param>
         /// <returns>The node position.</returns>
-        public virtual int? GetServoNodePosition(HarvbotArmNodeTypes nodeType)
+        public virtual float? GetServoNodePosition(HarvbotArmNodeIdentifiers nodeType)
         {
-            var node = this.nodes.FirstOrDefault(x => x.Node == nodeType) as HarvbotArmServoNode;
+            var node = this.nodes.FirstOrDefault(x => x.Node == nodeType) as HarvbotArmCircleNode;
             if (node != null)
             {
                 return node.GetPosition();
@@ -153,30 +153,12 @@ namespace Harvbot.Arms.Driver
         /// </summary>
         /// <param name="nodeType">The node type.</param>
         /// <param name="degree">The degree.</param>
-        public virtual int? MoveServoNode(HarvbotArmNodeTypes nodeType, int degree)
+        public virtual float? MoveServoNode(HarvbotArmNodeIdentifiers nodeType, float degree)
         {
-            var shoulder = this.nodes.FirstOrDefault(x => x.Node == nodeType) as HarvbotArmServoNode;
+            var shoulder = this.nodes.FirstOrDefault(x => x.Node == nodeType) as HarvbotArmCircleNode;
             if (shoulder != null)
             {
                 return shoulder.Move(degree);
-            }
-            else
-            {
-                throw new InvalidOperationException($"The node {nodeType} doesn't exist");
-            }
-        }
-
-        /// <summary>
-        /// Sweeps specified node on specified degree.
-        /// </summary>
-        /// <param name="nodeType">The node type.</param>
-        /// <param name="degree">The degree.</param>
-        public virtual int? SweepServoNode(HarvbotArmNodeTypes nodeType, int degree)
-        {
-            var shoulder = this.nodes.FirstOrDefault(x => x.Node == nodeType) as HarvbotArmServoNode;
-            if (shoulder != null)
-            {
-                return shoulder.Sweep(degree);
             }
             else
             {

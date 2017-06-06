@@ -9,7 +9,7 @@ namespace Harvbot.Arms.ItemDetection
 {
     public class NodeOffset
     {
-        public HarvbotArmNodeTypes NodeType { get; set; }
+        public HarvbotArmNodeIdentifiers NodeType { get; set; }
 
         public int Offset { get; set; }
     }

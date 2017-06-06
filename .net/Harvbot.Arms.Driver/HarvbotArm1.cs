@@ -45,12 +45,12 @@ namespace Harvbot.Arms.Driver
         {
             this.nodes = new HarvbotArmNode[]
             {
-                new HarvbotArmServoNode(HarvbotArmNodeTypes.Bedplate, this),
-                new HarvbotArmServoNode(HarvbotArmNodeTypes.Shoulder, this),
-                new HarvbotArmServoNode(HarvbotArmNodeTypes.Elbow, this),
-                new HarvbotArmServoNode(HarvbotArmNodeTypes.ElbowScrew, this),
-                new HarvbotArmServoNode(HarvbotArmNodeTypes.Hand, this),
-                new HarvbotArmServoNode(HarvbotArmNodeTypes.HandScrew, this)
+                new HarvbotArmCircleNode(HarvbotArmNodeIdentifiers.Bedplate, this),
+                new HarvbotArmCircleNode(HarvbotArmNodeIdentifiers.Shoulder, this),
+                new HarvbotArmCircleNode(HarvbotArmNodeIdentifiers.Elbow, this),
+                new HarvbotArmCircleNode(HarvbotArmNodeIdentifiers.ElbowScrew, this),
+                new HarvbotArmCircleNode(HarvbotArmNodeIdentifiers.Hand, this),
+                new HarvbotArmCircleNode(HarvbotArmNodeIdentifiers.HandScrew, this)
             };
         }
     }

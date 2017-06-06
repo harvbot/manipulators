@@ -38,11 +38,14 @@ namespace Harvbot.Arms.Driver
             }
         }
 
-        public HarvbotArmStepperNode Claw
+        /// <summary>
+        /// Gets the claw node.
+        /// </summary>
+        public HarvbotArmScrewNode Claw
         {
             get
             {
-                return (HarvbotArmStepperNode)this.nodes[3];
+                return (HarvbotArmScrewNode)this.nodes[3];
             }
         }
 
@@ -53,10 +56,10 @@ namespace Harvbot.Arms.Driver
         {
             this.nodes = new HarvbotArmNode[]
             {
-                new HarvbotArmServoNode(HarvbotArmNodeTypes.Bedplate, this),
-                new HarvbotArmServoNode(HarvbotArmNodeTypes.Shoulder, this),
-                new HarvbotArmServoNode(HarvbotArmNodeTypes.Elbow, this),
-                new HarvbotArmStepperNode(HarvbotArmNodeTypes.Claw, this),
+                new HarvbotArmCircleNode(HarvbotArmNodeIdentifiers.Bedplate, this),
+                new HarvbotArmCircleNode(HarvbotArmNodeIdentifiers.Shoulder, this),
+                new HarvbotArmCircleNode(HarvbotArmNodeIdentifiers.Elbow, this),
+                new HarvbotArmScrewNode(HarvbotArmNodeIdentifiers.Claw, this),
             };
         }
     }

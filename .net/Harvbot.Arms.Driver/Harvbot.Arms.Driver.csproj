@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HarvbotArmCommands.cs" />
+    <Compile Include="HarvbotArmNodeTypes.cs" />
     <Compile Include="HarvbotArmRequest.cs" />
     <Compile Include="HarvbotArmResponse.cs" />
     <Compile Include="HarvbotArmSerialProvider.cs" />
@@ -52,9 +53,9 @@
     <Compile Include="HarvbotArmBase.cs" />
     <Compile Include="HarvbotArmFactory.cs" />
     <Compile Include="HarvbotArmNode.cs" />
-    <Compile Include="HarvbotArmNodeTypes.cs" />
-    <Compile Include="HarvbotArmServoNode.cs" />
-    <Compile Include="HarvbotArmStepperNode.cs" />
+    <Compile Include="HarvbotArmNodeIdentifiers.cs" />
+    <Compile Include="HarvbotArmCircleNode.cs" />
+    <Compile Include="HarvbotArmScrewNode.cs" />
     <Compile Include="HarvbotArmStepperDirections.cs" />
     <Compile Include="HarvbotArmTypes.cs" />
     <Compile Include="IHarvbotArmProvider.cs" />

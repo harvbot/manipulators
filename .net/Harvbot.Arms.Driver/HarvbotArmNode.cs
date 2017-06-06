@@ -14,7 +14,7 @@ namespace Harvbot.Arms.Driver
         /// </summary>
         /// <param name="type">The node type.</param>
         /// <param name="arm">The owner.</param>
-        public HarvbotArmNode(HarvbotArmNodeTypes type, HarvbotArmBase arm)
+        public HarvbotArmNode(HarvbotArmNodeIdentifiers type, HarvbotArmBase arm)
         {
             this.Arm = arm;
             this.Node = type;
@@ -26,9 +26,14 @@ namespace Harvbot.Arms.Driver
         public HarvbotArmBase Arm { get; private set; }
 
         /// <summary>
-        /// Gets the node type.
+        /// Gets the node identifier.
         /// </summary>
-        public HarvbotArmNodeTypes Node { get; private set; }
+        public HarvbotArmNodeIdentifiers Node { get; private set; }
+
+        /// <summary>
+        /// Gets node type.
+        /// </summary>
+        public abstract HarvbotArmNodeTypes NodeType { get; }
 
         /// <summary>
         /// Sends commands to controller.

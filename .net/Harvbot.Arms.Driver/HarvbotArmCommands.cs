@@ -12,8 +12,6 @@ namespace Harvbot.Arms.Driver
 
         Move,
 
-        Sweep,
-
         Steps,
 
         Angle,

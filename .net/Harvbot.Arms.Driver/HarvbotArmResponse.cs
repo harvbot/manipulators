@@ -13,7 +13,7 @@
         /// <summary>
         /// Gets or sets the response arm node.
         /// </summary>
-        public HarvbotArmNodeTypes Node { get; set; }
+        public HarvbotArmNodeIdentifiers Node { get; set; }
 
         /// <summary>
         /// Gets or sets the response additional data.

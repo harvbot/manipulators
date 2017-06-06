@@ -153,12 +153,12 @@ namespace Harvbot.Arms.ItemDetection
 
                                         this.commandsQueue.Enqueue(new NodeOffset()
                                         {
-                                            NodeType = HarvbotArmNodeTypes.Bedplate,
+                                            NodeType = HarvbotArmNodeIdentifiers.Bedplate,
                                             Offset = cx / Math.Abs(cx) * 2
                                         });
                                         this.commandsQueue.Enqueue(new NodeOffset()
                                         {
-                                            NodeType = HarvbotArmNodeTypes.Elbow,
+                                            NodeType = HarvbotArmNodeIdentifiers.Elbow,
                                             Offset = -cy / Math.Abs(cy) * 2
                                         });
                                     }

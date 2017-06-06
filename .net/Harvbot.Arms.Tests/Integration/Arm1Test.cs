@@ -19,10 +19,10 @@ namespace HarvbotArm.Tests.Integration
         }
 
         [Theory]
-        [InlineData(HarvbotArmNodeTypes.Bedplate)]
-        [InlineData(HarvbotArmNodeTypes.Shoulder)]
-        [InlineData(HarvbotArmNodeTypes.Elbow)]
-        public void GetPosition(HarvbotArmNodeTypes nodeType)
+        [InlineData(HarvbotArmNodeIdentifiers.Bedplate)]
+        [InlineData(HarvbotArmNodeIdentifiers.Shoulder)]
+        [InlineData(HarvbotArmNodeIdentifiers.Elbow)]
+        public void GetPosition(HarvbotArmNodeIdentifiers nodeType)
         {
             var position = this.fixture.Arm.GetServoNodePosition(nodeType);
 

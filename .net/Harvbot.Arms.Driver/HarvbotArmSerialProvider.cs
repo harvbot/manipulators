@@ -118,8 +118,6 @@ namespace Harvbot.Arms.Driver
                     return "pos";
                 case HarvbotArmCommands.Move:
                     return "move";
-                case HarvbotArmCommands.Sweep:
-                    return "sweep";
                 case HarvbotArmCommands.Revolution:
                     return "revolution";
                 case HarvbotArmCommands.Steps:
