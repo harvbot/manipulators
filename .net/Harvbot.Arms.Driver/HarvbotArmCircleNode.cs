@@ -46,7 +46,7 @@ namespace Harvbot.Arms.Driver
                 throw new InvalidOperationException($"Invalid moving: {degree}");
             }
 
-            this.pos = int.Parse(response);
+            this.pos = float.Parse(response);
 
             return this.pos;
         }
@@ -63,7 +63,7 @@ namespace Harvbot.Arms.Driver
 
                 if (!string.IsNullOrEmpty(response))
                 {
-                    this.pos = int.Parse(response);
+                    this.pos = float.Parse(response);
                 }
             }
 

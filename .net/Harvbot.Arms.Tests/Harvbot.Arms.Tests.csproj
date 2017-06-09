@@ -89,7 +89,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Fixtures\Arm1Fixture.cs" />
+    <Compile Include="Fixtures\GenericArmFixture.cs" />
+    <Compile Include="Integration\Arm2Test.cs" />
+    <Compile Include="Integration\BaseArmTest.cs" />
     <Compile Include="Integration\Arm1Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

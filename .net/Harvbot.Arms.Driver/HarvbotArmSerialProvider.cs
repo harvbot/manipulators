@@ -8,7 +8,7 @@ namespace Harvbot.Arms.Driver
     /// <summary>
     /// Represents arm serial provider.
     /// </summary>
-    internal class HarvbotArmSerialProvider : IHarvbotArmProvider
+    public class HarvbotArmSerialProvider : IHarvbotArmProvider
     {
         #region Fields
 

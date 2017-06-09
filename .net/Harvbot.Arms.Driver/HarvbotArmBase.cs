@@ -35,6 +35,11 @@ namespace Harvbot.Arms.Driver
         /// </summary>
         private IHarvbotArmProvider provider;
 
+        /// <summary>
+        /// Stores value indicating that provider was injected and mustn't be disposed.
+        /// </summary>
+        private bool externalProvider;
+
         #endregion
 
         /// <summary>
@@ -43,6 +48,7 @@ namespace Harvbot.Arms.Driver
         /// <param name="comNum">The COM number.</param>
         public HarvbotArmBase(string comNum) : this(new HarvbotArmSerialProvider(comNum))
         {
+            this.externalProvider = false;
         }
 
         /// <summary>
@@ -51,6 +57,7 @@ namespace Harvbot.Arms.Driver
         /// <param name="provider">The arm controller provider.</param>
         public HarvbotArmBase(IHarvbotArmProvider provider)
         {
+            this.externalProvider = true;
             this.provider = provider;
             this.InitializeNodes();
         }
@@ -82,7 +89,7 @@ namespace Harvbot.Arms.Driver
         /// <returns>The bedplate position degree.</returns>
         public virtual float? GetBedplatePosition()
         {
-            return this.GetServoNodePosition(HarvbotArmNodeIdentifiers.Bedplate);
+            return this.GetCircleNodePosition(HarvbotArmNodeIdentifiers.Bedplate);
         }
 
         /// <summary>
@@ -91,7 +98,7 @@ namespace Harvbot.Arms.Driver
         /// <param name="degree">The degree.</param>
         public virtual float? MoveBedplate(float degree)
         {
-            return this.MoveServoNode(HarvbotArmNodeIdentifiers.Bedplate, degree);
+            return this.MoveCircleNode(HarvbotArmNodeIdentifiers.Bedplate, degree);
         }
 
         /// <summary>
@@ -100,7 +107,7 @@ namespace Harvbot.Arms.Driver
         /// <returns>The shoulder position degree.</returns>
         public virtual float? GetShoulderPosition()
         {
-            return this.GetServoNodePosition(HarvbotArmNodeIdentifiers.Shoulder);
+            return this.GetCircleNodePosition(HarvbotArmNodeIdentifiers.Shoulder);
         }
 
         /// <summary>
@@ -109,7 +116,7 @@ namespace Harvbot.Arms.Driver
         /// <param name="degree">The degree.</param>
         public virtual float? MoveShoulder(float degree)
         {
-            return this.MoveServoNode(HarvbotArmNodeIdentifiers.Shoulder, degree);
+            return this.MoveCircleNode(HarvbotArmNodeIdentifiers.Shoulder, degree);
         }
 
         /// <summary>
@@ -118,7 +125,7 @@ namespace Harvbot.Arms.Driver
         /// <returns>The elbow position degree.</returns>
         public virtual float? GetElbowPosition()
         {
-            return this.GetServoNodePosition(HarvbotArmNodeIdentifiers.Elbow);
+            return this.GetCircleNodePosition(HarvbotArmNodeIdentifiers.Elbow);
         }
 
         /// <summary>
@@ -127,43 +134,73 @@ namespace Harvbot.Arms.Driver
         /// <param name="degree">The degree.</param>
         public virtual float? MoveElbow(float degree)
         {
-            return this.MoveServoNode(HarvbotArmNodeIdentifiers.Elbow, degree);
+            return this.MoveCircleNode(HarvbotArmNodeIdentifiers.Elbow, degree);
         }
 
         /// <summary>
         /// Gets specified node position.
         /// </summary>
-        /// <param name="nodeType">The node type.</param>
+        /// <param name="identifier">The node identifier.</param>
         /// <returns>The node position.</returns>
-        public virtual float? GetServoNodePosition(HarvbotArmNodeIdentifiers nodeType)
+        public virtual float? GetCircleNodePosition(HarvbotArmNodeIdentifiers identifier)
         {
-            var node = this.nodes.FirstOrDefault(x => x.Node == nodeType) as HarvbotArmCircleNode;
+            var node = this.nodes.FirstOrDefault(x => x.Node == identifier) as HarvbotArmCircleNode;
             if (node != null)
             {
                 return node.GetPosition();
             }
             else
             {
-                throw new InvalidOperationException($"The node {nodeType} doesn't exist");
+                throw new InvalidOperationException($"The node {identifier} doesn't exist");
             }
         }
 
         /// <summary>
         /// Moves specified node on specified degree.
         /// </summary>
-        /// <param name="nodeType">The node type.</param>
+        /// <param name="identifier">The node identifier.</param>
         /// <param name="degree">The degree.</param>
-        public virtual float? MoveServoNode(HarvbotArmNodeIdentifiers nodeType, float degree)
+        public virtual float? MoveCircleNode(HarvbotArmNodeIdentifiers identifier, float degree)
         {
-            var shoulder = this.nodes.FirstOrDefault(x => x.Node == nodeType) as HarvbotArmCircleNode;
+            var shoulder = this.nodes.FirstOrDefault(x => x.Node == identifier) as HarvbotArmCircleNode;
             if (shoulder != null)
             {
                 return shoulder.Move(degree);
             }
             else
             {
-                throw new InvalidOperationException($"The node {nodeType} doesn't exist");
+                throw new InvalidOperationException($"The node {identifier} doesn't exist");
             }
+        }
+
+        /// <summary>
+        /// Gets the node instance by specified identifier.
+        /// </summary>
+        /// <param name="identifier">The node type.</param>
+        /// <returns>The arm node.</returns>
+        public virtual HarvbotArmNode GetNodeByIdentifier(HarvbotArmNodeIdentifiers identifier)
+        {
+            return this.nodes.FirstOrDefault(x => x.Node == identifier);
+        }
+
+        /// <summary>
+        /// Gets the circle node by specified identifier.
+        /// </summary>
+        /// <param name="identifier">The node identifier.</param>
+        /// <returns>The circle node.</returns>
+        public HarvbotArmCircleNode GetCircleNodeByIdentifider(HarvbotArmNodeIdentifiers identifier)
+        {
+            return (HarvbotArmCircleNode)this.GetNodeByIdentifier(identifier);
+        }
+
+        /// <summary>
+        /// Gets the screw node by specified identifier.
+        /// </summary>
+        /// <param name="identifier">The node identifier.</param>
+        /// <returns>The screw node.</returns>
+        public HarvbotArmScrewNode GetScrewNodeByIdentifider(HarvbotArmNodeIdentifiers identifier)
+        {
+            return (HarvbotArmScrewNode)this.GetNodeByIdentifier(identifier);
         }
 
         /// <summary>
@@ -179,7 +216,11 @@ namespace Harvbot.Arms.Driver
         {
             if (!this.isDisposed)
             {
-                this.provider.Dispose();
+                if (!this.externalProvider)
+                {
+                    this.provider.Dispose();
+                }
+
                 this.isDisposed = true;
             }
         }

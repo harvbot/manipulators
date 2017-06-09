@@ -203,8 +203,8 @@ namespace Harvbot.Arms.ItemDetection
                         foreach (var nodeGroup in offsets.GroupBy(x => x.NodeType))
                         {
                             var nodeOffset = nodeGroup.Last();
-                            var pos = this.arm.GetServoNodePosition(nodeOffset.NodeType);
-                            this.arm.MoveServoNode(nodeOffset.NodeType, pos.GetValueOrDefault(90) + nodeOffset.Offset);
+                            var pos = this.arm.GetCircleNodePosition(nodeOffset.NodeType);
+                            this.arm.MoveCircleNode(nodeOffset.NodeType, pos.GetValueOrDefault(90) + nodeOffset.Offset);
                         }
                     }
                     else

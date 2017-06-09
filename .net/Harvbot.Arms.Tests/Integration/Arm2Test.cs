@@ -9,9 +9,9 @@ using Xunit;
 
 namespace HarvbotArm.Tests.Integration
 {
-    public class Arm1Test : BaseArmTest<HarvbotArm1>, IClassFixture<GenericArmFixture<HarvbotArm1>>
+    public class Arm2Test : BaseArmTest<HarvbotArm2>, IClassFixture<GenericArmFixture<HarvbotArm2>>
     {
-        public Arm1Test(GenericArmFixture<HarvbotArm1> fixture) 
+        public Arm2Test(GenericArmFixture<HarvbotArm2> fixture) 
             : base(fixture)
         {
         }
@@ -20,25 +20,25 @@ namespace HarvbotArm.Tests.Integration
         [InlineData(HarvbotArmNodeIdentifiers.Bedplate)]
         [InlineData(HarvbotArmNodeIdentifiers.Shoulder)]
         [InlineData(HarvbotArmNodeIdentifiers.Elbow)]
-        public void Arm1Test_GetPosition(HarvbotArmNodeIdentifiers nodeType)
+        public void Arm2Test_GetPosition(HarvbotArmNodeIdentifiers nodeType)
         {
             this.ArmTest_GetPosition(nodeType);
         }
 
         [Fact]
-        public void Arm1Test_SetPosition_Bedplate()
+        public void Arm2Test_SetPosition_Bedplate()
         {
             this.ArmTest_SetPosition_Bedplate();
         }
 
         [Fact]
-        public void Arm1Test_SetPosition_Shoulder()
+        public void Arm2Test_SetPosition_Shoulder()
         {
             this.ArmTest_SetPosition_Shoulder();
         }
 
         [Fact]
-        public void Arm1Test_SetPosition_Elbow()
+        public void Arm2Test_SetPosition_Elbow()
         {
             this.ArmTest_SetPosition_Elbow();
         }
