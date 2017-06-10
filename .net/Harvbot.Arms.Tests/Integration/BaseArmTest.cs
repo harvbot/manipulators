@@ -29,18 +29,18 @@ namespace HarvbotArm.Tests.Integration
 
         protected void ArmTest_SetPosition_Bedplate()
         {
-            ArmTest_SetCirclePosition_ArmNode(this.fixture.Arm.GetCircleNodeByIdentifider(HarvbotArmNodeIdentifiers.Elbow), 90.0f, 90.0f);
-            ArmTest_SetCirclePosition_ArmNode(this.fixture.Arm.GetCircleNodeByIdentifider(HarvbotArmNodeIdentifiers.Elbow), 90.5f, 90.0f);
-            ArmTest_SetCirclePosition_ArmNode(this.fixture.Arm.GetCircleNodeByIdentifider(HarvbotArmNodeIdentifiers.Elbow), 320.0f, 180.0f);
-            ArmTest_SetCirclePosition_ArmNode(this.fixture.Arm.GetCircleNodeByIdentifider(HarvbotArmNodeIdentifiers.Elbow), -1.0f, 5.0f);
+            ArmTest_SetCirclePosition_ArmNode(this.fixture.Arm.GetCircleNodeByIdentifider(HarvbotArmNodeIdentifiers.Bedplate), 90.0f, 90.0f);
+            ArmTest_SetCirclePosition_ArmNode(this.fixture.Arm.GetCircleNodeByIdentifider(HarvbotArmNodeIdentifiers.Bedplate), 90.5f, 90.0f);
+            ArmTest_SetCirclePosition_ArmNode(this.fixture.Arm.GetCircleNodeByIdentifider(HarvbotArmNodeIdentifiers.Bedplate), 320.0f, 180.0f);
+            ArmTest_SetCirclePosition_ArmNode(this.fixture.Arm.GetCircleNodeByIdentifider(HarvbotArmNodeIdentifiers.Bedplate), -1.0f, 0.0f);
         }
 
         protected void ArmTest_SetPosition_Shoulder()
         {
-            ArmTest_SetCirclePosition_ArmNode(this.fixture.Arm.GetCircleNodeByIdentifider(HarvbotArmNodeIdentifiers.Elbow), 90.0f, 90.0f);
-            ArmTest_SetCirclePosition_ArmNode(this.fixture.Arm.GetCircleNodeByIdentifider(HarvbotArmNodeIdentifiers.Elbow), 90.5f, 90.0f);
-            ArmTest_SetCirclePosition_ArmNode(this.fixture.Arm.GetCircleNodeByIdentifider(HarvbotArmNodeIdentifiers.Elbow), 320.0f, 180.0f);
-            ArmTest_SetCirclePosition_ArmNode(this.fixture.Arm.GetCircleNodeByIdentifider(HarvbotArmNodeIdentifiers.Elbow), 0.0f, 0.0f);
+            ArmTest_SetCirclePosition_ArmNode(this.fixture.Arm.GetCircleNodeByIdentifider(HarvbotArmNodeIdentifiers.Shoulder), 90.0f, 90.0f);
+            ArmTest_SetCirclePosition_ArmNode(this.fixture.Arm.GetCircleNodeByIdentifider(HarvbotArmNodeIdentifiers.Shoulder), 90.5f, 90.0f);
+            ArmTest_SetCirclePosition_ArmNode(this.fixture.Arm.GetCircleNodeByIdentifider(HarvbotArmNodeIdentifiers.Shoulder), 320.0f, 180.0f);
+            ArmTest_SetCirclePosition_ArmNode(this.fixture.Arm.GetCircleNodeByIdentifider(HarvbotArmNodeIdentifiers.Shoulder), -1.0f, 5.0f);
         }
 
         protected void ArmTest_SetPosition_Elbow()
