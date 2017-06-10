@@ -18,7 +18,7 @@ void HarvbotArmProtocol::run()
 
 	if(requestData == "")
 	{
-		return;
+		return this->buildResponse("invalid-request", -1, "");
 	}
 
 	String response = this->process(requestData);
@@ -29,17 +29,26 @@ void HarvbotArmProtocol::run()
 String HarvbotArmProtocol::buildResponse(String command, int nodeType, String data)
 {
 	String result = "harm:";
-    result += command;
-    result += ":";
-    result += nodeType;
+
+	if(command != NULL && command != "")
+	{
+    	result += command;
+    	result += ":";
+	}
+
+	if(nodeType != -1)
+	{
+		result += nodeType;
+		result += ":";
+	}
 
     if(data != NULL && data != "")
-    {
-      result += ":";
-      result += data;
+    {      
+    	result += data;
+		result += ":";
     }
     
-    result += ":~harm";
+    result += "~harm";
 
     return result;
 }
@@ -72,7 +81,7 @@ String HarvbotArmProtocol::process(String requestData)
 
 	// Take command parameters.
 	int nodeType = this->parseCmdValue(requestData, 2).toInt();
-  
+
 	// Get node.
 	HarvbotArmNode* node = arm->getNodeByType(nodeType);
 

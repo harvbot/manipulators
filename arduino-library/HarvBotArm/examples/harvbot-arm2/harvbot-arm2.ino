@@ -26,7 +26,7 @@ void setup()
   elbow.Pin = 24;
   elbow.InitialPos = 60;
 
-  HarvbotArmAFMotorScrewNode* claw = new HarvbotArmAFMotorScrewNode(HARVBOT_ARM_CLAW_NODE, 2, 0, 200);
+  HarvbotArmAFMotorScrewNode* claw = new HarvbotArmAFMotorScrewNode(HARVBOT_ARM_CLAW_NODE, 2, 0, 200, HARVBOT_ARM_CLAW_MAX_FULL_ROTATION);
   claw->setSpeed(50);
   
   manipulator = new HarvbotArm2(bedplate, shoulder, elbow, claw);

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO.Ports;
 using System.Linq;
+using System.Text;
 
 namespace Harvbot.Arms.Driver
 {
@@ -36,7 +37,7 @@ namespace Harvbot.Arms.Driver
             }
 
             this.serial = new SerialPort(comNum, HarvbotArmBase.BaudRate);
-            this.serial.DtrEnable = true;
+
             if (!this.serial.IsOpen)
             {
                 this.serial.Open();
@@ -68,10 +69,15 @@ namespace Harvbot.Arms.Driver
                 requestData = $"harm:{command}:{(int)request.Node}:{args}:~harm";
             }
 
-            Trace.WriteLine(requestData);
+            Trace.WriteLine(requestData);            
             this.serial.WriteLine(requestData);
 
-            var response = this.serial.ReadLine();
+            string response;
+            do
+            {
+                response = this.serial.ReadLine();
+            }
+            while (string.IsNullOrEmpty(response));
             Trace.WriteLine(response);
 
             var segments = response.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);

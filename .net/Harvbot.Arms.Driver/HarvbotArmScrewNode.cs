@@ -46,8 +46,10 @@ namespace Harvbot.Arms.Driver
                 {
                     this.steps = double.Parse(response);
                 }
-
-                this.steps = new double?();
+                else
+                {
+                    this.steps = new double?();
+                }
             }
 
             return this.steps;
