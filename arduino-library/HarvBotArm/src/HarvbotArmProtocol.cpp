@@ -1,8 +1,8 @@
 #include "HarvbotArmConstants.h"
+#include "HarvbotArmFactory.h"
 #include "HarvbotArmProtocol.h"
 
-HarvbotArmProtocol::HarvbotArmProtocol(HarvbotArm* arm) {
-	this->m_arm = arm;
+HarvbotArmProtocol::HarvbotArmProtocol() {
 }
 
 HarvbotArmProtocol::~HarvbotArmProtocol() {
@@ -18,7 +18,7 @@ void HarvbotArmProtocol::run()
 
 	if(requestData == "")
 	{
-		return this->buildResponse("invalid-request", -1, "");
+		return this->buildResponse("invalid-request", "", "");
 	}
 
 	String response = this->process(requestData);
@@ -26,7 +26,7 @@ void HarvbotArmProtocol::run()
 	this->writeResponse(response);
 }
 
-String HarvbotArmProtocol::buildResponse(String command, int nodeType, String data)
+String HarvbotArmProtocol::buildResponse(String command, String nodeType, String data)
 {
 	String result = "harm:";
 
@@ -36,7 +36,7 @@ String HarvbotArmProtocol::buildResponse(String command, int nodeType, String da
     	result += ":";
 	}
 
-	if(nodeType != -1)
+	if(nodeType != NULL && nodeType != "")
 	{
 		result += nodeType;
 		result += ":";
@@ -74,10 +74,35 @@ String HarvbotArmProtocol::parseCmdValue(String data, int index)
 
 String HarvbotArmProtocol::process(String requestData) 
 {
-	HarvbotArm* arm = this->getArm();
-
 	// Get command.
 	String cmd = this->parseCmdValue(requestData, 1);
+
+	if(cmd == "init")
+	{
+		String armType = this->parseCmdValue(requestData, 2);
+
+		if(armType == "SE1")
+		{
+			this->m_arm = HarvbotArmFactory::CreateServoArm1();
+		}
+		else if(armType == "AFM2")
+		{
+			this->m_arm = HarvbotArmFactory::CreateAFMotorArm2();
+		}
+		else
+		{
+			this->m_arm = NULL;		
+			return this->buildResponse("init", "invalid-arm-type", "");
+		}
+
+		return this->buildResponse("init", armType, "");
+	}
+
+	HarvbotArm* arm = this->getArm();
+	if(arm == NULL)
+	{
+		return this->buildResponse("undefined-arm", "", "");
+	}
 
 	// Take command parameters.
 	int nodeType = this->parseCmdValue(requestData, 2).toInt();
@@ -87,7 +112,7 @@ String HarvbotArmProtocol::process(String requestData)
 
 	if(node == NULL)
 	{
-		return this->buildResponse("invalid-node-number", nodeType, cmd);
+		return this->buildResponse("invalid-node-number", String(nodeType), cmd);
 	}
 
 	if(cmd == "pos")
@@ -97,7 +122,7 @@ String HarvbotArmProtocol::process(String requestData)
 		// Set position.
 		float pos = circleNode->read();
 
-		return this->buildResponse(cmd, nodeType, String(pos));
+		return this->buildResponse(cmd, String(nodeType), String(pos));
 	}
 	else if(cmd == "move")
 	{
@@ -109,7 +134,7 @@ String HarvbotArmProtocol::process(String requestData)
 		// Set position.
 		circleNode->write(degree);
 
-		return this->buildResponse(cmd, nodeType, String(circleNode->read()));
+		return this->buildResponse(cmd, String(nodeType), String(circleNode->read()));
 	}
 	else if(cmd == "steps")
 	{
@@ -118,7 +143,7 @@ String HarvbotArmProtocol::process(String requestData)
 		// Set position.
 		float steps = screwNode->getSteps();
 
-		return this->buildResponse(cmd, nodeType, String(steps));
+		return this->buildResponse(cmd, String(nodeType), String(steps));
 	}
 	else if(cmd == "angle")
 	{
@@ -127,7 +152,7 @@ String HarvbotArmProtocol::process(String requestData)
 		// Set position.
 		float angle = screwNode->getCurrentAngle();
 
-		return this->buildResponse(cmd, nodeType, String(angle));
+		return this->buildResponse(cmd, String(nodeType), String(angle));
 	}
 	else if(cmd == "rotate-steps")
 	{
@@ -140,7 +165,7 @@ String HarvbotArmProtocol::process(String requestData)
 
 		float currentSteps = ((HarvbotArmScrewNode*)node)->getSteps();
 
-		return this->buildResponse(cmd, nodeType, String(currentSteps));
+		return this->buildResponse(cmd, String(nodeType), String(currentSteps));
 	}
 	else if(cmd == "rotate-angle")
 	{
@@ -153,7 +178,7 @@ String HarvbotArmProtocol::process(String requestData)
 		// Rotate.
 		float currentSteps = screwNode->rotate(steps);
 		
-		return this->buildResponse(cmd, nodeType, String(currentSteps));
+		return this->buildResponse(cmd, String(nodeType), String(currentSteps));
 	}
 	else if(cmd == "revolution")
 	{
@@ -173,10 +198,15 @@ String HarvbotArmProtocol::process(String requestData)
 		
 		int currentSteps = screwNode->getSteps();
 
-		return this->buildResponse(cmd, nodeType, String(currentSteps));
+		return this->buildResponse(cmd, String(nodeType), String(currentSteps));
+	}
+	else if(cmd == "init-start")
+	{
+		arm->gotToStartPosition();
+		return this->buildResponse("init-start", "", "");
 	}
 	else
 	{
-		return this->buildResponse("invalid-command", nodeType, cmd);
+		return this->buildResponse("invalid-command", String(nodeType), cmd);
 	}
 }

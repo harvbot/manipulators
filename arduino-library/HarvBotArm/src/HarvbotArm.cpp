@@ -47,3 +47,8 @@ HarvbotArmNode* HarvbotArm::getNodeByType(int nodeType)
 
 	return NULL;
 }
+
+void HarvbotArm::gotToStartPosition()
+{
+	// empty for now.
+}

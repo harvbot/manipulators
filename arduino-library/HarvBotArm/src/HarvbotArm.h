@@ -17,6 +17,8 @@ class HarvbotArm {
 		~HarvbotArm();
 		int getType();
 
+		virtual void gotToStartPosition();
+
 		/**
 			Gets bedplate node.
 		*/

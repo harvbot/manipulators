@@ -6,8 +6,8 @@
 #include "HarvbotArmProtocol.h"
 #include "HarvbotArmSerialProtocol.h"
 
-HarvbotArmSerialProtocol::HarvbotArmSerialProtocol(HarvbotArm* arm) 
-	: HarvbotArmProtocol(arm) 
+HarvbotArmSerialProtocol::HarvbotArmSerialProtocol() 
+	: HarvbotArmProtocol() 
 {
 }
 

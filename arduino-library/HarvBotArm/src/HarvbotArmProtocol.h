@@ -5,12 +5,12 @@
 #include <HarvbotArm.h>
 
 class HarvbotArmProtocol {
-	protected:
+	private:
 		HarvbotArm* m_arm;
 	public:
 
 		// Initialzies a new instance.
-		HarvbotArmProtocol(HarvbotArm* arm);
+		HarvbotArmProtocol();
 
 		// Releases all resouces.
 		~HarvbotArmProtocol();
@@ -25,7 +25,7 @@ class HarvbotArmProtocol {
 		void run();
 
 		// Build response.
-		String buildResponse(String command, int nodeType, String data);
+		String buildResponse(String command, String nodeType, String data);
 
 		// Parse command value.
 		String parseCmdValue(String data, int index);

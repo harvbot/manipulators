@@ -8,7 +8,7 @@ class HarvbotArmSerialProtocol : public HarvbotArmProtocol {
 	public:
 
 		// Initialzies a new instance.
-		HarvbotArmSerialProtocol(HarvbotArm* arm);
+		HarvbotArmSerialProtocol();
 
 		// Releases all resouces.
 		~HarvbotArmSerialProtocol();
