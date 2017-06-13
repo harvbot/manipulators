@@ -5,12 +5,6 @@
 #include <HarvbotArmConstants.h>
 #include <HarvbotArmCircleNode.h>
 
-struct HarvbotArmServoNodePins
-{
-	int Pin;
-	int InitialPos;
-};
-
 class HarvbotArmServoNode : public HarvbotArmCircleNode {
 	protected: 
 		int m_pin;
@@ -19,7 +13,7 @@ class HarvbotArmServoNode : public HarvbotArmCircleNode {
 		Servo* servo;
 	public:
 		HarvbotArmServoNode(int nodeType, int pin, float pos, float minPos, float maxPos);
-		
+
 		~HarvbotArmServoNode();
 
 		float write(float pos);

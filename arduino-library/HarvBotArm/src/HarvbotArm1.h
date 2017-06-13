@@ -5,20 +5,20 @@
 #include <HarvbotArmNode.h>
 #include <HarvbotArmCircleNode.h>
 #include <HarvbotArmScrewNode.h>
-#include <HarvbotArmServoNode.h>
 #include <HarvbotArmConstants.h>
 
 class HarvbotArm1 : public HarvbotArm {
 	public:
-		HarvbotArm1(HarvbotArmServoNodePins beadplate, 
-			HarvbotArmServoNodePins shoulder,
-			HarvbotArmServoNodePins elbow,
-			HarvbotArmServoNodePins elbowScrew,
-			HarvbotArmServoNodePins hand,
-			HarvbotArmServoNodePins handScrew);
+		HarvbotArm1(int beadplatePin, int shoulderPin, int elbow, int elbowScrewPin, int handPin, int handScrewPin);
+
 		~HarvbotArm1();
+
+		void goToStartPosition();
+
 		HarvbotArmCircleNode* getElbowScrew();
+
 		HarvbotArmCircleNode* getHand();
+
 		HarvbotArmCircleNode* getHandScrew();
 };
 

@@ -104,7 +104,7 @@ String HarvbotArmProtocol::process(String requestData)
 	}
 	else if(cmd == "init-start")
 	{
-		this->m_arm->gotToStartPosition();
+		this->m_arm->goToStartPosition();
 		return this->buildResponse("init-start", "", "");
 	}
 

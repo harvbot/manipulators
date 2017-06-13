@@ -61,8 +61,3 @@ int HarvbotArm::getStatus()
 
 	return HARVBOT_NODE_STATUS_READY;
 }
-
-void HarvbotArm::gotToStartPosition()
-{
-	// empty for now.
-}

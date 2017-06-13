@@ -20,31 +20,7 @@ void setup()
 {
   Serial.begin(9600);
   
-  HarvbotArmServoNodePins bedplate;
-  bedplate.Pin = 2;
-  bedplate.InitialPos = 90;
-
-  HarvbotArmServoNodePins shoulder;
-  shoulder.Pin = 3;
-  shoulder.InitialPos = 5; 
-
-  HarvbotArmServoNodePins elbow;
-  elbow.Pin = 4;
-  elbow.InitialPos = 20;
-
-  HarvbotArmServoNodePins elbowScrew;
-  elbowScrew.Pin = 5;
-  elbowScrew.InitialPos = 90;
-
-  HarvbotArmServoNodePins hand;
-  hand.Pin = 6;
-  hand.InitialPos = 90;
-
-  HarvbotArmServoNodePins handScrew;
-  handScrew.Pin = 7;
-  handScrew.InitialPos = 90;
-  
-  manipulator = new HarvbotArm1(bedplate, shoulder, elbow, elbowScrew, hand, handScrew);
+  manipulator = new HarvbotArm1(2, 3, 4, 5, 6, 7);
 }
 
 void loop() 

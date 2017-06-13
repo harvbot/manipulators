@@ -54,10 +54,15 @@ class HarvbotArmScrewNode : public HarvbotArmNode {
         */
 		virtual float getAnglePerStep();
 
-        /*
+        /**
             Gets the current angle.
         */
 		virtual float getCurrentAngle();
+
+        /**
+            Moves screw to start position.
+        */
+        virtual void goToStartPosition();
 };
 
 #endif /* HarvbotArmScrewNode_H_ */

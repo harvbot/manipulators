@@ -10,12 +10,13 @@
 
 class HarvbotArm2 : public HarvbotArm {
 	public:
-		HarvbotArm2(HarvbotArmServoNodePins beadplate, 
-			HarvbotArmServoNodePins shoulder, 
-			HarvbotArmServoNodePins elbow, 
-			HarvbotArmScrewNode* claw);
+		HarvbotArm2(int beadplatePin, int shoulderPin, int elbowPin, HarvbotArmScrewNode* claw);
+		
 		~HarvbotArm2();
+
 		HarvbotArmScrewNode* getClaw();
+
+		void goToStartPosition();
 };
 
 #endif /* HarvbotArm2_H_ */
