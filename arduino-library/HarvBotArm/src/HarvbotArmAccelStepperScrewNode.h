@@ -17,9 +17,14 @@ class  HarvbotArmAccelStepperScrewNode : public HarvbotArmScrewNode {
 			int maxStepsCount, 
 			int maxFullRotaionCount=HARVBOT_ARM_CLAW_MAX_FULL_ROTATION, 
 			int reductorGear=1);
+			
 		~HarvbotArmAccelStepperScrewNode();
+
 		float rotate(float steps);
+
 		void setSpeed(int speed);
+
+		int getStatus();
 };
 
 #endif /* HarvbotArmAccelStepperScrewNode_H_ */

@@ -58,3 +58,8 @@ void HarvbotArmAccelStepperCircleNode::setSpeed(int speed)
 	this->m_speed=speed;
 	this->stepper->setSpeed(speed);
 }
+
+int HarvbotArmAccelStepperCircleNode::getStatus()
+{
+	return this->stepper->distanceToGo()==0 ? HARVBOT_NODE_STATUS_READY : HARVBOT_NODE_STATUS_INPROCESS;
+}

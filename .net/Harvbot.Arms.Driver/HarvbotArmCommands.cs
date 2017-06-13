@@ -8,6 +8,12 @@ namespace Harvbot.Arms.Driver
 {
     public enum HarvbotArmCommands
     {
+        Status,
+
+        Init,
+
+        InitStart,
+
         Position,
 
         Move,
@@ -21,5 +27,7 @@ namespace Harvbot.Arms.Driver
         RotateOnAngle,
 
         Revolution,
+
+        NodeStatus
     }
 }

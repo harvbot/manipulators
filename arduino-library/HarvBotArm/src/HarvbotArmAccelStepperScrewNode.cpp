@@ -54,3 +54,8 @@ void HarvbotArmAccelStepperScrewNode::setSpeed(int speed)
 
 	this->stepper->setSpeed(speed);
 }
+
+int HarvbotArmAccelStepperScrewNode::getStatus()
+{
+	return this->stepper->distanceToGo()==0 ? HARVBOT_NODE_STATUS_READY : HARVBOT_NODE_STATUS_INPROCESS;
+}

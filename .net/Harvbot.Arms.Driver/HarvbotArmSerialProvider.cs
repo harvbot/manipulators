@@ -56,18 +56,21 @@ namespace Harvbot.Arms.Driver
                 throw new ArgumentNullException("request");
             }
 
-            var requestData = string.Empty;
             var command = ConvertCommandToString(request.Command);
+            var requestData = $"harm:{command}:";
 
-            if (request.Arguments == null || request.Arguments.Length == 0)
+            if (request.Node.HasValue)
             {
-                requestData = $"harm:{command}:{(int)request.Node}:~harm";
+                requestData += $"{(int)request.Node}:";
             }
-            else
-            {
+
+            if (request.Arguments != null && request.Arguments.Length > 0)
+            { 
                 var args = string.Join(":", request.Arguments.Select(x => x.ToString().ToLower()).ToArray());
-                requestData = $"harm:{command}:{(int)request.Node}:{args}:~harm";
+                requestData += $"{args}:";
             }
+
+            requestData += "~harm";
 
             Trace.WriteLine(requestData);            
             this.serial.WriteLine(requestData);
@@ -84,7 +87,7 @@ namespace Harvbot.Arms.Driver
 
             if (segments[0].Equals("harm", StringComparison.InvariantCultureIgnoreCase) &&
                 segments[1].Equals(command, StringComparison.InvariantCultureIgnoreCase) &&
-                segments[2].Equals(((int)request.Node).ToString(), StringComparison.InvariantCultureIgnoreCase) &&
+                (request.Node.HasValue && segments[2].Equals(((int)request.Node).ToString(), StringComparison.InvariantCultureIgnoreCase) || !request.Node.HasValue) &&
                 segments.Last().Equals("~harm", StringComparison.InvariantCultureIgnoreCase))
             {
                 throw new InvalidOperationException($"Invalid response: {response}");
@@ -134,6 +137,14 @@ namespace Harvbot.Arms.Driver
                     return "rotate-angle";
                 case HarvbotArmCommands.RotateOnSteps:
                     return "rotate-steps";
+                case HarvbotArmCommands.Init:
+                    return "init";
+                case HarvbotArmCommands.InitStart:
+                    return "init-start";
+                case HarvbotArmCommands.NodeStatus:
+                    return "node-status";
+                case HarvbotArmCommands.Status:
+                    return "status";
                 default: throw new ArgumentOutOfRangeException($"The {cmd} is not supported in Serial provider");
             }
         }

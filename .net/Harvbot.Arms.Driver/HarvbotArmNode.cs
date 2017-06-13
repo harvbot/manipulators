@@ -36,6 +36,28 @@ namespace Harvbot.Arms.Driver
         public abstract HarvbotArmNodeTypes NodeType { get; }
 
         /// <summary>
+        /// Gets current arm status.
+        /// </summary>
+        /// <returns>The arm status.</returns>
+        public HarvbotArmStatuses GetStatus()
+        {
+            var data = this.SendCommand(HarvbotArmCommands.NodeStatus);
+
+            if (string.IsNullOrEmpty(data))
+            {
+                throw new InvalidOperationException("Invalid response data");
+            }
+
+            HarvbotArmStatuses status;
+            if (!Enum.TryParse<HarvbotArmStatuses>(data, out status))
+            {
+                throw new InvalidOperationException($"Invalid response data {data}");
+            }
+
+            return status;
+        }
+
+        /// <summary>
         /// Sends commands to controller.
         /// </summary>
         /// <param name="command">The command.</param>
@@ -47,7 +69,7 @@ namespace Harvbot.Arms.Driver
             {
                 Command = command,
                 Node = this.Node,
-                Arguments = args
+                Arguments =  args
             });
 
             return response.Data;

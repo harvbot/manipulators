@@ -14,6 +14,7 @@ namespace HarvbotArm.Tests.Integration
         public Arm2Test(GenericArmFixture<HarvbotArm2> fixture) 
             : base(fixture)
         {
+            fixture.ArmSubType = HarvbotArmSubTypes.AFMotor2;
         }
 
         [Theory]
@@ -81,7 +82,15 @@ namespace HarvbotArm.Tests.Integration
             steps.Value.Should().BeGreaterOrEqualTo(0);
 
             var newPos = this.fixture.Arm.Claw.RevolutionBackward();
-            newPos.Should().BeLessThan(steps.Value);
+
+            if (steps > 0)
+            {
+                newPos.Should().BeLessThan(steps.Value);
+            }
+            else
+            {
+                newPos.Should().Be(0.0);
+            }
         }
 
         [Fact]

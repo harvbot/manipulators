@@ -18,7 +18,10 @@ class HarvbotArmNode {
 		virtual int getNodeType();
 
 		// Gets the node type: circle or screw.
-		virtual int getType() = 0;		
+		virtual int getType() = 0;	
+
+		// Gets current node status.
+		virtual int getStatus() = 0;
 };
 
 #endif /* HarvbotArmNode_H_ */

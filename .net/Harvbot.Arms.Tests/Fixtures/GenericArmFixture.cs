@@ -10,13 +10,19 @@ namespace HarvbotArm.Tests.Fixtures
 
         public GenericArmFixture()
         {
-            this.arm = this.InitializeArm();
         }
+
+        public HarvbotArmSubTypes ArmSubType { get; set; }
 
         public T Arm
         {
             get
             {
+                if (this.arm == null)
+                {
+                    this.arm = this.InitializeArm();
+                }
+
                 return this.arm;
             }
         }
@@ -26,9 +32,9 @@ namespace HarvbotArm.Tests.Fixtures
             this.arm.Dispose();
         }
 
-        protected T InitializeArm()
+        public T InitializeArm()
         {
-            return (T)Activator.CreateInstance(typeof(T), new object[] { TestAssemblyFixture.Provider });
+            return (T)Activator.CreateInstance(typeof(T), new object[] { TestAssemblyFixture.Provider, this.ArmSubType });
         }
     }
 }

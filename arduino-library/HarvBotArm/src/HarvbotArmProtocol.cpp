@@ -97,6 +97,16 @@ String HarvbotArmProtocol::process(String requestData)
 
 		return this->buildResponse("init", armType, "");
 	}
+	else if(cmd == "status")
+	{
+		int status = this->m_arm->getStatus();
+		return this->buildResponse(cmd, String(status), "");
+	}
+	else if(cmd == "init-start")
+	{
+		this->m_arm->gotToStartPosition();
+		return this->buildResponse("init-start", "", "");
+	}
 
 	HarvbotArm* arm = this->getArm();
 	if(arm == NULL)
@@ -200,10 +210,10 @@ String HarvbotArmProtocol::process(String requestData)
 
 		return this->buildResponse(cmd, String(nodeType), String(currentSteps));
 	}
-	else if(cmd == "init-start")
+	else if(cmd == "node-status")
 	{
-		arm->gotToStartPosition();
-		return this->buildResponse("init-start", "", "");
+		int status = node->getStatus();
+		return this->buildResponse(cmd, String(nodeType), String(status));
 	}
 	else
 	{

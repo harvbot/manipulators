@@ -1,5 +1,6 @@
 #include "HarvbotArm.h"
 #include "HarvbotArmNode.h"
+#include "HarvbotArmConstants.h"
 #include "HarvbotArmCircleNode.h"
 
 HarvbotArm::HarvbotArm(int armType) 
@@ -46,6 +47,19 @@ HarvbotArmNode* HarvbotArm::getNodeByType(int nodeType)
 	}
 
 	return NULL;
+}
+
+int HarvbotArm::getStatus()
+{
+	for(int i=0;i<nodesCount;i++)
+	{
+		if(this->nodes[i]->getStatus() != HARVBOT_NODE_STATUS_READY)
+		{
+			return HARVBOT_NODE_STATUS_INPROCESS;
+		}
+	}
+
+	return HARVBOT_NODE_STATUS_READY;
 }
 
 void HarvbotArm::gotToStartPosition()

@@ -19,7 +19,7 @@ namespace Harvbot.Arms.Driver
         /// <summary>
         /// Gets or sets the requested arm node.
         /// </summary>
-        public HarvbotArmNodeIdentifiers Node { get; set; }
+        public HarvbotArmNodeIdentifiers? Node { get; set; }
 
         /// <summary>
         /// Gets or sets additional arguments.

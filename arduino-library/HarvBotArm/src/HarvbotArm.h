@@ -38,6 +38,11 @@ class HarvbotArm {
 			Gets node by node type.
 		*/
 		virtual HarvbotArmNode* getNodeByType(int nodeType);
+
+		/**
+			Gets the arm current status.
+		*/
+		int getStatus();
 };
 
 #endif /* HarvbotArm_H_ */

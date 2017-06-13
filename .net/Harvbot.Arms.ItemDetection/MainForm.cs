@@ -70,6 +70,10 @@ namespace Harvbot.Arms.ItemDetection
             this.CbArmTypes.Items.Add(HarvbotArmTypes.Type1);
             this.CbArmTypes.SelectedIndex = 0;
 
+            this.CbArmSubTypes.Items.Add(HarvbotArmSubTypes.Servo1);
+            this.CbArmSubTypes.Items.Add(HarvbotArmSubTypes.AFMotor2);
+            this.CbArmSubTypes.SelectedIndex = 0;
+
             this.ibVideo.Image = this.capture.QueryFrame();
             this.capture.Start();
 
@@ -228,6 +232,24 @@ namespace Harvbot.Arms.ItemDetection
 
         private void BtnStartRecognition_Click(object sender, EventArgs e)
         {
+            if (this.CbPorts.SelectedItem == null)
+            {
+                MessageBox.Show("Please, select the COM port");
+                return;
+            }
+
+            if (this.CbArmTypes.SelectedItem == null)
+            {
+                MessageBox.Show("Please, select the arm type");
+                return;
+            }
+
+            if (this.CbArmSubTypes.SelectedItem == null)
+            {
+                MessageBox.Show("Please, select the arm sub type");
+                return;
+            }
+
             if (File.Exists(this.TbCascade.Text))
             {
                 lock (this)
@@ -244,11 +266,8 @@ namespace Harvbot.Arms.ItemDetection
                         this.arm.Dispose();
                     }
 
-                    if (this.CbPorts.SelectedItem != null && this.CbArmTypes.SelectedItem != null)
-                    {
-                        this.arm = HarvbotArmFactory.GetInstance(this.CbPorts.SelectedItem.ToString(),
-                            (HarvbotArmTypes)this.CbArmTypes.SelectedItem);
-                    }
+                    this.arm = HarvbotArmFactory.GetInstance(this.CbPorts.SelectedItem.ToString(),
+                        (HarvbotArmTypes)this.CbArmTypes.SelectedItem, (HarvbotArmSubTypes)this.CbArmSubTypes.SelectedItem);
                 }
             }
             else

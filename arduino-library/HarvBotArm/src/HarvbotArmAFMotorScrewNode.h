@@ -10,6 +10,7 @@
 class  HarvbotArmAFMotorScrewNode : public HarvbotArmScrewNode {
 	private:
 		AF_Stepper* stepper;
+		int m_status;
 	public:
 		HarvbotArmAFMotorScrewNode(
 			int nodeType, 
@@ -17,9 +18,14 @@ class  HarvbotArmAFMotorScrewNode : public HarvbotArmScrewNode {
 			float pos, 
 			int maxStepsCount, 
 			int maxFullRotaionCount=HARVBOT_ARM_CLAW_MAX_FULL_ROTATION);
+
 		~HarvbotArmAFMotorScrewNode();
+
 		float rotate(float steps);
+
 		void setSpeed(int speed);
+		
+		int getStatus();
 };
 
 #endif /* HarvbotArmAFMotorScrewNode_H_ */

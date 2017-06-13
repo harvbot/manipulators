@@ -12,6 +12,8 @@ HarvbotArmAFMotorScrewNode::HarvbotArmAFMotorScrewNode(int nodeType, int adafrui
 {
 	this->stepper = new AF_Stepper(maxStepsCount, adafruitShieldPort);
 	this->setSpeed(HARVBOT_DEFAULT_STEPPER_SPEED);
+
+	this->m_status = HARVBOT_NODE_STATUS_READY;
 }
 
 HarvbotArmAFMotorScrewNode::~HarvbotArmAFMotorScrewNode()
@@ -21,6 +23,8 @@ HarvbotArmAFMotorScrewNode::~HarvbotArmAFMotorScrewNode()
 
 float HarvbotArmAFMotorScrewNode::rotate(float steps) 
 {
+	this->m_status = HARVBOT_NODE_STATUS_INPROCESS;
+
 	float prevPos = HarvbotArmScrewNode::getSteps();
 	HarvbotArmScrewNode::rotate(steps);
 	float currentPos = HarvbotArmScrewNode::getSteps();
@@ -44,6 +48,8 @@ float HarvbotArmAFMotorScrewNode::rotate(float steps)
 	// Reset current position.
 	this->m_pos=prevPos + (fullSteps+microSteps/(float)MICROSTEPS) * (direction == FORWARD ? 1 : -1);
 
+	this->m_status = HARVBOT_NODE_STATUS_READY;
+
 	return this->m_pos;
 }
 
@@ -51,6 +57,11 @@ void HarvbotArmAFMotorScrewNode::setSpeed(int speed) {
 	HarvbotArmScrewNode::setSpeed(speed);
 
 	this->stepper->setSpeed(speed);
+}
+
+int HarvbotArmAFMotorScrewNode::getStatus()
+{
+	return this->m_status;
 }
 
 #endif

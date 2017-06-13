@@ -46,7 +46,8 @@ namespace Harvbot.Arms.Driver
         /// Initializes a new instance of the <see cref="HarvbotArmBase"/> class.
         /// </summary>
         /// <param name="comNum">The COM number.</param>
-        public HarvbotArmBase(string comNum) : this(new HarvbotArmSerialProvider(comNum))
+        /// <param name="subType">The arm sub type.</param>
+        public HarvbotArmBase(string comNum, HarvbotArmSubTypes subType) : this(new HarvbotArmSerialProvider(comNum), subType)
         {
             this.externalProvider = false;
         }
@@ -55,10 +56,14 @@ namespace Harvbot.Arms.Driver
         /// Initializes a new instance of the <see cref="HarvbotArmBase"/> class.
         /// </summary>
         /// <param name="provider">The arm controller provider.</param>
-        public HarvbotArmBase(IHarvbotArmProvider provider)
+        /// <param name="subType">The arm sub type.</param>
+        public HarvbotArmBase(IHarvbotArmProvider provider, HarvbotArmSubTypes subType)
         {
             this.externalProvider = true;
+            this.SubType = subType;
             this.provider = provider;
+
+            this.Init();
             this.InitializeNodes();
         }
 
@@ -66,6 +71,11 @@ namespace Harvbot.Arms.Driver
         /// Gets arm type.
         /// </summary>
         public abstract HarvbotArmTypes ArmType { get; }
+
+        /// <summary>
+        /// Gets the arm sub type.
+        /// </summary>
+        public HarvbotArmSubTypes SubType { get; private set; }
 
         /// <summary>
         /// Gets serial port instance.
@@ -81,6 +91,41 @@ namespace Harvbot.Arms.Driver
         ~HarvbotArmBase()
         {
             this.Dispose(false);
+        }
+
+        /// <summary>
+        /// Gets current arm status.
+        /// </summary>
+        /// <returns>The arm status.</returns>
+        public HarvbotArmStatuses GetStatus()
+        {
+            var data = this.SendCommand(HarvbotArmCommands.Status);
+
+            if (string.IsNullOrEmpty(data))
+            {
+                throw new InvalidOperationException("Invalid response data");
+            }
+
+            HarvbotArmStatuses status;
+            if (!Enum.TryParse<HarvbotArmStatuses>(data, out status))
+            {
+                throw new InvalidOperationException($"Invalid response data {data}");
+            }
+
+            return status;
+        }
+
+        public void Init()
+        {
+            this.SendCommand(HarvbotArmCommands.Init, this.SubType);
+        }
+
+        /// <summary>
+        /// Moves arm to initial position.
+        /// </summary>
+        public void InitStart()
+        {
+            this.SendCommand(HarvbotArmCommands.InitStart);
         }
 
         /// <summary>
@@ -229,5 +274,27 @@ namespace Harvbot.Arms.Driver
         /// Initializes arm nodes.
         /// </summary>
         protected abstract void InitializeNodes();
+
+        /// <summary>
+        /// Checks that specified sub type is valid for specified arm type.
+        /// </summary>
+        protected abstract void CheckArmSubType();
+
+        /// <summary>
+        /// Sends commands to controller.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="args">The command arguments.</param>
+        /// <returns>The response.</returns>
+        protected string SendCommand(HarvbotArmCommands command, params object[] args)
+        {
+            var response = this.Provider.SendRequest(new HarvbotArmRequest()
+            {
+                Command = command,
+                Arguments = args
+            });
+
+            return response.Data;
+        }
     }
 }

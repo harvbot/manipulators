@@ -14,6 +14,7 @@ namespace HarvbotArm.Tests.Integration
         public Arm1Test(GenericArmFixture<HarvbotArm1> fixture) 
             : base(fixture)
         {
+            fixture.ArmSubType = HarvbotArmSubTypes.Servo1;
         }
 
         [Theory]
