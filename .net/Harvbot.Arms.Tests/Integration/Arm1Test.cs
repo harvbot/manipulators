@@ -43,5 +43,17 @@ namespace HarvbotArm.Tests.Integration
         {
             this.ArmTest_SetPosition_Elbow();
         }
+
+        [Fact]
+        public void ArmTest1_InitStart()
+        {
+            this.ArmTest_InitStart();
+        }
+
+        [Fact]
+        public void ArmTest1_GetStatus()
+        {
+            this.ArmTest_GetStatus();
+        }
     }
 }

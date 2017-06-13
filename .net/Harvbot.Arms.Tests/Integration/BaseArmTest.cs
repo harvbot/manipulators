@@ -51,12 +51,36 @@ namespace HarvbotArm.Tests.Integration
             ArmTest_SetCirclePosition_ArmNode(this.fixture.Arm.GetCircleNodeByIdentifider(HarvbotArmNodeIdentifiers.Elbow), -1.0f, 20.0f);
         }
 
+        protected void ArmTest_GetNodeStatus()
+        {
+            ArmTest_GetStatus_ArmNode(this.fixture.Arm.GetCircleNodeByIdentifider(HarvbotArmNodeIdentifiers.Bedplate));
+            ArmTest_GetStatus_ArmNode(this.fixture.Arm.GetCircleNodeByIdentifider(HarvbotArmNodeIdentifiers.Shoulder));
+            ArmTest_GetStatus_ArmNode(this.fixture.Arm.GetCircleNodeByIdentifider(HarvbotArmNodeIdentifiers.Elbow));
+        }
+
         protected void ArmTest_SetCirclePosition_ArmNode(HarvbotArmCircleNode node, float target, float expected)
         {
             float? position = null;
             position = node.Move(target);
             position.HasValue.Should().Be(true);
             position.Value.Should().Be(expected);
+        }
+
+        protected void ArmTest_GetStatus_ArmNode(HarvbotArmNode node)
+        {
+            var status = node.GetStatus();
+            status.Should().Be(HarvbotArmStatuses.Ready);
+        }
+
+        protected void ArmTest_InitStart()
+        {
+            this.fixture.Arm.InitStart();
+        }
+
+        protected void ArmTest_GetStatus()
+        {
+            var status = this.fixture.Arm.GetStatus();
+            status.Should().Be(HarvbotArmStatuses.Ready);
         }
     }
 }

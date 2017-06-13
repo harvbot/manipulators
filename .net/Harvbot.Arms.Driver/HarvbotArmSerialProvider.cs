@@ -66,7 +66,7 @@ namespace Harvbot.Arms.Driver
 
             if (request.Arguments != null && request.Arguments.Length > 0)
             { 
-                var args = string.Join(":", request.Arguments.Select(x => x.ToString().ToLower()).ToArray());
+                var args = string.Join(":", request.Arguments.Select(x => ConvertArgumentToString(x)).ToArray());
                 requestData += $"{args}:";
             }
 
@@ -97,7 +97,9 @@ namespace Harvbot.Arms.Driver
             {
                 Command = request.Command,
                 Node = request.Node,
-                Data = segments.Length > 4 ? segments[3] : null
+                Data = request.Node.HasValue ? 
+                    (segments.Length > 4 ? segments[3] : null) : 
+                    (segments.Length > 3 ? segments[2] : null)
             };
         }
 
@@ -147,6 +149,27 @@ namespace Harvbot.Arms.Driver
                     return "status";
                 default: throw new ArgumentOutOfRangeException($"The {cmd} is not supported in Serial provider");
             }
+        }
+
+        private static string ConvertArgumentToString(object arg)
+        {
+            if (arg is HarvbotArmSubTypes)
+            {
+                switch ((HarvbotArmSubTypes)arg)
+                {
+                    case HarvbotArmSubTypes.Servo1:
+                        {
+                            return "SE1";
+                        }
+                    case HarvbotArmSubTypes.AFMotor2:
+                        {
+                            return "AFM2";
+                        }
+                    default: throw new ArgumentOutOfRangeException($"The argument with type {arg} is not supported");
+                }
+            }
+
+            return arg.ToString();
         }
     }
 }

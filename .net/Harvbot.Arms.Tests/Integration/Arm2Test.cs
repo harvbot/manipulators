@@ -82,15 +82,7 @@ namespace HarvbotArm.Tests.Integration
             steps.Value.Should().BeGreaterOrEqualTo(0);
 
             var newPos = this.fixture.Arm.Claw.RevolutionBackward();
-
-            if (steps > 0)
-            {
-                newPos.Should().BeLessThan(steps.Value);
-            }
-            else
-            {
-                newPos.Should().Be(0.0);
-            }
+            newPos.Should().BeLessOrEqualTo(steps.Value);
         }
 
         [Fact]
@@ -104,6 +96,26 @@ namespace HarvbotArm.Tests.Integration
             var newAngle = this.fixture.Arm.Claw.GetCurrentAngle();
             var fullRotation = Math.Truncate((angle + 45.0) / 360);
             newAngle.Should().Be((angle + 45.0)- fullRotation * 360);
+        }
+
+        [Fact]
+        public void ArmTest2_InitStart()
+        {
+            this.ArmTest_InitStart();
+        }
+
+        [Fact]
+        public void ArmTest2_GetStatus()
+        {
+            this.ArmTest_GetStatus();
+        }
+
+        [Fact]
+        public void ArmTest2_GetNodeStatus()
+        {
+            this.ArmTest_GetNodeStatus();
+
+            this.ArmTest_GetStatus_ArmNode(this.fixture.Arm.GetScrewNodeByIdentifider(HarvbotArmNodeIdentifiers.Claw));
         }
     }
 }
