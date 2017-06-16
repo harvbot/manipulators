@@ -81,11 +81,11 @@ String HarvbotArmProtocol::process(String requestData)
 	{
 		String armType = this->parseCmdValue(requestData, 2);
 
-		if(armType == "SE1")
+		if(armType == "1")
 		{
 			this->m_arm = HarvbotArmFactory::CreateServoArm1();
 		}
-		else if(armType == "AFM2")
+		else if(armType == "2")
 		{
 			this->m_arm = HarvbotArmFactory::CreateAFMotorArm2();
 		}

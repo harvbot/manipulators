@@ -15,8 +15,7 @@ namespace Harvbot.Arms.Driver
         /// Initializes a new instance of the <see cref="HarvbotArm1"/> class.
         /// </summary>
         /// <param name="comNum">The COM number.</param>
-        /// <param name="subType">The arm sub type.</param>
-        public HarvbotArm2(string comNum, HarvbotArmSubTypes subType) : base(comNum, subType)
+        public HarvbotArm2(string comNum) : base(comNum)
         {
         }
 
@@ -24,8 +23,7 @@ namespace Harvbot.Arms.Driver
         /// Initializes a new instance of the <see cref="HarvbotArm2"/> class.
         /// </summary>
         /// <param name="provider">The arm controller provider.</param>
-        /// <param name="subType">The arm sub type.</param>
-        public HarvbotArm2(IHarvbotArmProvider provider, HarvbotArmSubTypes subType) : base(provider, subType)
+        public HarvbotArm2(IHarvbotArmProvider provider) : base(provider)
         {
         }
 
@@ -63,17 +61,6 @@ namespace Harvbot.Arms.Driver
                 new HarvbotArmCircleNode(HarvbotArmNodeIdentifiers.Elbow, this),
                 new HarvbotArmScrewNode(HarvbotArmNodeIdentifiers.Claw, this),
             };
-        }
-
-        /// <summary>
-        /// Checks that specified sub type is valid for specified arm type.
-        /// </summary>
-        protected override void CheckArmSubType()
-        {
-            if (this.SubType != HarvbotArmSubTypes.AFMotor2)
-            {
-                throw new InvalidProgramException($"The sub type {this.SubType} is not allowed for arm type 2");
-            }
         }
     }
 }

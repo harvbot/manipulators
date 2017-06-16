@@ -153,20 +153,9 @@ namespace Harvbot.Arms.Driver
 
         private static string ConvertArgumentToString(object arg)
         {
-            if (arg is HarvbotArmSubTypes)
+            if (arg is HarvbotArmTypes)
             {
-                switch ((HarvbotArmSubTypes)arg)
-                {
-                    case HarvbotArmSubTypes.Servo1:
-                        {
-                            return "SE1";
-                        }
-                    case HarvbotArmSubTypes.AFMotor2:
-                        {
-                            return "AFM2";
-                        }
-                    default: throw new ArgumentOutOfRangeException($"The argument with type {arg} is not supported");
-                }
+                return ((int)(HarvbotArmTypes)arg).ToString();
             }
 
             return arg.ToString();

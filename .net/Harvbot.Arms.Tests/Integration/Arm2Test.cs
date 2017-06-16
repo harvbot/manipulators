@@ -14,7 +14,6 @@ namespace HarvbotArm.Tests.Integration
         public Arm2Test(GenericArmFixture<HarvbotArm2> fixture) 
             : base(fixture)
         {
-            fixture.ArmSubType = HarvbotArmSubTypes.AFMotor2;
         }
 
         [Theory]

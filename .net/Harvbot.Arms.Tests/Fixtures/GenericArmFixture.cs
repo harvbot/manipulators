@@ -12,8 +12,6 @@ namespace HarvbotArm.Tests.Fixtures
         {
         }
 
-        public HarvbotArmSubTypes ArmSubType { get; set; }
-
         public T Arm
         {
             get
@@ -34,7 +32,7 @@ namespace HarvbotArm.Tests.Fixtures
 
         public T InitializeArm()
         {
-            return (T)Activator.CreateInstance(typeof(T), new object[] { TestAssemblyFixture.Provider, this.ArmSubType });
+            return (T)Activator.CreateInstance(typeof(T), new object[] { TestAssemblyFixture.Provider });
         }
     }
 }

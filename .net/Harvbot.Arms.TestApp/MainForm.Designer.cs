@@ -42,7 +42,6 @@
             this.BtnOpenClaw = new System.Windows.Forms.Button();
             this.BtnCloseClaw = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.CbArmSubTypes = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // CbPorts
@@ -171,22 +170,12 @@
             this.label1.TabIndex = 14;
             this.label1.Text = "Select arm subtype:";
             // 
-            // CbArmSubTypes
-            // 
-            this.CbArmSubTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.CbArmSubTypes.FormattingEnabled = true;
-            this.CbArmSubTypes.Location = new System.Drawing.Point(12, 126);
-            this.CbArmSubTypes.Name = "CbArmSubTypes";
-            this.CbArmSubTypes.Size = new System.Drawing.Size(140, 21);
-            this.CbArmSubTypes.TabIndex = 13;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(367, 223);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.CbArmSubTypes);
             this.Controls.Add(this.BtnCloseClaw);
             this.Controls.Add(this.BtnOpenClaw);
             this.Controls.Add(this.BtnDown);
@@ -224,7 +213,6 @@
         private System.Windows.Forms.Button BtnOpenClaw;
         private System.Windows.Forms.Button BtnCloseClaw;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox CbArmSubTypes;
     }
 }
 

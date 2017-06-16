@@ -46,8 +46,7 @@ namespace Harvbot.Arms.Driver
         /// Initializes a new instance of the <see cref="HarvbotArmBase"/> class.
         /// </summary>
         /// <param name="comNum">The COM number.</param>
-        /// <param name="subType">The arm sub type.</param>
-        public HarvbotArmBase(string comNum, HarvbotArmSubTypes subType) : this(new HarvbotArmSerialProvider(comNum), subType)
+        public HarvbotArmBase(string comNum) : this(new HarvbotArmSerialProvider(comNum))
         {
             this.externalProvider = false;
         }
@@ -56,11 +55,9 @@ namespace Harvbot.Arms.Driver
         /// Initializes a new instance of the <see cref="HarvbotArmBase"/> class.
         /// </summary>
         /// <param name="provider">The arm controller provider.</param>
-        /// <param name="subType">The arm sub type.</param>
-        public HarvbotArmBase(IHarvbotArmProvider provider, HarvbotArmSubTypes subType)
+        public HarvbotArmBase(IHarvbotArmProvider provider)
         {
             this.externalProvider = true;
-            this.SubType = subType;
             this.provider = provider;
 
             this.Init();
@@ -71,11 +68,6 @@ namespace Harvbot.Arms.Driver
         /// Gets arm type.
         /// </summary>
         public abstract HarvbotArmTypes ArmType { get; }
-
-        /// <summary>
-        /// Gets the arm sub type.
-        /// </summary>
-        public HarvbotArmSubTypes SubType { get; private set; }
 
         /// <summary>
         /// Gets serial port instance.
@@ -117,7 +109,7 @@ namespace Harvbot.Arms.Driver
 
         public void Init()
         {
-            this.SendCommand(HarvbotArmCommands.Init, this.SubType);
+            this.SendCommand(HarvbotArmCommands.Init, this.ArmType);
         }
 
         /// <summary>
@@ -274,11 +266,6 @@ namespace Harvbot.Arms.Driver
         /// Initializes arm nodes.
         /// </summary>
         protected abstract void InitializeNodes();
-
-        /// <summary>
-        /// Checks that specified sub type is valid for specified arm type.
-        /// </summary>
-        protected abstract void CheckArmSubType();
 
         /// <summary>
         /// Sends commands to controller.

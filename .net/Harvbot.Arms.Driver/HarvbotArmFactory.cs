@@ -17,17 +17,17 @@ namespace Harvbot.Arms.Driver
         /// <param name="comNum">The COM number.</param>
         /// <param name="type">The Arm type.</param>
         /// <returns>The Arm instance.</returns>
-        public static HarvbotArmBase GetInstance(string comNum, HarvbotArmTypes type, HarvbotArmSubTypes subType)
+        public static HarvbotArmBase GetInstance(string comNum, HarvbotArmTypes type)
         {
             switch (type)
             {
                 case HarvbotArmTypes.Type1:
                     {
-                        return new HarvbotArm1(comNum, subType);
+                        return new HarvbotArm1(comNum);
                     }
                 case HarvbotArmTypes.Type2:
                     {
-                        return new HarvbotArm2(comNum, subType);
+                        return new HarvbotArm2(comNum);
                     }
                 default:
                     {
