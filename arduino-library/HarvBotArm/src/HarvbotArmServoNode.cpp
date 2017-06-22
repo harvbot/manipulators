@@ -3,12 +3,12 @@
 #include "HarvbotArmConstants.h"
 #include "HarvbotArmServoNode.h"
 
-HarvbotArmServoNode::HarvbotArmServoNode(int nodeType, int pin, float pos, float minPos, float maxPos) 
-	: HarvbotArmCircleNode(nodeType, pos, minPos, maxPos)
+HarvbotArmServoNode::HarvbotArmServoNode(HarvbotArmNodeIdentifiers identifier, int pin, float pos, float minPos, float maxPos) 
+	: HarvbotArmCircleNode(identifier, pos, minPos, maxPos)
 {
 	this->m_pin = pin;
 	this->m_sweepDelay = 15;
-	this->m_status = HARVBOT_NODE_STATUS_READY;
+	this->m_status = Ready;
 
 	servo = new Servo();
 	servo->attach(pin);
@@ -22,7 +22,7 @@ HarvbotArmServoNode::~HarvbotArmServoNode(){
 
 float HarvbotArmServoNode::write(float pos) {
 
-	this->m_status = HARVBOT_NODE_STATUS_INPROCESS;
+	this->m_status = InProcess;
 
 	int currentPos = (int)read();
 
@@ -48,7 +48,7 @@ float HarvbotArmServoNode::write(float pos) {
 		HarvbotArmCircleNode::write(pos);
 	}
 
-	this->m_status = HARVBOT_NODE_STATUS_READY;
+	this->m_status = Ready;
 
 	return pos;
 }
@@ -63,7 +63,7 @@ void HarvbotArmServoNode::setSweepDelay(int delay)
 	this->m_sweepDelay = delay;
 }
 
-int HarvbotArmServoNode::getStatus()
+HarvbotNodeStatuses HarvbotArmServoNode::getStatus()
 {
 	return this->m_status;
 }

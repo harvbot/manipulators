@@ -12,7 +12,8 @@ class HarvbotArmAccelStepperCircleNode : public HarvbotArmCircleNode {
 		int m_speed;
 		AccelStepper* stepper;
 	public:
-		HarvbotArmAccelStepperCircleNode(int nodeType, 
+		HarvbotArmAccelStepperCircleNode(
+			HarvbotArmNodeIdentifiers identifier, 
 			int pinDir, 
 			int pinStep, 
 			float pos, 
@@ -31,7 +32,7 @@ class HarvbotArmAccelStepperCircleNode : public HarvbotArmCircleNode {
 
 		void setSpeed(int speed);
 
-		int getStatus();
+		HarvbotNodeStatuses getStatus();
 };
 
 #endif /* HarvbotArmAccelStepperCircleNode_H_ */

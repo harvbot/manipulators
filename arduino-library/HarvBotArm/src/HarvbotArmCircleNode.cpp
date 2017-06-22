@@ -2,8 +2,8 @@
 #include "HarvbotArmCircleNode.h"
 #include "HarvbotArmConstants.h"
 
-HarvbotArmCircleNode::HarvbotArmCircleNode(int nodeType, float pos, float minPos, float maxPos) 
-	: HarvbotArmNode(nodeType)
+HarvbotArmCircleNode::HarvbotArmCircleNode(HarvbotArmNodeIdentifiers identifier, float pos, float minPos, float maxPos) 
+	: HarvbotArmNode(identifier)
 {
 	m_pos = pos;
 	m_minPos = minPos;
@@ -13,9 +13,9 @@ HarvbotArmCircleNode::HarvbotArmCircleNode(int nodeType, float pos, float minPos
 HarvbotArmCircleNode::~HarvbotArmCircleNode(){
 }
 
-int HarvbotArmCircleNode::getType()
+HarvbotArmNodeTypes HarvbotArmCircleNode::getType()
 {
-	return HARVBOT_ARM_CIRCLE_NODE_TYPE;
+	return Circle;
 }
 
 float HarvbotArmCircleNode::read() {

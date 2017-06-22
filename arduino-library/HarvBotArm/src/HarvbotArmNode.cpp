@@ -1,12 +1,13 @@
 #include "HarvbotArmNode.h"
+#include "HarvbotArmConstants.h"
 
-HarvbotArmNode::HarvbotArmNode(int nodeType) {
-	this->m_nodeType = nodeType;
+HarvbotArmNode::HarvbotArmNode(HarvbotArmNodeIdentifiers identifier) {
+	this->m_identifier = identifier;
 }
 
 HarvbotArmNode::~HarvbotArmNode() {
 }
 
-int HarvbotArmNode::getNodeType() {
-	return this->m_nodeType;
+HarvbotArmNodeIdentifiers HarvbotArmNode::getIdentifier() {
+	return this->m_identifier;
 }

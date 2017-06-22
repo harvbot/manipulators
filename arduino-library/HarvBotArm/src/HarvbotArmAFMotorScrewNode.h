@@ -10,10 +10,10 @@
 class  HarvbotArmAFMotorScrewNode : public HarvbotArmScrewNode {
 	private:
 		AF_Stepper* stepper;
-		int m_status;
+		HarvbotNodeStatuses m_status;
 	public:
 		HarvbotArmAFMotorScrewNode(
-			int nodeType, 
+			HarvbotArmNodeIdentifiers identifier, 
 			int adafruitShieldPort, 
 			float pos, 
 			int maxStepsCount, 
@@ -25,7 +25,7 @@ class  HarvbotArmAFMotorScrewNode : public HarvbotArmScrewNode {
 
 		void setSpeed(int speed);
 		
-		int getStatus();
+		HarvbotNodeStatuses getStatus();
 };
 
 #endif /* HarvbotArmAFMotorScrewNode_H_ */

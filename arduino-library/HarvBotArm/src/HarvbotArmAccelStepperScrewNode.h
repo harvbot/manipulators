@@ -10,7 +10,7 @@ class  HarvbotArmAccelStepperScrewNode : public HarvbotArmScrewNode {
 		AccelStepper* stepper;
 	public:
 		HarvbotArmAccelStepperScrewNode(
-			int nodeType, 
+			HarvbotArmNodeIdentifiers identifier, 
 			int pinDir, 
 			int pinStep, 
 			float pos, 
@@ -24,7 +24,7 @@ class  HarvbotArmAccelStepperScrewNode : public HarvbotArmScrewNode {
 
 		void setSpeed(int speed);
 
-		int getStatus();
+		HarvbotNodeStatuses getStatus();
 };
 
 #endif /* HarvbotArmAccelStepperScrewNode_H_ */

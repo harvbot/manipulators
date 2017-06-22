@@ -3,7 +3,7 @@
 #include "HarvbotArmConstants.h"
 #include "HarvbotArmCircleNode.h"
 
-HarvbotArm::HarvbotArm(int armType) 
+HarvbotArm::HarvbotArm(HarvbotArmTypes armType) 
 {
 	this->armType = armType;
 }
@@ -16,31 +16,31 @@ HarvbotArm::~HarvbotArm()
 	}
 }
 
-int HarvbotArm::getType()
+HarvbotArmTypes HarvbotArm::getType()
 {
 	return this->armType;
 }
 
 HarvbotArmCircleNode* HarvbotArm::getBedplate()
 {
-	return this->getNodeByType(HARVBOT_ARM_BEDPLATE_NODE);
+	return (HarvbotArmCircleNode*)this->getNodeByType(Bedplate);
 }
 
 HarvbotArmCircleNode* HarvbotArm::getShoulder()
 {
-	return this->getNodeByType(HARVBOT_ARM_SHOULDER_NODE);
+	return (HarvbotArmCircleNode*)this->getNodeByType(Shoulder);
 }
 
 HarvbotArmCircleNode* HarvbotArm::getElbow()
 {
-	return this->getNodeByType(HARVBOT_ARM_ELBOW_NODE);
+	return (HarvbotArmCircleNode*)this->getNodeByType(Elbow);
 }
 
-HarvbotArmNode* HarvbotArm::getNodeByType(int nodeType)
+HarvbotArmNode* HarvbotArm::getNodeByType(HarvbotArmNodeIdentifiers node)
 {
 	for(int i=0;i<nodesCount;i++)
 	{
-		if(this->nodes[i]->getNodeType() == nodeType)
+		if(this->nodes[i]->getIdentifier() == node)
 		{
 			return this->nodes[i];
 		}
@@ -49,15 +49,15 @@ HarvbotArmNode* HarvbotArm::getNodeByType(int nodeType)
 	return NULL;
 }
 
-int HarvbotArm::getStatus()
+HarvbotNodeStatuses HarvbotArm::getStatus()
 {
 	for(int i=0;i<nodesCount;i++)
 	{
-		if(this->nodes[i]->getStatus() != HARVBOT_NODE_STATUS_READY)
+		if(this->nodes[i]->getStatus() != Ready)
 		{
-			return HARVBOT_NODE_STATUS_INPROCESS;
+			return InProcess;
 		}
 	}
 
-	return HARVBOT_NODE_STATUS_READY;
+	return Ready;
 }

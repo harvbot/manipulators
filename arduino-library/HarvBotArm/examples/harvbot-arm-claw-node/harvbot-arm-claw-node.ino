@@ -1,5 +1,6 @@
 #include <HarvbotArmNode.h>
 #include <HarvbotArmAFMotorScrewNode.h>
+#include <HarvbotArmConstants.h>
 
 HarvbotArmAFMotorScrewNode* claw;
 
@@ -14,7 +15,7 @@ void setup()
 {
   Serial.begin(9600);
 
-  claw = new HarvbotArmAFMotorScrewNode(HARVBOT_ARM_CLAW_NODE, 2, 0, 200);
+  claw = new HarvbotArmAFMotorScrewNode(Claw, 2, 0, 200);
  
   // Do not forget to setup speed, otherwise stepper won't work.
   claw->setSpeed(60);

@@ -8,14 +8,16 @@
 
 class HarvbotArm {
 	private: 
-		int armType;
+		HarvbotArmTypes armType;
 	protected:
 		int nodesCount;
 		HarvbotArmNode** nodes;
 	public:
-		HarvbotArm(int armType);
+		HarvbotArm(HarvbotArmTypes armType);
+
 		~HarvbotArm();
-		int getType();
+
+		HarvbotArmTypes getType();
 
 		virtual void goToStartPosition() = 0;
 
@@ -37,12 +39,12 @@ class HarvbotArm {
 		/**
 			Gets node by node type.
 		*/
-		virtual HarvbotArmNode* getNodeByType(int nodeType);
+		virtual HarvbotArmNode* getNodeByType(HarvbotArmNodeIdentifiers node);
 
 		/**
 			Gets the arm current status.
 		*/
-		int getStatus();
+		HarvbotNodeStatuses getStatus();
 };
 
 #endif /* HarvbotArm_H_ */

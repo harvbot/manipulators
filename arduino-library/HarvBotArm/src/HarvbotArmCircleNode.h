@@ -10,11 +10,11 @@ class HarvbotArmCircleNode : public HarvbotArmNode {
 		float m_minPos;
 		float m_maxPos;
 	public:
-		HarvbotArmCircleNode(int nodeType, float pos, float minPos, float maxPos);
+		HarvbotArmCircleNode(HarvbotArmNodeIdentifiers identifier, float pos, float minPos, float maxPos);
 		
 		~HarvbotArmCircleNode();
 
-		int getType();
+		HarvbotArmNodeTypes getType();
 
 		virtual float read();
 

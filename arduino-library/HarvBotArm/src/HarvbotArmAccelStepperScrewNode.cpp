@@ -5,14 +5,14 @@
 #include "HarvbotArmAccelStepperScrewNode.h"
 
 HarvbotArmAccelStepperScrewNode::HarvbotArmAccelStepperScrewNode(
-	int nodeType, 
+	HarvbotArmNodeIdentifiers identifier, 
 	int pinDir,
 	int pinStep, 
 	float pos, 
 	int maxStepsCount, 
 	int maxFullRotaionCount, 
 	int reductorGear) 
-	: HarvbotArmScrewNode(nodeType, pos, maxStepsCount, maxFullRotaionCount, reductorGear)
+	: HarvbotArmScrewNode(identifier, pos, maxStepsCount, maxFullRotaionCount, reductorGear)
 {
 	this->stepper = new AccelStepper(1, pinDir, pinStep);
 	this->setSpeed(HARVBOT_DEFAULT_STEPPER_SPEED);
@@ -55,7 +55,7 @@ void HarvbotArmAccelStepperScrewNode::setSpeed(int speed)
 	this->stepper->setSpeed(speed);
 }
 
-int HarvbotArmAccelStepperScrewNode::getStatus()
+HarvbotNodeStatuses HarvbotArmAccelStepperScrewNode::getStatus()
 {
-	return this->stepper->distanceToGo()==0 ? HARVBOT_NODE_STATUS_READY : HARVBOT_NODE_STATUS_INPROCESS;
+	return this->stepper->distanceToGo()==0 ? Ready : InProcess;
 }

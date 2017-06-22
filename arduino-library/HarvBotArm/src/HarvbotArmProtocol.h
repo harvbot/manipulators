@@ -7,6 +7,31 @@
 class HarvbotArmProtocol {
 	private:
 		HarvbotArm* m_arm;
+
+		String processInitCommand(String data);
+
+		String getCommandTypeString(HarvbotArmCommands cmd);
+
+		// Build response.
+		String buildResponse(String command, String data);
+
+		// Build error response.
+		String buildErrorResponse(HarvbotArmProtocolErrorCodes errorCode);
+
+		// Parse command value.
+		String parseLine(String data, int index);
+
+		// Parse command value.
+		HarvbotArmNodeIdentifiers parseNodeIdentifier(String data);
+
+		String parseParamValue(String data);
+
+		// Parse command value.
+		HarvbotArmCommands parseCommandType(String data);
+
+		int commandParamsNumber(String data);
+
+		String getNodeIdentifierString(HarvbotArmNodeIdentifiers nodeIdenfitier);
 	public:
 
 		// Initialzies a new instance.
@@ -23,12 +48,6 @@ class HarvbotArmProtocol {
 
 		// Run protocol processing.
 		void run();
-
-		// Build response.
-		String buildResponse(String command, String nodeType, String data);
-
-		// Parse command value.
-		String parseCmdValue(String data, int index);
 
 		virtual String readRequest() = 0;
 

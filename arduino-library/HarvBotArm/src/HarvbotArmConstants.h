@@ -1,59 +1,11 @@
+#ifndef HarvbotArmConstants_H_
+#define HarvbotArmConstants_H_
+
 #include <Arduino.h>
-
-// Arm nodes.
-#ifndef HARVBOT_ARM_BEDPLATE_NODE
-#define HARVBOT_ARM_BEDPLATE_NODE 1
-#endif
-
-#ifndef HARVBOT_ARM_SHOULDER_NODE
-#define HARVBOT_ARM_SHOULDER_NODE 2
-#endif
-
-#ifndef HARVBOT_ARM_ELBOW_NODE
-#define HARVBOT_ARM_ELBOW_NODE 3
-#endif
-
-#ifndef HARVBOT_ARM_ELBOW_SCREW_NODE
-#define HARVBOT_ARM_ELBOW_SCREW_NODE 4
-#endif
-
-#ifndef HARVBOT_ARM_HAND_NODE
-#define HARVBOT_ARM_HAND_NODE 5
-#endif
-
-#ifndef HARVBOT_ARM_HAND_SCREW_NODE
-#define HARVBOT_ARM_HAND_SCREW_NODE 6
-#endif
-
-#ifndef HARVBOT_ARM_CLAW_NODE
-#define HARVBOT_ARM_CLAW_NODE 7
-#endif
 
 // Max full rotation
 #ifndef HARVBOT_ARM_CLAW_MAX_FULL_ROTATION
 #define HARVBOT_ARM_CLAW_MAX_FULL_ROTATION 28
-#endif
-
-// Nodes types
-#ifndef HARVBOT_ARM_CIRCLE_NODE_TYPE
-#define HARVBOT_ARM_CIRCLE_NODE_TYPE 1
-#endif
-
-#ifndef HARVBOT_ARM_SCREW_NODE_TYPE
-#define HARVBOT_ARM_SCREW_NODE_TYPE 2
-#endif
-
-// Arm types
-#ifndef HARVBOT_ARM_TYPE_1
-#define HARVBOT_ARM_TYPE_1 1
-#endif
-
-#ifndef HARVBOT_ARM_TYPE_2
-#define HARVBOT_ARM_TYPE_2 2
-#endif
-
-#ifndef HARVBOT_ARM_TYPE_3
-#define HARVBOT_ARM_TYPE_3 3
 #endif
 
 // Default stepper motor speed
@@ -61,11 +13,60 @@
 #define HARVBOT_DEFAULT_STEPPER_SPEED 50
 #endif
 
-// Node statuses
-#ifndef HARVBOT_NODE_STATUS_READY
-#define HARVBOT_NODE_STATUS_READY 0
-#endif
+enum HarvbotArmNodeIdentifiers
+{
+    Undefined = -1,
+    Bedplate = 1,
+    Shoulder = 2,
+    Elbow = 3,
+    ElbowScrew = 4,
+    Hand = 5,
+    HandScrew = 6,
+    Claw = 7
+};
 
-#ifndef HARVBOT_NODE_STATUS_INPROCESS
-#define HARVBOT_NODE_STATUS_INPROCESS 1
-#endif
+enum HarvbotArmNodeTypes
+{
+    Circle = 1,
+    Screw = 2
+};
+
+enum HarvbotArmTypes
+{
+    ArmType1 = 1,
+    ArmType2 = 2,
+    ArmType3 = 3
+};
+
+// Node statuses
+enum HarvbotNodeStatuses
+{
+    Ready = 0,
+    InProcess = 1
+};
+
+enum HarvbotArmProtocolErrorCodes
+{
+    Uninitialized = 101,
+    InvalidArmType = 102,
+    InvalidNodeIdentifier = 103,
+    InvalidCommand = 104
+};
+
+enum HarvbotArmCommands
+{
+    Invalid,
+    Init,
+    InitStart,
+    Status,
+    Move,
+    Position,
+    Steps,
+    Angle,
+    Rotate,
+    RotateOnAngle,
+    Revolution,
+    NodeStatus
+};
+
+#endif /* HarvbotArmConstants_H_ */

@@ -13,7 +13,7 @@ class HarvbotArmScrewNode : public HarvbotArmNode {
         int m_reductorGear;
 	public:
 		HarvbotArmScrewNode(
-            int nodeType, 
+            HarvbotArmNodeIdentifiers identifier, 
             float pos, 
             int maxStepsCount, 
             int maxFullRotaionCount=HARVBOT_ARM_CLAW_MAX_FULL_ROTATION,
@@ -21,7 +21,7 @@ class HarvbotArmScrewNode : public HarvbotArmNode {
 
 		~HarvbotArmScrewNode();
 
-        int getType();
+        HarvbotArmNodeTypes getType();
 
         /**
             Gets the current position. In general the number of steps which were passed on screw.

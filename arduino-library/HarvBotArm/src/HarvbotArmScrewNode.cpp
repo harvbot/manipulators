@@ -1,8 +1,8 @@
 #include "HarvbotArmNode.h"
 #include "HarvbotArmScrewNode.h"
 
-HarvbotArmScrewNode::HarvbotArmScrewNode(int nodeType, float pos, int maxStepsCount, int maxFullRotaionCount, int reductorGear) 
-	: HarvbotArmNode(nodeType)
+HarvbotArmScrewNode::HarvbotArmScrewNode(HarvbotArmNodeIdentifiers identifier, float pos, int maxStepsCount, int maxFullRotaionCount, int reductorGear) 
+	: HarvbotArmNode(identifier)
 {
 	this->m_pos = pos;
 	this->m_maxStepsCount = maxStepsCount;
@@ -76,9 +76,9 @@ float HarvbotArmScrewNode::getAnglePerStep()
 	return 360.0 / (this->m_maxStepsCount  * this->m_reductorGear);
 }
 
-int HarvbotArmScrewNode::getType()
+HarvbotArmNodeTypes HarvbotArmScrewNode::getType()
 {
-	return HARVBOT_ARM_SCREW_NODE_TYPE;
+	return Screw;
 }
 
 void HarvbotArmScrewNode::goToStartPosition()

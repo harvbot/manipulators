@@ -7,18 +7,18 @@
 #include "HarvbotArmConstants.h"
 
 HarvbotArm1::HarvbotArm1(int beadplatePin, int shoulderPin, int elbowPin, int elbowScrewPin, int handPin, int handScrewPin) 
-: HarvbotArm(HARVBOT_ARM_TYPE_1) {
+: HarvbotArm(ArmType1) {
 
 	this->nodesCount = 6;
 	
 	this->nodes = new HarvbotArmNode*[6];
 
-	this->nodes[0] = new HarvbotArmServoNode(HARVBOT_ARM_BEDPLATE_NODE, beadplatePin, 90, 0, 180);
-	this->nodes[1] = new HarvbotArmServoNode(HARVBOT_ARM_SHOULDER_NODE, shoulderPin, 150, 5, 180);
-	this->nodes[2] = new HarvbotArmServoNode(HARVBOT_ARM_ELBOW_NODE, elbowPin, 60, 20, 180);
-	this->nodes[3] = new HarvbotArmServoNode(HARVBOT_ARM_ELBOW_SCREW_NODE, elbowScrewPin, 60, 0, 180);
-	this->nodes[4] = new HarvbotArmServoNode(HARVBOT_ARM_HAND_NODE, handPin, 90, 0, 180);
-	this->nodes[5] = new HarvbotArmServoNode(HARVBOT_ARM_HAND_SCREW_NODE, handScrewPin, 90, 0, 180);
+	this->nodes[0] = new HarvbotArmServoNode(Bedplate, beadplatePin, 90, 0, 180);
+	this->nodes[1] = new HarvbotArmServoNode(Shoulder, shoulderPin, 150, 5, 180);
+	this->nodes[2] = new HarvbotArmServoNode(Elbow, elbowPin, 60, 20, 180);
+	this->nodes[3] = new HarvbotArmServoNode(ElbowScrew, elbowScrewPin, 60, 0, 180);
+	this->nodes[4] = new HarvbotArmServoNode(Hand, handPin, 90, 0, 180);
+	this->nodes[5] = new HarvbotArmServoNode(HandScrew, handScrewPin, 90, 0, 180);
 
 	this->goToStartPosition();
 }
@@ -37,15 +37,15 @@ void HarvbotArm1::goToStartPosition()
 
 HarvbotArmCircleNode* HarvbotArm1::getElbowScrew()
 {
-	return this->getNodeByType(HARVBOT_ARM_ELBOW_SCREW_NODE);
+	return this->getNodeByType(ElbowScrew);
 }
 
 HarvbotArmCircleNode* HarvbotArm1::getHand()
 {
-	return this->getNodeByType(HARVBOT_ARM_HAND_NODE);
+	return this->getNodeByType(Hand);
 }
 
 HarvbotArmCircleNode* HarvbotArm1::getHandScrew()
 {
-	return this->getNodeByType(HARVBOT_ARM_HAND_SCREW_NODE);
+	return this->getNodeByType(HandScrew);
 }

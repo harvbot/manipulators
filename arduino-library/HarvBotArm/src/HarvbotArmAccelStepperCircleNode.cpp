@@ -4,7 +4,7 @@
 #include "HarvbotArmAccelStepperCircleNode.h"
 
 HarvbotArmAccelStepperCircleNode::HarvbotArmAccelStepperCircleNode(
-	int nodeType, 
+	HarvbotArmNodeIdentifiers identifier, 
 	int pinDir, 
 	int pinStep, 
 	float pos, 
@@ -12,7 +12,7 @@ HarvbotArmAccelStepperCircleNode::HarvbotArmAccelStepperCircleNode(
 	float maxPos,
 	int maxStepCount,
 	int reductorGear) 
-	: HarvbotArmCircleNode(nodeType, pos, minPos, maxPos)
+	: HarvbotArmCircleNode(identifier, pos, minPos, maxPos)
 {
 	this->stepper = new AccelStepper(1, pinDir, pinStep);
 	this->m_maxStepCount = maxStepCount;
@@ -59,7 +59,7 @@ void HarvbotArmAccelStepperCircleNode::setSpeed(int speed)
 	this->stepper->setSpeed(speed);
 }
 
-int HarvbotArmAccelStepperCircleNode::getStatus()
+HarvbotNodeStatuses HarvbotArmAccelStepperCircleNode::getStatus()
 {
-	return this->stepper->distanceToGo()==0 ? HARVBOT_NODE_STATUS_READY : HARVBOT_NODE_STATUS_INPROCESS;
+	return this->stepper->distanceToGo()==0 ? Ready : InProcess;
 }

@@ -2,6 +2,7 @@
 #include <HarvbotArm1.h>
 #include <HarvbotArmNode.h>
 #include <HarvbotArmServoNode.h>
+#include <HarvbotArmConstants.h>
 
 HarvbotArm1* manipulator;
 int joyPin11 = 0;                 // slider variable connecetd to analog pin 0
@@ -41,11 +42,11 @@ void loop()
   // reads the value of the variable resistor
   int deltaY2 = getDelta(joyPin22);
 
-  changeNodePosition(HARVBOT_ARM_BEDPLATE_NODE, deltaX1);
-  changeNodePosition(HARVBOT_ARM_SHOULDER_NODE, deltaY1);
+  changeNodePosition(Bedplate, deltaX1);
+  changeNodePosition(Shoulder, deltaY1);
 
-  changeNodePosition(HARVBOT_ARM_ELBOW_NODE, deltaX2);
-  changeNodePosition(HARVBOT_ARM_ELBOW_SCREW_NODE, deltaY2);
+  changeNodePosition(Elbow, deltaX2);
+  changeNodePosition(ElbowScrew, deltaY2);
 }
 
 void changeNodePosition(int nodeType, int delta)

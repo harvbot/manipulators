@@ -1,27 +1,29 @@
 #ifndef HarvbotArmNode_H_
 #define HarvbotArmNode_H_
 
+#include <HarvbotArmConstants.h>
+
 class HarvbotArmNode {
 	private:
 
 		// Stores node type.
-		int m_nodeType;
+		HarvbotArmNodeIdentifiers m_identifier;
 	public:
 
 		// Initialzies a new instance.
-		HarvbotArmNode(int nodeType);
+		HarvbotArmNode(HarvbotArmNodeIdentifiers identifier);
 
 		// Release all resouces.
 		~HarvbotArmNode();
 
 		// Gets the node identifier. For instance Elbow.
-		virtual int getNodeType();
+		HarvbotArmNodeIdentifiers getIdentifier();
 
 		// Gets the node type: circle or screw.
-		virtual int getType() = 0;	
+		virtual HarvbotArmNodeTypes getType() = 0;	
 
 		// Gets current node status.
-		virtual int getStatus() = 0;
+		virtual HarvbotNodeStatuses getStatus() = 0;
 };
 
 #endif /* HarvbotArmNode_H_ */

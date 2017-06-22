@@ -15,7 +15,7 @@ HarvbotArm1* HarvbotArmFactory::CreateServoArm1()
 
 HarvbotArm2* HarvbotArmFactory::CreateAFMotorArm2()
 {
-	HarvbotArmAFMotorScrewNode* claw = new HarvbotArmAFMotorScrewNode(HARVBOT_ARM_CLAW_NODE, 2, 0, 200, HARVBOT_ARM_CLAW_MAX_FULL_ROTATION);
+	HarvbotArmAFMotorScrewNode* claw = new HarvbotArmAFMotorScrewNode(Claw, 2, 0, 200, HARVBOT_ARM_CLAW_MAX_FULL_ROTATION);
 	claw->setSpeed(50);
 	
 	return new HarvbotArm2(22, 23, 24, claw);

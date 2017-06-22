@@ -9,10 +9,10 @@ class HarvbotArmServoNode : public HarvbotArmCircleNode {
 	protected: 
 		int m_pin;
 		int m_sweepDelay;
-		int m_status;
+		HarvbotNodeStatuses m_status;
 		Servo* servo;
 	public:
-		HarvbotArmServoNode(int nodeType, int pin, float pos, float minPos, float maxPos);
+		HarvbotArmServoNode(HarvbotArmNodeIdentifiers identifier, int pin, float pos, float minPos, float maxPos);
 
 		~HarvbotArmServoNode();
 
@@ -22,7 +22,7 @@ class HarvbotArmServoNode : public HarvbotArmCircleNode {
 
 		void setSweepDelay(int delay);
 
-		int getStatus();
+		HarvbotNodeStatuses getStatus();
 };
 
 #endif /* HarvbotArmServoNode_H_ */
