@@ -16,7 +16,9 @@ HarvbotArmSerialProtocol::~HarvbotArmSerialProtocol() {
 
 String HarvbotArmSerialProtocol::readRequest()
 {
-	return Serial.readString();
+	String request = Serial.readString();
+	request.trim();
+	return request;
 }
 
 void HarvbotArmSerialProtocol::writeResponse(String response)

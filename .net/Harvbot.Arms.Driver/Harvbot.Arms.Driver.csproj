@@ -59,6 +59,7 @@
     <Compile Include="HarvbotArmStatuses.cs" />
     <Compile Include="HarvbotArmStepperDirections.cs" />
     <Compile Include="HarvbotArmTypes.cs" />
+    <Compile Include="HarvbotArmErrorCodes.cs" />
     <Compile Include="IHarvbotArmProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

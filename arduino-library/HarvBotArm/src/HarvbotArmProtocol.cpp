@@ -33,18 +33,19 @@ String HarvbotArmProtocol::buildErrorResponse(HarvbotArmProtocolErrorCodes error
 
 String HarvbotArmProtocol::buildResponse(String result, String data)
 {
+	String response = "";
 	if(result != NULL && result != "")
 	{
-    	result += result;
+    	response += result;
 	}
 
     if(data != NULL && data != "")
     {
-		result += ":";
-    	result += data;
+		response += ":";
+    	response += data;
     }
-    
-    return result;
+
+    return response;
 }
 
 String HarvbotArmProtocol::parseLine(String data, int index)
@@ -63,7 +64,12 @@ String HarvbotArmProtocol::parseLine(String data, int index)
         }
     }
 
-    return found > index ? data.substring(strIndex[0], strIndex[1]) : "";
+    if(found > index) 
+	{
+		return data.substring(strIndex[0], strIndex[1]);
+	}
+
+	return "";
 }
 
 int HarvbotArmProtocol::commandParamsNumber(String data)
@@ -76,6 +82,11 @@ int HarvbotArmProtocol::commandParamsNumber(String data)
             found++;
         }
     }
+
+	if (data.charAt(data.length()-1) != separator)
+	{
+		found++;
+	}
 
     return found - 1;
 }
@@ -161,7 +172,7 @@ String HarvbotArmProtocol::parseParamValue(String data)
 
 HarvbotArmCommands HarvbotArmProtocol::parseCommandType(String data)
 {
-	String cmd = this->parseLine(data, 1);
+	String cmd = this->parseLine(data, 0);
 
 	if(cmd == "HIN")
 	{
@@ -234,7 +245,7 @@ String HarvbotArmProtocol::getCommandTypeString(HarvbotArmCommands cmd)
 
 String HarvbotArmProtocol::processInitCommand(String data)
 {
-	String armType = this->parseLine(data, 2);
+	String armType = this->parseLine(data, 1);
 
 	if(armType == "1")
 	{
@@ -263,7 +274,7 @@ String HarvbotArmProtocol::process(String requestData)
 
 	// Get command.
 	HarvbotArmCommands cmd = this->parseCommandType(requestData);
-	if(cmd==Invalid)
+	if(cmd == Invalid)
 	{
 		return this->buildErrorResponse(InvalidCommand); 
 	}
@@ -306,7 +317,7 @@ String HarvbotArmProtocol::process(String requestData)
 		}
 
 		response += this->getNodeIdentifierString(nodeType);
-		
+
 		if(cmd == Position)
 		{
 			HarvbotArmCircleNode* circleNode = ((HarvbotArmCircleNode*)node);

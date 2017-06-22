@@ -11,7 +11,7 @@ namespace Harvbot.Arms.Driver
         /// <summary>
         /// 6-asix arm with 6 nodes.
         /// </summary>
-        Type1,
+        Type1 = 1,
 
         /// <summary>
         /// 4 nodes arm: beadplate, shoulder, elbow, claw
