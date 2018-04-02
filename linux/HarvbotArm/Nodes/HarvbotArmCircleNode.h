@@ -2,7 +2,7 @@
 #define HarvbotArmCircleNode_H_
 
 #include "HarvbotArmNode.h"
-#include "HarvbotArmConstants.h"
+#include "../HarvbotArmConstants.h"
 
 class HarvbotArmCircleNode : public HarvbotArmNode {
 	protected:

@@ -1,6 +1,6 @@
 #include <math.h>
 #include <wiringPi.h>
-#include "HarvbotArmConstants.h"
+#include "../HarvbotArmConstants.h"
 #include "HarvbotArmScrewNode.h"
 #include "HarvbotArmStepperScrewNode.h"
 
@@ -9,6 +9,7 @@ HarvbotArmStepperScrewNode::HarvbotArmStepperScrewNode(
 	uint8_t pinStep,
 	uint8_t pinDir,
 	uint8_t pinTerminal,
+	unsigned int stepperFrequency,
 	float pos, 
 	unsigned int maxStepsCount,
 	unsigned int maxFullRotaionCount,
@@ -16,7 +17,7 @@ HarvbotArmStepperScrewNode::HarvbotArmStepperScrewNode(
 	: HarvbotArmScrewNode(identifier, pos, maxStepsCount, maxFullRotaionCount, reductorGear)
 {
 	this->stepper = new HarvbotTerminableStepper(pinDir, pinStep, pinTerminal);
-	this->setSpeed(HARVBOT_DEFAULT_STEPPER_SPEED);
+	this->stepper->setEngineFrequency(stepperFrequency);
 }
 
 HarvbotArmStepperScrewNode::~HarvbotArmStepperScrewNode()

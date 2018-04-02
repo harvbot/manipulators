@@ -87,7 +87,7 @@ HarvbotStepper::HarvbotStepper(uint8_t stepPin, uint8_t dirPin, bool enable)
 	_dirPin = dirPin;
     _currentPos = 0;
     _targetPos = 0;
-	setEgineFrequency(1000);
+	setEngineFrequency(1000);
     _enablePin = 0xff;
 	_lastStepTime = 0;
 
@@ -98,7 +98,7 @@ HarvbotStepper::HarvbotStepper(uint8_t stepPin, uint8_t dirPin, bool enable)
 		enableOutputs();
 }
 
-void HarvbotStepper::setEgineFrequency(unsigned int frequency)
+void HarvbotStepper::setEngineFrequency(unsigned int frequency)
 {
 	_engineFrequency = frequency;
 	_pulsePeriod = 1000000 / frequency;

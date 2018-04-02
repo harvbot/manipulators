@@ -3,12 +3,11 @@
 
 #include <string>
 #include "HarvbotArmNode.h"
-#include "HarvbotArmConstants.h"
+#include "../HarvbotArmConstants.h"
 
 class HarvbotArmScrewNode : public HarvbotArmNode {
 	protected: 
 		float m_pos;
-		int m_speed;
 		int m_maxStepsCount;
 		int m_maxFullRotaionCount;
         int m_reductorGear;
@@ -34,16 +33,6 @@ class HarvbotArmScrewNode : public HarvbotArmNode {
             Returns current positions.
         */
 		virtual float rotate(float steps);
-
-        /**
-            Gets the current rotaton speed.
-        */
-		int getSpeed();
-
-        /**
-            Sets the current rotation speed.
-        */
-		virtual void setSpeed(int speed);
 
         /**
             Makes one whole revolution in specified direction.

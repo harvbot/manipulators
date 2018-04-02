@@ -1,5 +1,5 @@
 #include "HarvbotArmNode.h"
-#include "HarvbotArmConstants.h"
+#include "../HarvbotArmConstants.h"
 
 HarvbotArmNode::HarvbotArmNode(HarvbotArmNodeIdentifiers identifier) {
 	this->m_identifier = identifier;

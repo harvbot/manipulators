@@ -1,5 +1,5 @@
 #include <math.h>
-#include "HarvbotArmConstants.h"
+#include "../HarvbotArmConstants.h"
 #include "HarvbotArmCircleNode.h"
 #include "HarvbotArmStepperCircleNode.h"
 
@@ -8,6 +8,7 @@ HarvbotArmStepperCircleNode::HarvbotArmStepperCircleNode(
 	uint8_t pinStep,
 	uint8_t pinDir,
 	uint8_t pinTerminal,
+	unsigned int stepperFrequency,
 	float pos, 
 	float minPos, 
 	float maxPos,
@@ -16,6 +17,7 @@ HarvbotArmStepperCircleNode::HarvbotArmStepperCircleNode(
 	: HarvbotArmCircleNode(identifier, pos, minPos, maxPos)
 {
 	this->stepper = new HarvbotTerminableStepper(pinStep, pinDir, pinTerminal);
+	this->stepper->setEngineFrequency(stepperFrequency);
 	this->m_maxStepCount = maxStepCount;
 	this->m_reductorGear = reductorGear;
 }

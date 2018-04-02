@@ -1,7 +1,7 @@
 #ifndef HarvbotArmNode_H_
 #define HarvbotArmNode_H_
 
-#include "HarvbotArmConstants.h"
+#include "../HarvbotArmConstants.h"
 
 class HarvbotArmNode {
 	private:

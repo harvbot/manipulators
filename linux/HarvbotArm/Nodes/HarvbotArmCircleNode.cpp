@@ -1,6 +1,6 @@
 #include "HarvbotArmNode.h"
 #include "HarvbotArmCircleNode.h"
-#include "HarvbotArmConstants.h"
+#include "../HarvbotArmConstants.h"
 
 HarvbotArmCircleNode::HarvbotArmCircleNode(HarvbotArmNodeIdentifiers identifier, float pos, float minPos, float maxPos) 
 	: HarvbotArmNode(identifier)

@@ -1,9 +1,9 @@
 #ifndef HarvbotArmStepperScrewNode_H_
 #define HarvbotArmStepperScrewNode_H_
 
-#include "Steppers/HarvbotTerminableStepper.h"
+#include "../Steppers/HarvbotTerminableStepper.h"
 #include "HarvbotArmScrewNode.h"
-#include "HarvbotArmConstants.h"
+#include "../HarvbotArmConstants.h"
 
 class  HarvbotArmStepperScrewNode : public HarvbotArmScrewNode {
 	private:
@@ -14,6 +14,7 @@ class  HarvbotArmStepperScrewNode : public HarvbotArmScrewNode {
 			uint8_t pinStep,
 			uint8_t pinDir,
 			uint8_t pinTerminal,
+			unsigned int stepperFrequency,
 			float pos, 
 			unsigned int maxStepsCount,
 			unsigned int maxFullRotaionCount=HARVBOT_ARM_CLAW_MAX_FULL_ROTATION,

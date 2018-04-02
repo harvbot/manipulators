@@ -1,15 +1,14 @@
 #ifndef HarvbotArmStepperCircleNode_H_
 #define HarvbotArmStepperCircleNode_H_
 
-#include "Steppers/HarvbotTerminableStepper.h"
-#include "HarvbotArmConstants.h"
+#include "../Steppers/HarvbotTerminableStepper.h"
+#include "../HarvbotArmConstants.h"
 #include "HarvbotArmCircleNode.h"
 
 class HarvbotArmStepperCircleNode : public HarvbotArmCircleNode {
 	protected:
 		int m_maxStepCount;
 		int m_reductorGear; 
-		int m_speed;
 		HarvbotTerminableStepper* stepper;
 	public:
 		HarvbotArmStepperCircleNode(
@@ -17,6 +16,7 @@ class HarvbotArmStepperCircleNode : public HarvbotArmCircleNode {
 			uint8_t pinStep,
 			uint8_t pinDir,
 			uint8_t pinTerminal,
+			unsigned int stepperFrequency,
 			float pos, 
 			float minPos, 
 			float maxPos, 

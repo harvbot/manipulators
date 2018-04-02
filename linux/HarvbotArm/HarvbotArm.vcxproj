@@ -66,13 +66,13 @@
   <ItemGroup>
     <ClCompile Include="HarvbotArm.cpp" />
     <ClCompile Include="HarvbotArm2.cpp" />
-    <ClCompile Include="HarvbotArmStepperCircleNode.cpp" />
-    <ClCompile Include="HarvbotArmStepperScrewNode.cpp" />
-    <ClCompile Include="HarvbotArmCircleNode.cpp" />
+    <ClCompile Include="Nodes\HarvbotArmStepperCircleNode.cpp" />
+    <ClCompile Include="Nodes\HarvbotArmStepperScrewNode.cpp" />
+    <ClCompile Include="Nodes\HarvbotArmCircleNode.cpp" />
     <ClCompile Include="HarvbotArmFactory.cpp" />
-    <ClCompile Include="HarvbotArmNode.cpp" />
+    <ClCompile Include="Nodes\HarvbotArmNode.cpp" />
     <ClCompile Include="HarvbotArmProtocol.cpp" />
-    <ClCompile Include="HarvbotArmScrewNode.cpp" />
+    <ClCompile Include="Nodes\HarvbotArmScrewNode.cpp" />
     <ClCompile Include="HarvbotArmSerialProtocol.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Steppers\HarvbotStepper.cpp" />
@@ -81,14 +81,14 @@
   <ItemGroup>
     <ClInclude Include="HarvbotArm.h" />
     <ClInclude Include="HarvbotArm2.h" />
-    <ClInclude Include="HarvbotArmStepperCircleNode.h" />
-    <ClInclude Include="HarvbotArmStepperScrewNode.h" />
-    <ClInclude Include="HarvbotArmCircleNode.h" />
+    <ClInclude Include="Nodes\HarvbotArmStepperCircleNode.h" />
+    <ClInclude Include="Nodes\HarvbotArmStepperScrewNode.h" />
+    <ClInclude Include="Nodes\HarvbotArmCircleNode.h" />
     <ClInclude Include="HarvbotArmConstants.h" />
     <ClInclude Include="HarvbotArmFactory.h" />
-    <ClInclude Include="HarvbotArmNode.h" />
+    <ClInclude Include="Nodes\HarvbotArmNode.h" />
     <ClInclude Include="HarvbotArmProtocol.h" />
-    <ClInclude Include="HarvbotArmScrewNode.h" />
+    <ClInclude Include="Nodes\HarvbotArmScrewNode.h" />
     <ClInclude Include="HarvbotArmSerialProtocol.h" />
     <ClInclude Include="Steppers\HarvbotStepper.h" />
     <ClInclude Include="Steppers\HarvbotTerminableStepper.h" />

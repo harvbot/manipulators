@@ -38,14 +38,6 @@ float HarvbotArmScrewNode::rotate(float steps)
 	return this->m_pos;
 }
 
-int HarvbotArmScrewNode::getSpeed() {
-	return this->m_speed;
-}
-
-void HarvbotArmScrewNode::setSpeed(int speed) {
-	this->m_speed = speed;
-}
-
 float HarvbotArmScrewNode::revolution(int direction) {
 
 	if(direction == 1)

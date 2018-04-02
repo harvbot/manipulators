@@ -40,7 +40,7 @@ public:
 
     bool runSpeed();
 
-    void    setEgineFrequency(unsigned int frequency);
+    void    setEngineFrequency(unsigned int frequency);
 
 	unsigned int   engineFrequency();
 

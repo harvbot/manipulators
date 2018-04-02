@@ -1,27 +1,32 @@
 #include "HarvbotArm.h"
 #include "HarvbotArm2.h"
-#include "HarvbotArmNode.h"
-#include "HarvbotArmCircleNode.h"
-#include "HarvbotArmScrewNode.h"
-#include "HarvbotArmStepperCircleNode.h"
-#include "HarvbotArmStepperScrewNode.h"
+#include "Nodes/HarvbotArmNode.h"
+#include "Nodes/HarvbotArmCircleNode.h"
+#include "Nodes/HarvbotArmScrewNode.h"
+#include "Nodes/HarvbotArmStepperCircleNode.h"
+#include "Nodes/HarvbotArmStepperScrewNode.h"
 #include "HarvbotArmConstants.h"
 
 //					WiringPI			Shifter-sheld      
 #define SX_STEP         4       //    		16
 #define SX_DIR          5       // 		    18
 #define SX_END          6       //    		22
+#define SX_RATIO        50
 
 #define SY_STEP         11      //   		26
 #define SY_DIR          26      //    		32
 #define SY_END          27  	//			36
+#define SY_RATIO        50
 
 #define SZ_STEP         23		//  		33   
 #define SZ_DIR          22      //    		31 
 #define SZ_END          21		//			29
+#define SZ_RATIO        50
 
 #define SJ_STEP         3       //  		15 
 #define SJ_DIR          2       //  		13
+#define SJ_END          30		//			27
+#define SJ_RATIO        1
 
 
 HarvbotArm2::HarvbotArm2() 
@@ -31,10 +36,10 @@ HarvbotArm2::HarvbotArm2()
 	
 	this->nodes = new HarvbotArmNode*[4];
 
-	this->nodes[0] = new HarvbotArmStepperCircleNode(Bedplate, SX_STEP, SX_DIR, 0.0f, 0.0f, 360.0, 1000, 1);
-	this->nodes[1] = new HarvbotArmStepperCircleNode(Shoulder, SY_STEP, SY_DIR, 0.0f, 0.0f, 180, 1000, 1);
-	this->nodes[2] = new HarvbotArmStepperCircleNode(Elbow, SZ_STEP, SZ_DIR, 0.0f, 0.0f, 180, 1000, 1);
-	this->nodes[3] = new HarvbotArmStepperScrewNode(Claw, SJ_STEP, SJ_DIR, 0, 1000, 8);
+	this->nodes[0] = new HarvbotArmStepperCircleNode(Bedplate, SX_STEP, SX_DIR, SX_END, 1000, 0.0f, 0.0f, 360.0, 1000, SX_RATIO);
+	this->nodes[1] = new HarvbotArmStepperCircleNode(Shoulder, SY_STEP, SY_DIR, SY_END, 1000, 0.0f, 0.0f, 180, 1000, SY_RATIO);
+	this->nodes[2] = new HarvbotArmStepperCircleNode(Elbow, SZ_STEP, SZ_DIR, SZ_END, 1000, 0.0f, 0.0f, 180, 1000, SZ_RATIO);
+	this->nodes[3] = new HarvbotArmStepperScrewNode(Claw, SJ_STEP, SJ_DIR, SJ_END, 1600, 0, 1000, 8);
 
 	this->goToStartPosition();
 }
