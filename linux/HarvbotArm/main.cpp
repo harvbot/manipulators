@@ -11,7 +11,7 @@ int main()
 
 	HarvbotArm2* arm = HarvbotArmFactory::CreateArm2();
 
-	arm->getElbow()->move(5);
+	arm->getElbow()->move(1);
 	arm->runToPosition();
 
 	delete arm;

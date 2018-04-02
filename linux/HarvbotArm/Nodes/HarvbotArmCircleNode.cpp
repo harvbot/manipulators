@@ -22,9 +22,6 @@ float HarvbotArmCircleNode::currentPosition() {
 	return m_pos;
 }
 
-void HarvbotArmCircleNode::goToStartPosition() {
-}
-
 float HarvbotArmCircleNode::move(float pos) {
 
 	if (m_minPos > pos)

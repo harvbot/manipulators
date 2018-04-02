@@ -27,7 +27,12 @@ class HarvbotArmNode {
 
 		virtual bool run();
 
-		virtual void runToPosition();
+		virtual void runToPosition() = 0;
+
+		/**
+		Moves screw to start position.
+		*/
+		virtual void goToStartPosition() = 0;
 };
 
 #endif /* HarvbotArmNode_H_ */

@@ -73,7 +73,3 @@ HarvbotArmNodeTypes HarvbotArmScrewNode::getType()
 {
 	return Screw;
 }
-
-void HarvbotArmScrewNode::goToStartPosition()
-{
-}

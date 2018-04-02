@@ -19,11 +19,6 @@ class HarvbotArmCircleNode : public HarvbotArmNode {
 		virtual float currentPosition();
 
 		virtual float move(float pos);
-
-		/**
-		Moves screw to start position.
-		*/
-		virtual void goToStartPosition();
 };
 
 #endif /* HarvbotArmCircleNode_H_ */

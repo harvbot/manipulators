@@ -1,7 +1,7 @@
 #include "HarvbotArm.h"
-#include "HarvbotArmNode.h"
+#include "Nodes/HarvbotArmNode.h"
 #include "HarvbotArmConstants.h"
-#include "HarvbotArmCircleNode.h"
+#include "Nodes/HarvbotArmCircleNode.h"
 
 HarvbotArm::HarvbotArm(HarvbotArmTypes armType) 
 {
@@ -76,4 +76,12 @@ void HarvbotArm::runToPosition()
 {
 	while (run())
 		;
+}
+
+void HarvbotArm::goToStartPosition()
+{
+	for (int i = 0; i < nodesCount; i++)
+	{
+		this->nodes[i]->goToStartPosition();
+	}
 }

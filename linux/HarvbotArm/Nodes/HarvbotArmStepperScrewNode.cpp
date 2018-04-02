@@ -52,3 +52,13 @@ void HarvbotArmStepperScrewNode::goToStartPosition()
 {
 	this->stepper->runTillTerminal(false);
 }
+
+bool HarvbotArmStepperScrewNode::run()
+{
+	return this->stepper->run();
+}
+
+void HarvbotArmStepperScrewNode::runToPosition()
+{
+	return this->stepper->runToPosition();
+}

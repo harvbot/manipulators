@@ -16,7 +16,3 @@ bool HarvbotArmNode::run()
 {
 	return false;
 }
-
-void HarvbotArmNode::runToPosition()
-{
-}

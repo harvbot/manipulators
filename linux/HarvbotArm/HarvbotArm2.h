@@ -2,9 +2,9 @@
 #define HarvbotArm2_H_
 
 #include "HarvbotArm.h"
-#include "HarvbotArmNode.h"
-#include "HarvbotArmCircleNode.h"
-#include "HarvbotArmScrewNode.h"
+#include "Nodes/HarvbotArmNode.h"
+#include "Nodes/HarvbotArmCircleNode.h"
+#include "Nodes/HarvbotArmScrewNode.h"
 #include "HarvbotArmConstants.h"
 
 class HarvbotArm2 : public HarvbotArm {
