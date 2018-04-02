@@ -25,6 +25,8 @@ class  HarvbotArmStepperScrewNode : public HarvbotArmScrewNode {
 		float rotate(float steps);
 
 		HarvbotNodeStatuses getStatus();
+
+		void goToStartPosition();
 };
 
 #endif /* HarvbotArmStepperScrewNode_H_ */

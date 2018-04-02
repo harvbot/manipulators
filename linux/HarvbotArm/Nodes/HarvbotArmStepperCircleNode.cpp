@@ -26,16 +26,16 @@ HarvbotArmStepperCircleNode::~HarvbotArmStepperCircleNode(){
 	delete this->stepper;
 }
 
-float HarvbotArmStepperCircleNode::write(float pos) {
+float HarvbotArmStepperCircleNode::move(float pos) {
 
-	float currentPos = this->read();
+	float currentPos = this->currentPosition();
 
 	if(pos < this->m_minPos)
 	{
 		pos = this->m_minPos;
 	}
 
-	if(pos < this->m_maxPos)
+	if(pos > this->m_maxPos)
 	{
 		pos = this->m_maxPos;
 	}
@@ -44,7 +44,6 @@ float HarvbotArmStepperCircleNode::write(float pos) {
 	{
 		int steps = round((pos-currentPos)*this->m_maxStepCount * this->m_reductorGear / 360.0);
 		this->stepper->move(steps);
-		this->stepper->run();
 	}
 
 	return pos;
@@ -53,4 +52,19 @@ float HarvbotArmStepperCircleNode::write(float pos) {
 HarvbotNodeStatuses HarvbotArmStepperCircleNode::getStatus()
 {
 	return this->stepper->distanceToGo()==0 ? Ready : InProcess;
+}
+
+bool HarvbotArmStepperCircleNode::run()
+{
+	return this->stepper->run();
+}
+
+void HarvbotArmStepperCircleNode::runToPosition()
+{
+	return this->stepper->runToPosition();
+}
+
+void HarvbotArmStepperCircleNode::goToStartPosition()
+{
+	return this->stepper->runTillTerminal(false);
 }

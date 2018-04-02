@@ -24,6 +24,10 @@ class HarvbotArmNode {
 
 		// Gets current node status.
 		virtual HarvbotNodeStatuses getStatus() = 0;
+
+		virtual bool run();
+
+		virtual void runToPosition();
 };
 
 #endif /* HarvbotArmNode_H_ */

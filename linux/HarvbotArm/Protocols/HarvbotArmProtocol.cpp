@@ -323,7 +323,7 @@ std::string HarvbotArmProtocol::process(std::string requestData)
 			HarvbotArmCircleNode* circleNode = ((HarvbotArmCircleNode*)node);
 			
 			// Set position.
-			float pos = circleNode->read();
+			float pos = circleNode->currentPosition();
 
 			response += std::to_string(pos);
 		}
@@ -335,9 +335,10 @@ std::string HarvbotArmProtocol::process(std::string requestData)
 			float degree = ::atof(this->parseParamValue(par).c_str());
 			
 			// Set position.
-			circleNode->write(degree);
+			circleNode->move(degree);
+			circleNode->runToPosition();
 
-			response += std::to_string(circleNode->read());
+			response += std::to_string(circleNode->currentPosition());
 		}
 		else if(cmd == Steps)
 		{

@@ -61,3 +61,19 @@ HarvbotNodeStatuses HarvbotArm::getStatus()
 
 	return Ready;
 }
+
+bool HarvbotArm::run()
+{
+	bool result = false;
+	for (int i = 0; i < nodesCount; i++)
+	{
+		result = result || this->nodes[i]->run();
+	}
+	return result;
+}
+
+void HarvbotArm::runToPosition()
+{
+	while (run())
+		;
+}

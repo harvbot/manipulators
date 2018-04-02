@@ -7,11 +7,12 @@ int main()
 {
 	wiringPiSetup();
 
+	printf("hello from HarvbotArm!\n");
+
 	HarvbotArm2* arm = HarvbotArmFactory::CreateArm2();
 
-	arm->getBedplate()->write(10);
-
-    printf("hello from HarvbotArm!\n");
+	arm->getElbow()->move(5);
+	arm->runToPosition();
 
 	delete arm;
     return 0;

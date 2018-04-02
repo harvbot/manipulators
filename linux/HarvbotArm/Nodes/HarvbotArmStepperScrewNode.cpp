@@ -34,15 +34,8 @@ float HarvbotArmStepperScrewNode::rotate(float steps)
 	// Get the full step count.
 	int fullSteps = (int)floor(currentPos-prevPos);
 
-	// Wait till current action will be finished.
-	while(this->stepper->distanceToGo()!=0)
-	{
-		delay(10);
-	}
-
 	// Rotate.
 	this->stepper->move(fullSteps);
-	this->stepper->runToPosition();
 
 	// Reset current position.
 	this->m_pos=prevPos + fullSteps;
@@ -53,4 +46,9 @@ float HarvbotArmStepperScrewNode::rotate(float steps)
 HarvbotNodeStatuses HarvbotArmStepperScrewNode::getStatus()
 {
 	return this->stepper->distanceToGo()==0 ? Ready : InProcess;
+}
+
+void HarvbotArmStepperScrewNode::goToStartPosition()
+{
+	this->stepper->runTillTerminal(false);
 }

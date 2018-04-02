@@ -18,11 +18,14 @@ HarvbotArmNodeTypes HarvbotArmCircleNode::getType()
 	return Circle;
 }
 
-float HarvbotArmCircleNode::read() {
+float HarvbotArmCircleNode::currentPosition() {
 	return m_pos;
 }
 
-float HarvbotArmCircleNode::write(float pos) {
+void HarvbotArmCircleNode::goToStartPosition() {
+}
+
+float HarvbotArmCircleNode::move(float pos) {
 
 	if (m_minPos > pos)
 	{

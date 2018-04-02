@@ -55,7 +55,7 @@ bool HarvbotTerminableStepper::isTerminated()
 	return _terminalPressed;
 }
 
-void HarvbotTerminableStepper::moveTillTerminal(bool direction)
+void HarvbotTerminableStepper::runTillTerminal(bool direction)
 {
 	do 
 	{

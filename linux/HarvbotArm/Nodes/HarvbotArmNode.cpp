@@ -11,3 +11,12 @@ HarvbotArmNode::~HarvbotArmNode() {
 HarvbotArmNodeIdentifiers HarvbotArmNode::getIdentifier() {
 	return this->m_identifier;
 }
+
+bool HarvbotArmNode::run()
+{
+	return false;
+}
+
+void HarvbotArmNode::runToPosition()
+{
+}

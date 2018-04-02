@@ -2,9 +2,9 @@
 #define HarvbotArm_H_
 
 #include "HarvbotArmConstants.h"
-#include "HarvbotArmNode.h"
-#include "HarvbotArmCircleNode.h"
-#include "HarvbotArmScrewNode.h"
+#include "Nodes/HarvbotArmNode.h"
+#include "Nodes/HarvbotArmCircleNode.h"
+#include "Nodes/HarvbotArmScrewNode.h"
 
 class HarvbotArm {
 	private: 
@@ -45,6 +45,10 @@ class HarvbotArm {
 			Gets the arm current status.
 		*/
 		HarvbotNodeStatuses getStatus();
+
+		bool run();
+
+		void runToPosition();
 };
 
 #endif /* HarvbotArm_H_ */

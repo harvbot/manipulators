@@ -10,7 +10,7 @@ class HarvbotTerminableStepper : public HarvbotStepper
 public:
 	HarvbotTerminableStepper(uint8_t stepPin, uint8_t dirPin, uint8_t terminalPin = 0);
 	
-	void moveTillTerminal(bool direction);
+	void runTillTerminal(bool direction);
 
 	bool isTerminated();
 protected:

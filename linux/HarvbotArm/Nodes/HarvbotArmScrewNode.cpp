@@ -76,8 +76,4 @@ HarvbotArmNodeTypes HarvbotArmScrewNode::getType()
 
 void HarvbotArmScrewNode::goToStartPosition()
 {
-	float steps = this->getSteps();	
-
-	// Go to 0 step.
-	this->rotate(-steps);
 }

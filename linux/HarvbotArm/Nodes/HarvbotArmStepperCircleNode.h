@@ -27,13 +27,15 @@ class HarvbotArmStepperCircleNode : public HarvbotArmCircleNode {
 		/**
 			Sets the current angle.
 		*/
-		float write(float pos);
-
-		int getSpeed();
-
-		void setSpeed(int speed);
+		float move(float pos);
 
 		HarvbotNodeStatuses getStatus();
+
+		bool run();
+
+		void runToPosition();
+
+		void goToStartPosition();
 };
 
 #endif /* HarvbotArmStepperCircleNode_H_ */
