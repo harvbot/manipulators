@@ -1,6 +1,6 @@
 #include <string>
-#include "HarvbotArmConstants.h"
-#include "HarvbotArmFactory.h"
+#include "../HarvbotArmConstants.h"
+#include "../HarvbotArmFactory.h"
 #include "HarvbotArmProtocol.h"
 
 HarvbotArmProtocol::HarvbotArmProtocol() {

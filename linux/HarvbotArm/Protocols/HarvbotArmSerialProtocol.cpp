@@ -1,8 +1,8 @@
 #include <string>
-#include "HarvbotArm.h"
-#include "HarvbotArmNode.h"
-#include "HarvbotArmCircleNode.h"
-#include "HarvbotArmScrewNode.h"
+#include "../HarvbotArm.h"
+#include "../Nodes/HarvbotArmNode.h"
+#include "../Nodes/HarvbotArmCircleNode.h"
+#include "../Nodes/HarvbotArmScrewNode.h"
 #include "HarvbotArmProtocol.h"
 #include "HarvbotArmSerialProtocol.h"
 

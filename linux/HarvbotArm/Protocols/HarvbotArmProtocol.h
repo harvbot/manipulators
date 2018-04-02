@@ -2,8 +2,8 @@
 #define HarvbotArmProtocol_H_
 
 #include <string>
-#include "HarvbotArmConstants.h"
-#include "HarvbotArm.h"
+#include "../HarvbotArmConstants.h"
+#include "../HarvbotArm.h"
 
 class HarvbotArmProtocol {
 	private:
