@@ -1,30 +1,30 @@
 #include <math.h>
 #include "HarvbotArmConstants.h"
 #include "HarvbotArmCircleNode.h"
-#include "HarvbotArmAccelStepperCircleNode.h"
+#include "HarvbotArmStepperCircleNode.h"
 
-HarvbotArmAccelStepperCircleNode::HarvbotArmAccelStepperCircleNode(
+HarvbotArmStepperCircleNode::HarvbotArmStepperCircleNode(
 	HarvbotArmNodeIdentifiers identifier, 
-	int pinStep, 
-	int pinDir,
+	uint8_t pinStep,
+	uint8_t pinDir,
+	uint8_t pinTerminal,
 	float pos, 
 	float minPos, 
 	float maxPos,
-	int maxStepCount,
-	int reductorGear) 
+	unsigned int maxStepCount,
+	uint8_t reductorGear)
 	: HarvbotArmCircleNode(identifier, pos, minPos, maxPos)
 {
-	this->stepper = new AccelStepper(1, pinDir, pinStep);
+	this->stepper = new HarvbotTerminableStepper(pinStep, pinDir, pinTerminal);
 	this->m_maxStepCount = maxStepCount;
 	this->m_reductorGear = reductorGear;
-	this->setSpeed(HARVBOT_DEFAULT_STEPPER_SPEED);
 }
 
-HarvbotArmAccelStepperCircleNode::~HarvbotArmAccelStepperCircleNode(){
+HarvbotArmStepperCircleNode::~HarvbotArmStepperCircleNode(){
 	delete this->stepper;
 }
 
-float HarvbotArmAccelStepperCircleNode::write(float pos) {
+float HarvbotArmStepperCircleNode::write(float pos) {
 
 	float currentPos = this->read();
 
@@ -48,18 +48,7 @@ float HarvbotArmAccelStepperCircleNode::write(float pos) {
 	return pos;
 }
 
-int HarvbotArmAccelStepperCircleNode::getSpeed() 
-{
-	return this->m_speed;
-}
-
-void HarvbotArmAccelStepperCircleNode::setSpeed(int speed) 
-{
-	this->m_speed=speed;
-	this->stepper->setSpeed(speed);
-}
-
-HarvbotNodeStatuses HarvbotArmAccelStepperCircleNode::getStatus()
+HarvbotNodeStatuses HarvbotArmStepperCircleNode::getStatus()
 {
 	return this->stepper->distanceToGo()==0 ? Ready : InProcess;
 }

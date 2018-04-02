@@ -9,6 +9,8 @@ int main()
 
 	HarvbotArm2* arm = HarvbotArmFactory::CreateArm2();
 
+	arm->getBedplate()->write(10);
+
     printf("hello from HarvbotArm!\n");
 
 	delete arm;

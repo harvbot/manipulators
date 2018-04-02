@@ -1,30 +1,30 @@
 #include <math.h>
 #include <wiringPi.h>
-#include "AccelStepper/AccelStepper.h"
 #include "HarvbotArmConstants.h"
 #include "HarvbotArmScrewNode.h"
-#include "HarvbotArmAccelStepperScrewNode.h"
+#include "HarvbotArmStepperScrewNode.h"
 
-HarvbotArmAccelStepperScrewNode::HarvbotArmAccelStepperScrewNode(
+HarvbotArmStepperScrewNode::HarvbotArmStepperScrewNode(
 	HarvbotArmNodeIdentifiers identifier, 
-	int pinStep,
-	int pinDir,
+	uint8_t pinStep,
+	uint8_t pinDir,
+	uint8_t pinTerminal,
 	float pos, 
-	int maxStepsCount, 
-	int maxFullRotaionCount, 
-	int reductorGear) 
+	unsigned int maxStepsCount,
+	unsigned int maxFullRotaionCount,
+	uint8_t reductorGear)
 	: HarvbotArmScrewNode(identifier, pos, maxStepsCount, maxFullRotaionCount, reductorGear)
 {
-	this->stepper = new AccelStepper(1, pinDir, pinStep);
+	this->stepper = new HarvbotTerminableStepper(pinDir, pinStep, pinTerminal);
 	this->setSpeed(HARVBOT_DEFAULT_STEPPER_SPEED);
 }
 
-HarvbotArmAccelStepperScrewNode::~HarvbotArmAccelStepperScrewNode()
+HarvbotArmStepperScrewNode::~HarvbotArmStepperScrewNode()
 {
 	delete this->stepper;
 }
 
-float HarvbotArmAccelStepperScrewNode::rotate(float steps) 
+float HarvbotArmStepperScrewNode::rotate(float steps)
 {
 	float prevPos = HarvbotArmScrewNode::getSteps();
 	HarvbotArmScrewNode::rotate(steps);
@@ -41,7 +41,7 @@ float HarvbotArmAccelStepperScrewNode::rotate(float steps)
 
 	// Rotate.
 	this->stepper->move(fullSteps);
-	this->stepper->run();
+	this->stepper->runToPosition();
 
 	// Reset current position.
 	this->m_pos=prevPos + fullSteps;
@@ -49,14 +49,7 @@ float HarvbotArmAccelStepperScrewNode::rotate(float steps)
 	return this->m_pos;
 }
 
-void HarvbotArmAccelStepperScrewNode::setSpeed(int speed) 
-{
-	HarvbotArmScrewNode::setSpeed(speed);
-
-	this->stepper->setSpeed(speed);
-}
-
-HarvbotNodeStatuses HarvbotArmAccelStepperScrewNode::getStatus()
+HarvbotNodeStatuses HarvbotArmStepperScrewNode::getStatus()
 {
 	return this->stepper->distanceToGo()==0 ? Ready : InProcess;
 }

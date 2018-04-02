@@ -3,8 +3,8 @@
 #include "HarvbotArmNode.h"
 #include "HarvbotArmCircleNode.h"
 #include "HarvbotArmScrewNode.h"
-#include "HarvbotArmAccelStepperCircleNode.h"
-#include "HarvbotArmAccelStepperScrewNode.h"
+#include "HarvbotArmStepperCircleNode.h"
+#include "HarvbotArmStepperScrewNode.h"
 #include "HarvbotArmConstants.h"
 
 //					WiringPI			Shifter-sheld      
@@ -31,10 +31,10 @@ HarvbotArm2::HarvbotArm2()
 	
 	this->nodes = new HarvbotArmNode*[4];
 
-	this->nodes[0] = new HarvbotArmAccelStepperCircleNode(Bedplate, SX_STEP, SX_DIR, 0.0f, 0.0f, 360.0, 1000, 1);
-	this->nodes[1] = new HarvbotArmAccelStepperCircleNode(Shoulder, SY_STEP, SY_DIR, 0.0f, 0.0f, 180, 1000, 1);
-	this->nodes[2] = new HarvbotArmAccelStepperCircleNode(Elbow, SZ_STEP, SZ_DIR, 0.0f, 0.0f, 180, 1000, 1);
-	this->nodes[3] = new HarvbotArmAccelStepperScrewNode(Claw, SJ_STEP, SJ_DIR, 0, 1000, 8);
+	this->nodes[0] = new HarvbotArmStepperCircleNode(Bedplate, SX_STEP, SX_DIR, 0.0f, 0.0f, 360.0, 1000, 1);
+	this->nodes[1] = new HarvbotArmStepperCircleNode(Shoulder, SY_STEP, SY_DIR, 0.0f, 0.0f, 180, 1000, 1);
+	this->nodes[2] = new HarvbotArmStepperCircleNode(Elbow, SZ_STEP, SZ_DIR, 0.0f, 0.0f, 180, 1000, 1);
+	this->nodes[3] = new HarvbotArmStepperScrewNode(Claw, SJ_STEP, SJ_DIR, 0, 1000, 8);
 
 	this->goToStartPosition();
 }
