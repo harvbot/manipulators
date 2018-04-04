@@ -14,6 +14,7 @@
     <ClCompile Include="Nodes\HarvbotArmStepperScrewNode.cpp" />
     <ClCompile Include="Protocols\HarvbotArmSerialProtocol.cpp" />
     <ClCompile Include="Protocols\HarvbotArmProtocol.cpp" />
+    <ClCompile Include="LaserRangefinder\HarvbotRangefinder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HarvbotArm.h" />
@@ -29,5 +30,6 @@
     <ClInclude Include="Nodes\HarvbotArmStepperScrewNode.h" />
     <ClInclude Include="Protocols\HarvbotArmProtocol.h" />
     <ClInclude Include="Protocols\HarvbotArmSerialProtocol.h" />
+    <ClInclude Include="LaserRangefinder\HarvbotRangefinder.h" />
   </ItemGroup>
 </Project>
