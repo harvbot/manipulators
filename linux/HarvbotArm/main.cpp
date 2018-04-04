@@ -10,8 +10,8 @@ using namespace cv;
 using namespace std;
 
 #define CAMERA_MAX_VIEW_ANGLE_DEGREES 100
-#define CAMERA_FRAME_WIDTH 600
-#define CAMERA_FRAME_HEIGHT 600
+#define CAMERA_FRAME_WIDTH 640
+#define CAMERA_FRAME_HEIGHT 480
 
 int main()
 {
@@ -79,7 +79,7 @@ int main()
 		if (whole.size().width > 20 && whole.size().height > 20)
 		{
 			char buffer[255];
-			sprintf(buffer, "Distance to object %d", distance);
+			sprintf(buffer, "Distance to object %d\n", distance);
 
 			rectangle(cameraFrame, whole.tl(), whole.br(), Scalar(0, 255, 0), 2, 8, 0);
 			putText(cameraFrame, buffer, Point(0,0), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 255, 0), 4);
@@ -90,21 +90,21 @@ int main()
 			float moveAngleX = (CAMERA_MAX_VIEW_ANGLE_DEGREES * (CAMERA_FRAME_WIDTH / 2 - wholeCenterX)) / CAMERA_FRAME_WIDTH;
 			float moveAngleY = (CAMERA_MAX_VIEW_ANGLE_DEGREES * (CAMERA_FRAME_HEIGHT / 2 - wholeCenterY)) / CAMERA_FRAME_HEIGHT;
 
-			printf(buffer, "Distance to object %d", distance);
-			printf(buffer, "Move X: %d", moveAngleX);
-			printf(buffer, "Move Y: %d", moveAngleY);
+			printf("Distance to object %d\n", distance);
+			printf("Move X: %d\n", moveAngleX);
+			printf("Move Y: %d\n", moveAngleY);
 
-			if (fabs(moveAngleX) < 3)
+			/*if (fabs(moveAngleX) > 3)
 			{
 				arm->getBedplate()->move(moveAngleX);
-			}
+			}*/
 
-			if (fabs(moveAngleY) < 3)
+			if (fabs(moveAngleY) > 3)
 			{
 				arm->getElbow()->move(moveAngleY);
 			}
 
-			arm->goToStartPosition();
+			arm->runToPosition();
 		}
 
 		imshow("cam", cameraFrame);

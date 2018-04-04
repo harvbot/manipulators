@@ -25,7 +25,8 @@ void HarvbotTerminableStepper::step(long step)
 			{
 				if (_terminalPressedDir == direction())
 				{
-					printf("Stepper %d: Ender blocked: %d\n", stepPin(), _terminalPin);
+					stop();
+					move(currentPosition());
 					return;
 				}
 			}
@@ -35,7 +36,6 @@ void HarvbotTerminableStepper::step(long step)
 				moveTo(currentPosition());
 				_terminalPressed = true;
 				_terminalPressedDir = direction();
-				printf("Stepper %d: Ender fire: %d\n", stepPin(), _terminalPin);
 				return;
 			}
 
@@ -47,7 +47,6 @@ void HarvbotTerminableStepper::step(long step)
 	}
 
 	HarvbotStepper::step(step);
-	printf("Stepper %d: Step %d was done\n", stepPin(), step);
 }
 
 bool HarvbotTerminableStepper::isTerminated()
