@@ -49,6 +49,8 @@ class HarvbotArm {
 		bool run();
 
 		void runToPosition();
+
+		virtual void printNodesPositions() = 0;
 };
 
 #endif /* HarvbotArm_H_ */

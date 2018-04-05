@@ -42,3 +42,12 @@ HarvbotArmScrewNode* HarvbotArm2::getClaw()
 {
 	return (HarvbotArmScrewNode*)this->getNodeByType(Claw);
 }
+
+void HarvbotArm2::printNodesPositions()
+{
+	printf("Bedplate: %f, Shoulder: %f, Elbow: %f, Claw: %f\n", 
+		((HarvbotArmCircleNode*)this->nodes[0])->currentPosition(),
+		((HarvbotArmCircleNode*)this->nodes[1])->currentPosition(),
+		((HarvbotArmCircleNode*)this->nodes[2])->currentPosition(),
+		((HarvbotArmCircleNode*)this->nodes[3])->currentPosition());
+}

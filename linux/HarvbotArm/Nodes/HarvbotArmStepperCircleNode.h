@@ -27,7 +27,7 @@ class HarvbotArmStepperCircleNode : public HarvbotArmCircleNode {
 		/**
 			Sets the current angle.
 		*/
-		float move(float pos);
+		float moveTo(float pos);
 
 		HarvbotNodeStatuses getStatus();
 

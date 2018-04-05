@@ -16,6 +16,8 @@ class HarvbotArm2 : public HarvbotArm {
 		HarvbotArmScrewNode* getClaw();
 
 		void goToStartPosition();
+
+		void printNodesPositions();
 };
 
 #endif /* HarvbotArm2_H_ */

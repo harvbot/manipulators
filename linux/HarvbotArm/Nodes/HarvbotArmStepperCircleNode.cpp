@@ -26,7 +26,7 @@ HarvbotArmStepperCircleNode::~HarvbotArmStepperCircleNode(){
 	delete this->stepper;
 }
 
-float HarvbotArmStepperCircleNode::move(float pos) {
+float HarvbotArmStepperCircleNode::moveTo(float pos) {
 
 	float currentPos = this->currentPosition();
 
@@ -61,7 +61,9 @@ bool HarvbotArmStepperCircleNode::run()
 	if (result)
 	{
 		float currentPos = this->currentPosition();
-		setCurrentPosition(currentPos + getAnglePerStep());
+		float offset = getAnglePerStep() * (this->stepper->direction() ? 1 : -1);
+		printf("%f\n", (currentPos + offset));
+		setCurrentPosition(currentPos + offset);
 	}
 
 	return result;
@@ -84,5 +86,5 @@ void HarvbotArmStepperCircleNode::goToStartPosition()
 
 float HarvbotArmStepperCircleNode::getAnglePerStep()
 {
-	return 360.0 / this->m_maxStepCount * this->m_reductorGear;
+	return (360.0 / (this->m_maxStepCount * this->m_reductorGear));
 }

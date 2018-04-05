@@ -23,10 +23,11 @@ int main()
 	HarvbotRangefinder* rangefinder = new HarvbotRangefinder("/dev/ttyUSB0", 9600);
 	rangefinder->start();
 
-	arm->getElbow()->move(1);
-	arm->runToPosition();
+	//arm->getElbow()->move(1);
+	//arm->runToPosition();
 
 	VideoCapture stream1(0);   //0 is the id of video device.0 if you have only one camera.
+	stream1.set(CV_CAP_PROP_BUFFERSIZE, 3); // internal buffer will now store only 3 frames
 
 	if (!stream1.isOpened()) { //check if video device has been initialised
 		cout << "Cannot open camera";
@@ -63,7 +64,7 @@ int main()
 		{
 			approxPolyDP(Mat(contours[i]), contours_poly[i], 3, true);
 			Rect rect = boundingRect(Mat(contours_poly[i]));
-			if (rect.size().width > 20 && rect.size().height > 20)
+			if (rect.size().width > 60 && rect.size().height > 60)
 			{
 				if (whole.size().width > 0 && whole.size().height > 0)
 				{
@@ -76,7 +77,7 @@ int main()
 			}
 		}
 
-		if (whole.size().width > 20 && whole.size().height > 20)
+		if (whole.size().width > 60 && whole.size().height > 60)
 		{
 			char buffer[255];
 			sprintf(buffer, "Distance to object %d\n", distance);
@@ -87,10 +88,19 @@ int main()
 			int wholeCenterX = whole.x + whole.width / 2;
 			int wholeCenterY = whole.y + whole.height / 2;
 
-			float moveAngleX = (CAMERA_MAX_VIEW_ANGLE_DEGREES * (CAMERA_FRAME_WIDTH / 2 - wholeCenterX)) / CAMERA_FRAME_WIDTH;
-			float moveAngleY = (CAMERA_MAX_VIEW_ANGLE_DEGREES * (CAMERA_FRAME_HEIGHT / 2 - wholeCenterY)) / CAMERA_FRAME_HEIGHT;
+			//float moveAngleX = (CAMERA_MAX_VIEW_ANGLE_DEGREES * (wholeCenterX - CAMERA_FRAME_WIDTH / 2)) / CAMERA_FRAME_WIDTH;
+			float diffCenterY = wholeCenterY - CAMERA_FRAME_HEIGHT / 2;
+			float moveAngleY = 0;
+			if (diffCenterY < -10)
+			{
+				moveAngleY = -3;
+			}
+			if (diffCenterY > 10)
+			{
+				moveAngleY = 3;
+			}
 
-			printf("Distance to object %d\n", distance);
+			//printf("Distance to object %f\n", distance);
 			
 			/*if (fabs(moveAngleX) > 3)
 			{
@@ -98,13 +108,14 @@ int main()
 				printf("Move Y: %d\n", moveAngleX);
 			}*/
 
-			if (fabs(moveAngleY) > 3)
+			if (fabs(moveAngleY) >= 3)
 			{
 				arm->getElbow()->move(moveAngleY);
-				printf("Move Y: %d\n", moveAngleY);
 			}
 
 			arm->runToPosition();
+
+			arm->printNodesPositions();
 		}
 
 		imshow("cam", cameraFrame);
