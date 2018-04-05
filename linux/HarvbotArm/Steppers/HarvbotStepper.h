@@ -79,8 +79,8 @@ protected:
 
     typedef enum
     {
-		DIRECTION_CCW = 0,  ///< Clockwise
-        DIRECTION_CW  = 1   ///< Counter-Clockwise
+		DIRECTION_CCW = false,  ///< Clockwise
+        DIRECTION_CW  = true   ///< Counter-Clockwise
     } Direction;
 
     virtual void   step(long step);

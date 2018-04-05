@@ -100,7 +100,7 @@ int main()
 
 			if (fabs(moveAngleY) > 3)
 			{
-				arm->getElbow()->move(-moveAngleY);
+				arm->getElbow()->move(moveAngleY);
 				printf("Move Y: %d\n", moveAngleY);
 			}
 

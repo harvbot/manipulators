@@ -345,7 +345,7 @@ std::string HarvbotArmProtocol::process(std::string requestData)
 			HarvbotArmScrewNode* screwNode = ((HarvbotArmScrewNode*)node);
 
 			// Set position.
-			float steps = screwNode->getSteps();
+			float steps = screwNode->currentPosition();
 
 			response += std::to_string(steps);
 		}
@@ -367,7 +367,7 @@ std::string HarvbotArmProtocol::process(std::string requestData)
 			// Rotate.
 			((HarvbotArmScrewNode*)node)->rotate(steps);
 
-			float currentSteps = ((HarvbotArmScrewNode*)node)->getSteps();
+			float currentSteps = ((HarvbotArmScrewNode*)node)->currentPosition();
 
 			response += std::to_string(currentSteps);
 		}
@@ -377,7 +377,7 @@ std::string HarvbotArmProtocol::process(std::string requestData)
 
 			float angle = ::atof(this->parseParamValue(par).c_str());
 
-			float steps = angle /screwNode->getAnglePerStep();
+			float steps = angle / screwNode->getAnglePerStep();
 
 			// Rotate.
 			float currentSteps = screwNode->rotate(steps);
@@ -400,7 +400,7 @@ std::string HarvbotArmProtocol::process(std::string requestData)
 				screwNode->revolution(-1);
 			}
 			
-			int currentSteps = screwNode->getSteps();
+			int currentSteps = screwNode->currentPosition();
 
 			response += std::to_string(currentSteps);
 		}

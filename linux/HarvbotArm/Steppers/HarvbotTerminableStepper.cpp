@@ -35,9 +35,9 @@ void HarvbotTerminableStepper::step(long step)
 			else
 			{
 				// Stop movement
-				moveTo(currentPosition());
 				_terminalPressed = true;
 				_terminalPressedDir = direction();
+				moveTo(currentPosition());
 				return;
 			}
 
