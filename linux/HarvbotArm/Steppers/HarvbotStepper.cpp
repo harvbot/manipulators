@@ -1,6 +1,23 @@
 #include <math.h>
 #include "HarvbotStepper.h"
 
+HarvbotStepper::HarvbotStepper(uint8_t stepPin, uint8_t dirPin, bool enable)
+{
+	_stepPin = stepPin;
+	_dirPin = dirPin;
+	_currentPos = 0;
+	_targetPos = 0;
+	setEngineFrequency(1000);
+	_enablePin = 0xff;
+	_lastStepTime = 0;
+
+	// NEW
+	_direction = DIRECTION_CCW;
+
+	if (enable)
+		enableOutputs();
+}
+
 void HarvbotStepper::moveTo(long absolute)
 {
     if (_targetPos != absolute)
@@ -12,7 +29,6 @@ void HarvbotStepper::moveTo(long absolute)
 		{
 			time = micros();
 		} while (time < _lastStepTime + _pulsePeriod);
-		digitalWrite(_dirPin, _direction ? HIGH : LOW);
 
 		_targetPos = absolute;
     }
@@ -81,23 +97,6 @@ bool HarvbotStepper::run()
     return distanceToGo() != 0;
 }
 
-HarvbotStepper::HarvbotStepper(uint8_t stepPin, uint8_t dirPin, bool enable)
-{
-	_stepPin = stepPin;
-	_dirPin = dirPin;
-    _currentPos = 0;
-    _targetPos = 0;
-	setEngineFrequency(1000);
-    _enablePin = 0xff;
-	_lastStepTime = 0;
-
-    // NEW
-    _direction = DIRECTION_CCW;
-
-    if (enable)
-		enableOutputs();
-}
-
 void HarvbotStepper::setEngineFrequency(unsigned int frequency)
 {
 	_engineFrequency = frequency;
@@ -134,6 +133,7 @@ bool HarvbotStepper::direction()
 // Subclasses can override
 void HarvbotStepper::step(long step)
 {
+	digitalWrite(_dirPin, _direction ? HIGH : LOW);
 	digitalWrite(_stepPin, HIGH);			 // Set direction first else get rogue pulses
 	delayMicroseconds(1);
 	digitalWrite(_stepPin, LOW);			 // step LOW

@@ -42,7 +42,7 @@ float HarvbotArmStepperCircleNode::move(float pos) {
 
 	if (currentPos != pos)
 	{
-		int steps = round((pos-currentPos)*this->m_maxStepCount * this->m_reductorGear / 360.0);
+		int steps = round((pos - currentPos)*this->m_maxStepCount * this->m_reductorGear / 360.0);
 		this->stepper->move(steps);
 	}
 
@@ -56,15 +56,33 @@ HarvbotNodeStatuses HarvbotArmStepperCircleNode::getStatus()
 
 bool HarvbotArmStepperCircleNode::run()
 {
-	return this->stepper->run();
+	bool result = this->stepper->run();
+
+	if (result)
+	{
+		float currentPos = this->currentPosition();
+		setCurrentPosition(currentPos + getAnglePerStep());
+	}
+
+	return result;
 }
 
 void HarvbotArmStepperCircleNode::runToPosition()
 {
-	return this->stepper->runToPosition();
+	while (run())
+		;
 }
 
 void HarvbotArmStepperCircleNode::goToStartPosition()
 {
-	return this->stepper->runTillTerminal(false);
+	do
+	{
+		move(-1);
+		run();
+	} while (!this->stepper->isTerminated());
+}
+
+float HarvbotArmStepperCircleNode::getAnglePerStep()
+{
+	return 360.0 / this->m_maxStepCount * this->m_reductorGear;
 }

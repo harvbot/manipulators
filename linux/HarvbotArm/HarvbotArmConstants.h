@@ -2,14 +2,28 @@
 #define HarvbotArmConstants_H_
 
 // Max full rotation
-#ifndef HARVBOT_ARM_CLAW_MAX_FULL_ROTATION
 #define HARVBOT_ARM_CLAW_MAX_FULL_ROTATION 28
-#endif
 
-// Default stepper motor speed
-#ifndef HARVBOT_DEFAULT_STEPPER_SPEED
-#define HARVBOT_DEFAULT_STEPPER_SPEED 50
-#endif
+//								WiringPI			Shifter-sheld      
+#define HARVBOT_ARM_SX_STEP         4       //    		16
+#define HARVBOT_ARM_SX_DIR          5       // 		    18
+#define HARVBOT_ARM_SX_END          6       //    		22
+#define HARVBOT_ARM_SX_RATIO        50 * 4
+
+#define HARVBOT_ARM_SY_STEP         11      //   		26
+#define HARVBOT_ARM_SY_DIR          26      //    		32
+#define HARVBOT_ARM_SY_END          27  	//			36
+#define HARVBOT_ARM_SY_RATIO        50 * 4
+
+#define HARVBOT_ARM_SZ_STEP         23		//  		33   
+#define HARVBOT_ARM_SZ_DIR          22      //    		31 
+#define HARVBOT_ARM_SZ_END          21		//			29
+#define HARVBOT_ARM_SZ_RATIO        50 * 4
+
+#define HARVBOT_ARM_SJ_STEP         3       //  		15 
+#define HARVBOT_ARM_SJ_DIR          2       //  		13
+#define HARVBOT_ARM_SJ_END          30		//			27
+#define HARVBOT_ARM_SJ_RATIO        1 * 4
 
 enum HarvbotArmNodeIdentifiers
 {

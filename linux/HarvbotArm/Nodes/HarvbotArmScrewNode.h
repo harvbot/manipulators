@@ -11,6 +11,16 @@ class HarvbotArmScrewNode : public HarvbotArmNode {
 		int m_maxStepsCount;
 		int m_maxFullRotaionCount;
         int m_reductorGear;
+
+		/**
+		Gets the angle per step.
+		*/
+		virtual float getAnglePerStep();
+
+		/**
+		Gets the current position. In general the number of steps which were passed on screw.
+		*/
+		virtual float currentPosition();
 	public:
 		HarvbotArmScrewNode(
             HarvbotArmNodeIdentifiers identifier, 
@@ -24,11 +34,6 @@ class HarvbotArmScrewNode : public HarvbotArmNode {
         HarvbotArmNodeTypes getType();
 
         /**
-            Gets the current position. In general the number of steps which were passed on screw.
-        */
-		float getSteps();
-        
-        /**
             Rotates the screew on specified number of steps.
             Returns current positions.
         */
@@ -39,14 +44,9 @@ class HarvbotArmScrewNode : public HarvbotArmNode {
         */
 		virtual float revolution(int direction);
 
-        /**
-            Gets the angle per step.
-        */
-		virtual float getAnglePerStep();
-
-        /**
-            Gets the current angle.
-        */
+		/**
+		Gets the current angle.
+		*/
 		virtual float getCurrentAngle();
 };
 

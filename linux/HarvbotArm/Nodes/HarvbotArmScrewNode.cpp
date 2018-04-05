@@ -15,11 +15,6 @@ HarvbotArmScrewNode::~HarvbotArmScrewNode()
 {
 }
 
-float HarvbotArmScrewNode::getSteps() 
-{
-	return this->m_pos;
-}
-
 float HarvbotArmScrewNode::rotate(float steps) 
 {
 	if(this->m_pos + steps < 0)
@@ -72,4 +67,9 @@ float HarvbotArmScrewNode::getAnglePerStep()
 HarvbotArmNodeTypes HarvbotArmScrewNode::getType()
 {
 	return Screw;
+}
+
+float HarvbotArmScrewNode::currentPosition()
+{
+	return this->m_pos;
 }

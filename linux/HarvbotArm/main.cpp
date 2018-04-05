@@ -91,17 +91,17 @@ int main()
 			float moveAngleY = (CAMERA_MAX_VIEW_ANGLE_DEGREES * (CAMERA_FRAME_HEIGHT / 2 - wholeCenterY)) / CAMERA_FRAME_HEIGHT;
 
 			printf("Distance to object %d\n", distance);
-			printf("Move X: %d\n", moveAngleX);
-			printf("Move Y: %d\n", moveAngleY);
-
+			
 			/*if (fabs(moveAngleX) > 3)
 			{
 				arm->getBedplate()->move(moveAngleX);
+				printf("Move Y: %d\n", moveAngleX);
 			}*/
 
 			if (fabs(moveAngleY) > 3)
 			{
-				arm->getElbow()->move(moveAngleY);
+				arm->getElbow()->move(-moveAngleY);
+				printf("Move Y: %d\n", moveAngleY);
 			}
 
 			arm->runToPosition();

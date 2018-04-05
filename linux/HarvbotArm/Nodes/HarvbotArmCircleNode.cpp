@@ -22,8 +22,8 @@ float HarvbotArmCircleNode::currentPosition() {
 	return m_pos;
 }
 
-float HarvbotArmCircleNode::move(float pos) {
-
+float HarvbotArmCircleNode::setCurrentPosition(float pos)
+{
 	if (m_minPos > pos)
 	{
 		pos = m_minPos;
@@ -34,8 +34,10 @@ float HarvbotArmCircleNode::move(float pos) {
 		pos = m_maxPos;
 	}
 
-	if (m_pos != pos)
-	{
-		m_pos = pos;
-	}
+	m_pos = pos;
+}
+
+float HarvbotArmCircleNode::move(float pos) 
+{
+	setCurrentPosition(pos);
 }

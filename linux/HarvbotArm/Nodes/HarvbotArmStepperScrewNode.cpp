@@ -27,18 +27,15 @@ HarvbotArmStepperScrewNode::~HarvbotArmStepperScrewNode()
 
 float HarvbotArmStepperScrewNode::rotate(float steps)
 {
-	float prevPos = HarvbotArmScrewNode::getSteps();
+	float prevPos = HarvbotArmScrewNode::currentPosition();
 	HarvbotArmScrewNode::rotate(steps);
-	float currentPos = HarvbotArmScrewNode::getSteps();
+	float currentPos = HarvbotArmScrewNode::currentPosition();
 
 	// Get the full step count.
 	int fullSteps = (int)floor(currentPos-prevPos);
 
 	// Rotate.
 	this->stepper->move(fullSteps);
-
-	// Reset current position.
-	this->m_pos=prevPos + fullSteps;
 
 	return this->m_pos;
 }
@@ -55,10 +52,18 @@ void HarvbotArmStepperScrewNode::goToStartPosition()
 
 bool HarvbotArmStepperScrewNode::run()
 {
-	return this->stepper->run();
+	bool result = this->stepper->run();
+
+	if (result)
+	{
+		this->m_pos += getAnglePerStep();
+	}
+
+	return result;
 }
 
 void HarvbotArmStepperScrewNode::runToPosition()
 {
-	return this->stepper->runToPosition();
+	while (run())
+		;
 }

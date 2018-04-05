@@ -19,6 +19,8 @@ class HarvbotArmCircleNode : public HarvbotArmNode {
 		virtual float currentPosition();
 
 		virtual float move(float pos);
+	protected:
+		virtual float setCurrentPosition(float pos);
 };
 
 #endif /* HarvbotArmCircleNode_H_ */

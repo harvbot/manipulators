@@ -7,6 +7,8 @@
 HarvbotTerminableStepper::HarvbotTerminableStepper(uint8_t stepPin, uint8_t dirPin, uint8_t terminalPin) : HarvbotStepper(stepPin, dirPin)
 {
 	_terminalPin = terminalPin;
+	_terminalPressed = false;
+	_terminalPressedDir = false;
 
 	if (_terminalPin > 0)
 	{
@@ -26,7 +28,7 @@ void HarvbotTerminableStepper::step(long step)
 				if (_terminalPressedDir == direction())
 				{
 					stop();
-					move(currentPosition());
+					moveTo(currentPosition());
 					return;
 				}
 			}
