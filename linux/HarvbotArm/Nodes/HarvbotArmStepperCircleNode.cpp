@@ -56,13 +56,15 @@ HarvbotNodeStatuses HarvbotArmStepperCircleNode::getStatus()
 
 bool HarvbotArmStepperCircleNode::run()
 {
+	long stepperPosStart = this->stepper->distanceToGo();
 	bool result = this->stepper->run();
+	long stepperPosEnd = this->stepper->distanceToGo();
 
-	if (result)
+	if (result && stepperPosStart != stepperPosEnd)
 	{
 		float currentPos = this->currentPosition();
-		float offset = getAnglePerStep() * (this->stepper->direction() ? 1 : -1);
-		printf("%f\n", (currentPos + offset));
+		float offset = getAnglePerStep() * (stepperPosStart - stepperPosEnd);
+		//printf("New postion %d offset: %f, pos: %f\n", getType(), (offset), (currentPos + offset));
 		setCurrentPosition(currentPos + offset);
 	}
 

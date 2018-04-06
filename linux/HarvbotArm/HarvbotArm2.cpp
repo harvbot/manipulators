@@ -49,5 +49,5 @@ void HarvbotArm2::printNodesPositions()
 		((HarvbotArmCircleNode*)this->nodes[0])->currentPosition(),
 		((HarvbotArmCircleNode*)this->nodes[1])->currentPosition(),
 		((HarvbotArmCircleNode*)this->nodes[2])->currentPosition(),
-		((HarvbotArmCircleNode*)this->nodes[3])->currentPosition());
+		((HarvbotArmScrewNode*)this->nodes[3])->currentPosition());
 }

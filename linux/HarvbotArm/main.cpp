@@ -27,7 +27,7 @@ void movingThread()
 	{
 		locker.lock();
 		arm->runToPosition();
-		arm->printNodesPositions();
+		//arm->printNodesPositions();
 		locker.unlock();
 	}
 }
@@ -113,7 +113,7 @@ int main()
 			sprintf(buffer, "Distance to object %d\n", distanceToObject);
 
 			rectangle(cameraFrame, whole.tl(), whole.br(), Scalar(0, 255, 0), 2, 8, 0);
-			putText(cameraFrame, buffer, Point(0,0), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 255, 0), 4);
+			putText(cameraFrame, buffer, Point(0,0), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 255, 0), 16);
 
 			int wholeCenterX = whole.x + whole.width / 2;
 			int wholeCenterY = whole.y + whole.height / 2;
@@ -123,11 +123,11 @@ int main()
 			float moveAngleY = 0;
 			if (diffCenterY < -10)
 			{
-				moveAngleY = -3;
+				moveAngleY = -1;
 			}
 			if (diffCenterY > 10)
 			{
-				moveAngleY = 3;
+				moveAngleY = 1;
 			}
 
 			//printf("Distance to object %f\n", distance);
@@ -139,9 +139,12 @@ int main()
 			}*/
 
 			locker.lock();
-			if (fabs(moveAngleY) >= 3)
+			if (fabs(moveAngleY) != 0)
 			{
-				arm->getElbow()->move(moveAngleY);
+				if (arm->getStatus() == Ready)
+				{
+					arm->getElbow()->move(moveAngleY);
+				}
 			}
 			locker.unlock();
 		}

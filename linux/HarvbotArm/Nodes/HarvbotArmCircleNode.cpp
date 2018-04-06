@@ -39,7 +39,7 @@ float HarvbotArmCircleNode::setCurrentPosition(float pos)
 
 float HarvbotArmCircleNode::move(float pos) 
 {
-	moveTo(currentPosition() + pos);
+	return moveTo(currentPosition() + pos);
 }
 
 float HarvbotArmCircleNode::moveTo(float pos)
