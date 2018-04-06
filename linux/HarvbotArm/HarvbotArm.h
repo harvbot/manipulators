@@ -50,6 +50,8 @@ class HarvbotArm {
 
 		void runToPosition();
 
+		void stop();
+
 		virtual void printNodesPositions() = 0;
 };
 

@@ -90,3 +90,8 @@ float HarvbotArmStepperCircleNode::getAnglePerStep()
 {
 	return (360.0 / (this->m_maxStepCount * this->m_reductorGear));
 }
+
+void HarvbotArmStepperCircleNode::stop()
+{
+	this->stepper->stop();
+}

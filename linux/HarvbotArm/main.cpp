@@ -143,6 +143,7 @@ int main()
 			{
 				if (arm->getStatus() == Ready)
 				{
+					arm->getElbow()->stop();
 					arm->getElbow()->move(moveAngleY);
 				}
 			}

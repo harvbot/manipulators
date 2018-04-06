@@ -199,6 +199,7 @@ void HarvbotStepper::runToNewPosition(long position)
 
 void HarvbotStepper::stop()
 {
+	_targetPos = _currentPos;
 	digitalWrite(_dirPin, LOW);
 	digitalWrite(_stepPin, LOW);
 }

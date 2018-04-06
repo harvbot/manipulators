@@ -64,3 +64,8 @@ void HarvbotArmStepperScrewNode::runToPosition()
 	while (run())
 		;
 }
+
+void HarvbotArmStepperScrewNode::stop()
+{
+	this->stepper->stop();
+}

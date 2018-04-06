@@ -33,6 +33,8 @@ class HarvbotArmNode {
 		Moves screw to start position.
 		*/
 		virtual void goToStartPosition() = 0;
+
+		virtual void stop() = 0;
 };
 
 #endif /* HarvbotArmNode_H_ */

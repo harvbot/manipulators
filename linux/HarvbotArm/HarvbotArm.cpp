@@ -85,3 +85,11 @@ void HarvbotArm::goToStartPosition()
 		this->nodes[i]->goToStartPosition();
 	}
 }
+
+void HarvbotArm::stop()
+{
+	for (int i = 0; i<nodesCount; i++)
+	{
+		this->nodes[i]->stop();
+	}
+}

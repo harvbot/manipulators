@@ -36,6 +36,8 @@ class HarvbotArmStepperCircleNode : public HarvbotArmCircleNode {
 		void runToPosition();
 
 		void goToStartPosition();
+
+		void stop();
 	private:
 		/**
 		Gets the angle per step.
