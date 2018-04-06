@@ -123,11 +123,11 @@ int main()
 			float moveAngleY = 0;
 			if (diffCenterY < -10)
 			{
-				moveAngleY = -1;
+				moveAngleY = -0.5;
 			}
 			if (diffCenterY > 10)
 			{
-				moveAngleY = 1;
+				moveAngleY = 0.5;
 			}
 
 			//printf("Distance to object %f\n", distance);
