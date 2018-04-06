@@ -1,5 +1,4 @@
 #include <math.h>
-#include <wiringPi.h>
 #include "../HarvbotArmConstants.h"
 #include "HarvbotArmScrewNode.h"
 #include "HarvbotArmStepperScrewNode.h"
@@ -16,7 +15,7 @@ HarvbotArmStepperScrewNode::HarvbotArmStepperScrewNode(
 	uint8_t reductorGear)
 	: HarvbotArmScrewNode(identifier, pos, maxStepsCount, maxFullRotaionCount, reductorGear)
 {
-	this->stepper = new HarvbotTerminableStepper(pinDir, pinStep, pinTerminal);
+	this->stepper = new HarvbotTerminableStepper(pinStep, pinDir, pinTerminal);
 	this->stepper->setEngineFrequency(stepperFrequency);
 }
 
@@ -27,19 +26,27 @@ HarvbotArmStepperScrewNode::~HarvbotArmStepperScrewNode()
 
 float HarvbotArmStepperScrewNode::rotate(float steps)
 {
-	float prevPos = HarvbotArmScrewNode::currentPosition();
-	HarvbotArmScrewNode::rotate(steps);
-	float currentPos = HarvbotArmScrewNode::currentPosition();
+	int destinationPos = this->currentPosition();
+	if (this->currentPosition() + steps < 0)
+	{
+		destinationPos = 0;
+	}
+	else if (this->currentPosition() + steps >= this->m_maxFullRotaionCount * this->m_maxStepsCount * this->m_reductorGear)
+	{
+		destinationPos = this->m_maxFullRotaionCount * this->m_maxStepsCount * this->m_reductorGear;
+	}
+	else
+	{
+		destinationPos += steps;
+	}
 
 	// Get the full step count.
-	int fullSteps = (int)floor(currentPos-prevPos);
+	int fullSteps = (int)floor(destinationPos - this->currentPosition());
 
 	// Rotate.
 	this->stepper->move(fullSteps);
 
-	currentPos += steps;
-
-	return this->m_pos;
+	return this->currentPosition();
 }
 
 HarvbotNodeStatuses HarvbotArmStepperScrewNode::getStatus()
@@ -50,11 +57,20 @@ HarvbotNodeStatuses HarvbotArmStepperScrewNode::getStatus()
 void HarvbotArmStepperScrewNode::goToStartPosition()
 {
 	this->stepper->runTillTerminal(false);
+	setCurrentPosition(0);
 }
 
 bool HarvbotArmStepperScrewNode::run()
 {
+	long stepperPosStart = this->stepper->distanceToGo();
 	bool result = this->stepper->run();
+	long stepperPosEnd = this->stepper->distanceToGo();
+
+	if (result && stepperPosStart != stepperPosEnd)
+	{
+		float currentPos = this->currentPosition();
+		setCurrentPosition(currentPos + stepperPosStart - stepperPosEnd);
+	}
 
 	return result;
 }

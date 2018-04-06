@@ -11,6 +11,8 @@ class HarvbotArmScrewNode : public HarvbotArmNode {
 		int m_maxStepsCount;
 		int m_maxFullRotaionCount;
         int m_reductorGear;
+
+		virtual float setCurrentPosition(float pos);
 	public:
 		HarvbotArmScrewNode(
             HarvbotArmNodeIdentifiers identifier, 

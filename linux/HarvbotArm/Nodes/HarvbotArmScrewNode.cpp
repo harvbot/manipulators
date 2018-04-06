@@ -73,3 +73,10 @@ float HarvbotArmScrewNode::currentPosition()
 {
 	return this->m_pos;
 }
+
+float HarvbotArmScrewNode::setCurrentPosition(float pos)
+{
+	this->m_pos = pos;
+
+	return this->m_pos;
+}

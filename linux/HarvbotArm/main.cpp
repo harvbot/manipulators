@@ -57,6 +57,8 @@ int main()
 	arm = HarvbotArmFactory::CreateArm2();
 	rangefinder = new HarvbotRangefinder("/dev/ttyUSB0", 9600);
 
+	arm->getClaw()->goToStartPosition();
+
 	VideoCapture camera(0);   //0 is the id of video device.0 if you have only one camera.
 	camera.set(CV_CAP_PROP_BUFFERSIZE, 3); // internal buffer will now store only 3 frames
 
