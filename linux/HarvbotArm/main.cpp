@@ -14,6 +14,8 @@ using namespace std;
 #define CAMERA_MAX_VIEW_ANGLE_DEGREES 100
 #define CAMERA_FRAME_WIDTH 640
 #define CAMERA_FRAME_HEIGHT 480
+#define MIN_CONTOUR_SIZE 60
+#define CENTERING_THRESHOLD 10
 
 bool exitFromApp = false;
 float distanceToObject = 0;
@@ -37,10 +39,14 @@ void measureDistanceThread()
 	rangefinder->start();
 	while (!exitFromApp)
 	{
-		distanceToObject = rangefinder->read();
+		float distanceValue = rangefinder->read();
+		if (distanceValue != -1)
+		{
+			distanceToObject = distanceValue;
+			printf("Distance to object: %f\n", distanceToObject);
+		}
 	}
 }
-
 
 int main()
 {
@@ -51,27 +57,20 @@ int main()
 	arm = HarvbotArmFactory::CreateArm2();
 	rangefinder = new HarvbotRangefinder("/dev/ttyUSB0", 9600);
 
-	//arm->getElbow()->move(1);
-	//arm->runToPosition();
+	VideoCapture camera(0);   //0 is the id of video device.0 if you have only one camera.
+	camera.set(CV_CAP_PROP_BUFFERSIZE, 3); // internal buffer will now store only 3 frames
 
-	VideoCapture stream1(0);   //0 is the id of video device.0 if you have only one camera.
-	stream1.set(CV_CAP_PROP_BUFFERSIZE, 3); // internal buffer will now store only 3 frames
-
-	if (!stream1.isOpened()) { //check if video device has been initialised
-		cout << "Cannot open camera";
+	if (!camera.isOpened()) { //check if video device has been initialised
+		printf("Cannot open camera\n");
 	}
 
 	std::thread(movingThread).detach();
 	std::thread(measureDistanceThread).detach();
 
-	/*Font font;
-	InitFont(&font, CV_FONT_HERSHEY_SIMPLEX, 0.5, 0.5);*/
-
-	//unconditional loop
 	while (true) {
 		
 		Mat cameraFrame;
-		stream1.read(cameraFrame);
+		camera.read(cameraFrame);
 
 		Mat imgHSV;
 		cvtColor(cameraFrame, imgHSV, COLOR_BGR2HSV);
@@ -94,7 +93,7 @@ int main()
 		{
 			approxPolyDP(Mat(contours[i]), contours_poly[i], 3, true);
 			Rect rect = boundingRect(Mat(contours_poly[i]));
-			if (rect.size().width > 60 && rect.size().height > 60)
+			if (rect.size().width > MIN_CONTOUR_SIZE && rect.size().height > MIN_CONTOUR_SIZE)
 			{
 				if (whole.size().width > 0 && whole.size().height > 0)
 				{
@@ -107,44 +106,49 @@ int main()
 			}
 		}
 
-		if (whole.size().width > 60 && whole.size().height > 60)
+		if (whole.size().width > MIN_CONTOUR_SIZE && whole.size().height > MIN_CONTOUR_SIZE)
 		{
-			char buffer[255];
-			sprintf(buffer, "Distance to object %d\n", distanceToObject);
-
 			rectangle(cameraFrame, whole.tl(), whole.br(), Scalar(0, 255, 0), 2, 8, 0);
-			putText(cameraFrame, buffer, Point(0,0), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 255, 0), 16);
+
+			char buffer[500];
+			sprintf(buffer, "Distance to object %f\n", distanceToObject);
+			putText(cameraFrame, buffer, Point(0, 25), FONT_HERSHEY_SIMPLEX, 0.5, Scalar(0, 255, 0), 2);
 
 			int wholeCenterX = whole.x + whole.width / 2;
 			int wholeCenterY = whole.y + whole.height / 2;
 
-			//float moveAngleX = (CAMERA_MAX_VIEW_ANGLE_DEGREES * (wholeCenterX - CAMERA_FRAME_WIDTH / 2)) / CAMERA_FRAME_WIDTH;
+			float diffCenterX = wholeCenterX - CAMERA_FRAME_WIDTH / 2;
+			float moveAngleX = 0;
+			if (diffCenterX < -CENTERING_THRESHOLD)
+			{
+				moveAngleX = -0.5;
+			}
+			if (diffCenterX > CENTERING_THRESHOLD)
+			{
+				moveAngleX = 0.5;
+			}
+
 			float diffCenterY = wholeCenterY - CAMERA_FRAME_HEIGHT / 2;
 			float moveAngleY = 0;
-			if (diffCenterY < -10)
+			if (diffCenterY < -CENTERING_THRESHOLD)
 			{
 				moveAngleY = -0.5;
 			}
-			if (diffCenterY > 10)
+			if (diffCenterY > CENTERING_THRESHOLD)
 			{
 				moveAngleY = 0.5;
 			}
 
-			//printf("Distance to object %f\n", distance);
-			
-			/*if (fabs(moveAngleX) > 3)
-			{
-				arm->getBedplate()->move(moveAngleX);
-				printf("Move Y: %d\n", moveAngleX);
-			}*/
-
 			locker.lock();
-			if (fabs(moveAngleY) != 0)
+			if (arm->getStatus() == Ready)
 			{
-				if (arm->getStatus() == Ready)
+				if (moveAngleY != 0)
 				{
-					arm->getElbow()->stop();
 					arm->getElbow()->move(moveAngleY);
+				}
+				if (moveAngleX != 0)
+				{
+					arm->getBedplate()->move(moveAngleX);
 				}
 			}
 			locker.unlock();
