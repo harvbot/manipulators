@@ -1,9 +1,11 @@
 #include <cstdio>
+#include <iostream>
+#include <thread>
+#include <mutex>
+#include <stdio.h>
 #include <wiringPi.h>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
-#include <iostream>
-#include <stdio.h>
 #include "HarvbotArmFactory.h"
 #include "LaserRangefinder/HarvbotRangefinder.h"
 using namespace cv;
@@ -13,15 +15,41 @@ using namespace std;
 #define CAMERA_FRAME_WIDTH 640
 #define CAMERA_FRAME_HEIGHT 480
 
+bool exitFromApp = false;
+float distanceToObject = 0;
+HarvbotArm2* arm;
+HarvbotRangefinder* rangefinder;
+std::mutex locker;
+
+void movingThread()
+{
+	while (!exitFromApp)
+	{
+		locker.lock();
+		arm->runToPosition();
+		arm->printNodesPositions();
+		locker.unlock();
+	}
+}
+
+void measureDistanceThread()
+{
+	rangefinder->start();
+	while (!exitFromApp)
+	{
+		distanceToObject = rangefinder->read();
+	}
+}
+
+
 int main()
 {
 	wiringPiSetup();
 
 	printf("hello from HarvbotArm!\n");
 
-	HarvbotArm2* arm = HarvbotArmFactory::CreateArm2();
-	HarvbotRangefinder* rangefinder = new HarvbotRangefinder("/dev/ttyUSB0", 9600);
-	rangefinder->start();
+	arm = HarvbotArmFactory::CreateArm2();
+	rangefinder = new HarvbotRangefinder("/dev/ttyUSB0", 9600);
 
 	//arm->getElbow()->move(1);
 	//arm->runToPosition();
@@ -33,13 +61,15 @@ int main()
 		cout << "Cannot open camera";
 	}
 
+	std::thread(movingThread).detach();
+	std::thread(measureDistanceThread).detach();
+
 	/*Font font;
 	InitFont(&font, CV_FONT_HERSHEY_SIMPLEX, 0.5, 0.5);*/
 
 	//unconditional loop
 	while (true) {
-		float distance = rangefinder->read();
-
+		
 		Mat cameraFrame;
 		stream1.read(cameraFrame);
 
@@ -80,7 +110,7 @@ int main()
 		if (whole.size().width > 60 && whole.size().height > 60)
 		{
 			char buffer[255];
-			sprintf(buffer, "Distance to object %d\n", distance);
+			sprintf(buffer, "Distance to object %d\n", distanceToObject);
 
 			rectangle(cameraFrame, whole.tl(), whole.br(), Scalar(0, 255, 0), 2, 8, 0);
 			putText(cameraFrame, buffer, Point(0,0), FONT_HERSHEY_SIMPLEX, 1, Scalar(0, 255, 0), 4);
@@ -108,19 +138,20 @@ int main()
 				printf("Move Y: %d\n", moveAngleX);
 			}*/
 
+			locker.lock();
 			if (fabs(moveAngleY) >= 3)
 			{
 				arm->getElbow()->move(moveAngleY);
 			}
-
-			arm->runToPosition();
-
-			arm->printNodesPositions();
+			locker.unlock();
 		}
 
 		imshow("cam", cameraFrame);
 		if (waitKey(30) >= 0)
+		{
+			exitFromApp = true;
 			break;
+		}
 	}
 
 	rangefinder->stop();
