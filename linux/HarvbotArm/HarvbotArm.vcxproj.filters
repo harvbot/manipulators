@@ -31,5 +31,6 @@
     <ClInclude Include="Protocols\HarvbotArmProtocol.h" />
     <ClInclude Include="Protocols\HarvbotArmSerialProtocol.h" />
     <ClInclude Include="LaserRangefinder\HarvbotRangefinder.h" />
+    <ClInclude Include="Spatial\HarvbotPoint.h" />
   </ItemGroup>
 </Project>

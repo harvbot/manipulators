@@ -2,10 +2,11 @@
 #define HarvbotArm2_H_
 
 #include "HarvbotArm.h"
+#include "HarvbotArmConstants.h"
+#include "Spatial/HarvbotPoint.h"
 #include "Nodes/HarvbotArmNode.h"
 #include "Nodes/HarvbotArmCircleNode.h"
 #include "Nodes/HarvbotArmScrewNode.h"
-#include "HarvbotArmConstants.h"
 
 class HarvbotArm2 : public HarvbotArm {
 	public:
@@ -17,7 +18,11 @@ class HarvbotArm2 : public HarvbotArm {
 
 		void goToStartPosition();
 
+		HarvbotPoint getPointerCoords();
+
 		void printNodesPositions();
+
+		virtual void printPointerPositions() = 0;
 };
 
 #endif /* HarvbotArm2_H_ */

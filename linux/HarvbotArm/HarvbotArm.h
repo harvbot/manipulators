@@ -2,6 +2,7 @@
 #define HarvbotArm_H_
 
 #include "HarvbotArmConstants.h"
+#include "Spatial/HarvbotPoint.h"
 #include "Nodes/HarvbotArmNode.h"
 #include "Nodes/HarvbotArmCircleNode.h"
 #include "Nodes/HarvbotArmScrewNode.h"
@@ -52,7 +53,11 @@ class HarvbotArm {
 
 		void stop();
 
+		virtual HarvbotPoint getPointerCoords() = 0;
+
 		virtual void printNodesPositions() = 0;
+
+		virtual void printPointerPositions() = 0;
 };
 
 #endif /* HarvbotArm_H_ */

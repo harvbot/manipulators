@@ -1,3 +1,4 @@
+#include <math.h>
 #include "HarvbotArm.h"
 #include "HarvbotArm2.h"
 #include "Nodes/HarvbotArmNode.h"
@@ -43,11 +44,37 @@ HarvbotArmScrewNode* HarvbotArm2::getClaw()
 	return (HarvbotArmScrewNode*)this->getNodeByType(Claw);
 }
 
+HarvbotPoint HarvbotArm2::getPointerCoords()
+{
+	HarvbotPoint pointer;
+
+	float alpha = this->getShoulder()->currentPosition();
+	float betta = this->getElbow()->currentPosition();
+	float a = 170.0;
+	float b = 170.0;
+	float c = 120.0;
+
+	float t = (c*cos(betta) - b) / cos(alpha);
+	float m = pow(b, 2) + pow(c, 2) - 2 * b * c * cos(betta);
+	float d = 4 * (pow(m, 2) / pow(cos(alpha), 2) - pow(t, 2));
+
+	pointer.x = (-2 * t * tan(alpha) + sqrt(d))*pow(cos(alpha), 2) / 2.0;
+	pointer.y = pointer.x * tan(alpha) + a + t;
+
+	return pointer;
+}
+
 void HarvbotArm2::printNodesPositions()
 {
-	printf("Bedplate: %f, Shoulder: %f, Elbow: %f, Claw: %f\n", 
+	printf("Bedplate: %f, Shoulder: %f, Elbow: %f, Claw: %f\n",
 		((HarvbotArmCircleNode*)this->nodes[0])->currentPosition(),
 		((HarvbotArmCircleNode*)this->nodes[1])->currentPosition(),
 		((HarvbotArmCircleNode*)this->nodes[2])->currentPosition(),
 		((HarvbotArmScrewNode*)this->nodes[3])->currentPosition());
+}
+
+void HarvbotArm2::printPointerPositions()
+{
+	HarvbotPoint pointer = getPointerCoords();
+	printf("z: %f, y: %f, z: %f\n", pointer.x, pointer.y, pointer.z);
 }

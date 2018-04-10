@@ -92,6 +92,7 @@
     <ClInclude Include="Protocols\HarvbotArmProtocol.h" />
     <ClInclude Include="Nodes\HarvbotArmScrewNode.h" />
     <ClInclude Include="Protocols\HarvbotArmSerialProtocol.h" />
+    <ClInclude Include="Spatial\HarvbotPoint.h" />
     <ClInclude Include="Steppers\HarvbotStepper.h" />
     <ClInclude Include="Steppers\HarvbotTerminableStepper.h" />
   </ItemGroup>
