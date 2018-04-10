@@ -50,9 +50,9 @@ HarvbotPoint HarvbotArm2::getPointerCoords()
 
 	float alpha = this->getShoulder()->currentPosition();
 	float betta = this->getElbow()->currentPosition();
-	float a = 170.0;
-	float b = 170.0;
-	float c = 120.0;
+	float a = HARVBOT_ARM_2_BEDPLATE;
+	float b = HARVBOT_ARM_2_SHOULDER;
+	float c = HARVBOT_ARM_2_ELBOW;
 
 	float t = (c*cos(betta) - b) / cos(alpha);
 	float m = pow(b, 2) + pow(c, 2) - 2 * b * c * cos(betta);
