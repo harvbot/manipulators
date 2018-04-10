@@ -22,7 +22,7 @@ class HarvbotArm2 : public HarvbotArm {
 
 		void printNodesPositions();
 
-		virtual void printPointerPositions() = 0;
+		void printPointerPositions();
 };
 
 #endif /* HarvbotArm2_H_ */
