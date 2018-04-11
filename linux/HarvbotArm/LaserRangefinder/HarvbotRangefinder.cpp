@@ -23,22 +23,18 @@ HarvbotRangefinder::~HarvbotRangefinder()
 
 float HarvbotRangefinder::read() 
 {
-	int dataAvailable = serialDataAvail(this->m_deviceHandle);
+	unsigned char* buffer = NULL;
+	int dataAvailable = getResponse(buffer);
 	if (dataAvailable <= 0)
 	{
 		return -1;
 	}
 
 	float result = -1;
-	unsigned char* buffer = new unsigned char[dataAvailable];
-	for (int i = 0; i < dataAvailable; i++)
-	{
-		buffer[i] = serialGetchar(this->m_deviceHandle);
-	}
-
+	
 	if (dataAvailable % 11 == 0)
 	{
-		if (buffer[0] == HarvbotRangefinder_DefaultAddr &&
+		if (buffer[0] == HARVBOT_RANGEFINDER_DEFAULT_ADDR &&
 			buffer[1] == 0x06 && buffer[2] == 0x83 && buffer[6] == 0x2E)
 		{
 			result = 0;
@@ -53,8 +49,6 @@ float HarvbotRangefinder::read()
 		}
 	}
 
-	serialFlush(this->m_deviceHandle);
-
 	delete buffer;
 
 	return result;
@@ -62,14 +56,110 @@ float HarvbotRangefinder::read()
 
 void HarvbotRangefinder::start() 
 {
-	char command[] = {HarvbotRangefinder_DefaultAddr, 0x06, 0x03, 0x77};
+	char command[] = { HARVBOT_RANGEFINDER_DEFAULT_ADDR, 0x06, 0x03, 0x77};
 
 	serialPuts(this->m_deviceHandle, (const char*)&command);
 }
 
 void HarvbotRangefinder::stop() 
 {
-	char command[] = {HarvbotRangefinder_DefaultAddr, 0x04, 0x02, 0x7A};
+	char command[] = { HARVBOT_RANGEFINDER_DEFAULT_ADDR, 0x04, 0x02, 0x7A};
 
 	serialPuts(this->m_deviceHandle, (const char*)&command);
+}
+
+void HarvbotRangefinder::turnLaserOn()
+{
+	char command[] = { HARVBOT_RANGEFINDER_DEFAULT_ADDR,  0x06, 0x05, 0x01, 0x74 };
+
+	serialPuts(this->m_deviceHandle, (const char*)&command);
+
+	unsigned char* buffer = NULL;
+	int dataAvailable = getResponse(buffer);
+
+	bool success = buffer[0] == HARVBOT_RANGEFINDER_DEFAULT_ADDR && buffer[1] == 0x06 && buffer[2] == 0x01;
+
+	delete buffer;
+}
+
+void HarvbotRangefinder::turnLaserOff()
+{
+	char command[] = { HARVBOT_RANGEFINDER_DEFAULT_ADDR,  0x06, 0x05, 0x00, 0x74 };
+
+	serialPuts(this->m_deviceHandle, (const char*)&command);
+
+	unsigned char* buffer = NULL;
+	int dataAvailable = getResponse(buffer);
+
+	bool success = buffer[0] == HARVBOT_RANGEFINDER_DEFAULT_ADDR && buffer[1] == 0x06 && buffer[2] == 0x01;
+
+	delete buffer;
+}
+
+bool HarvbotRangefinder::setRange(HarvbotRangefinderRanges range)
+{
+	char command[] = { 0xFA, 0x04, 0x09, range, 0xF4 };
+
+	serialPuts(this->m_deviceHandle, (const char*)&command);
+
+	unsigned char* buffer = NULL;
+	int dataAvailable = getResponse(buffer);
+
+	bool success = buffer[0] == command[0] && buffer[1] == command[1] && buffer[2] == 0x89 && buffer[3] == 0x79;
+
+	delete buffer;
+
+	return success;
+}
+
+bool HarvbotRangefinder::setResolution(HarvbotRangefinderResolutions resolution)
+{
+	char command[] = { 0xFA, 0x04, 0x0C, resolution, 0xF5 };
+
+	serialPuts(this->m_deviceHandle, (const char*)&command);
+
+	unsigned char* buffer = NULL;
+	int dataAvailable = getResponse(buffer);
+
+	bool success = buffer[0] == command[0] && buffer[1] == command[1] && buffer[2] == 0x8C && buffer[3] == 0x76;
+
+	delete buffer;
+
+	return success;
+}
+
+bool HarvbotRangefinder::setFrequency(HarvbotRangefinderFrequencies frequency)
+{
+	char command[] = { 0xFA, 0x04, 0x0A, frequency, 0xF5 };
+
+	serialPuts(this->m_deviceHandle, (const char*)&command);
+
+	unsigned char* buffer = NULL;
+	int dataAvailable = getResponse(buffer);
+
+	bool success = buffer[0] == command[0] && buffer[1] == command[1] && buffer[2] == 0x8A && buffer[3] == 0x78;
+
+	delete buffer;
+
+	return success;
+}
+
+int HarvbotRangefinder::getResponse(unsigned char* buffer)
+{
+	int dataAvailable = serialDataAvail(this->m_deviceHandle);
+	if (dataAvailable <= 0)
+	{
+		return -1;
+	}
+
+	float result = -1;
+	buffer = new unsigned char[dataAvailable];
+	for (int i = 0; i < dataAvailable; i++)
+	{
+		buffer[i] = serialGetchar(this->m_deviceHandle);
+	}
+
+	serialFlush(this->m_deviceHandle);
+
+	return dataAvailable;
 }
