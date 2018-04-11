@@ -30,9 +30,9 @@ enum HarvbotRangefinderFrequencies
 class HarvbotRangefinder {
 	private: 
 		// Serial port reference.
-		char *_device;
-		int _baud;
-		int _deviceHandle;
+		char* m_device;
+		int m_baud;
+		int m_deviceHandle;
 
 		int getResponse(unsigned char* buffer);
 	public:

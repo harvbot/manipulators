@@ -67,7 +67,8 @@ bool HarvbotArm::run()
 	bool result = false;
 	for (int i = 0; i < nodesCount; i++)
 	{
-		result = result || this->nodes[i]->run();
+		bool nodeResult = this->nodes[i]->run();
+		result = result || nodeResult;
 	}
 	return result;
 }

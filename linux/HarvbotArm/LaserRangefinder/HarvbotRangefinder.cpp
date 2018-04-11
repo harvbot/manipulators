@@ -152,7 +152,6 @@ int HarvbotRangefinder::getResponse(unsigned char* buffer)
 		return -1;
 	}
 
-	float result = -1;
 	buffer = new unsigned char[dataAvailable];
 	for (int i = 0; i < dataAvailable; i++)
 	{
