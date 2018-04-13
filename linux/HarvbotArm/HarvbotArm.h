@@ -55,6 +55,8 @@ class HarvbotArm {
 
 		virtual HarvbotPoint getPointerCoords() = 0;
 
+		virtual bool pickObject(float distanceToObject) = 0;
+
 		virtual void printNodesPositions() = 0;
 
 		virtual void printPointerPositions() = 0;

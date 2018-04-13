@@ -20,6 +20,8 @@ class HarvbotArm2 : public HarvbotArm {
 
 		HarvbotPoint getPointerCoords();
 
+		bool pickObject(float distanceToObject);
+
 		void printNodesPositions();
 
 		void printPointerPositions();
