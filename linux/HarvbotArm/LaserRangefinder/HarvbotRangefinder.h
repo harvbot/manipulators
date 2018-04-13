@@ -28,32 +28,32 @@ enum HarvbotRangefinderFrequencies
 };
 
 class HarvbotRangefinder {
-	private: 
-		// Serial port reference.
-		char* m_device;
-		int m_baud;
-		int m_deviceHandle;
+private:
+	// Serial port reference.
+	char* m_device;
+	int m_baud;
+	int m_deviceHandle;
 
-		int getResponse(unsigned char* buffer);
-	public:
-		HarvbotRangefinder(const char *device, const int baud);
-		~HarvbotRangefinder();
+	int getResponse(unsigned char* buffer, int dataAvailable);
+public:
+	HarvbotRangefinder(const char *device, const int baud);
+	~HarvbotRangefinder();
 
-		void turnLaserOn();
+	void turnLaserOn();
 
-		void turnLaserOff();
+	void turnLaserOff();
 
-		bool setRange(HarvbotRangefinderRanges range);
+	bool setRange(HarvbotRangefinderRanges range);
 
-		bool setResolution(HarvbotRangefinderResolutions resolution);
+	bool setResolution(HarvbotRangefinderResolutions resolution);
 
-		bool setFrequency(HarvbotRangefinderFrequencies frequency);
+	bool setFrequency(HarvbotRangefinderFrequencies frequency);
 
-		void start();
+	void start();
 
-		float read();
+	float read();
 
-		void stop();
+	void stop();
 };
 
 #endif /* HarvbotRangefinder_H_ */

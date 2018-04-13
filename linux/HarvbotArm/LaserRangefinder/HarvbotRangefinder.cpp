@@ -21,17 +21,19 @@ HarvbotRangefinder::~HarvbotRangefinder()
 	}
 }
 
-float HarvbotRangefinder::read() 
+float HarvbotRangefinder::read()
 {
-	unsigned char* buffer = NULL;
-	int dataAvailable = getResponse(buffer);
+	int dataAvailable = serialDataAvail(this->m_deviceHandle);
 	if (dataAvailable <= 0)
 	{
 		return -1;
 	}
 
+	unsigned char* buffer = new unsigned char[dataAvailable];
+	getResponse(buffer, dataAvailable);
+
 	float result = -1;
-	
+
 	if (dataAvailable % 11 == 0)
 	{
 		if (buffer[0] == HARVBOT_RANGEFINDER_DEFAULT_ADDR &&
@@ -54,16 +56,16 @@ float HarvbotRangefinder::read()
 	return result;
 }
 
-void HarvbotRangefinder::start() 
+void HarvbotRangefinder::start()
 {
-	char command[] = { HARVBOT_RANGEFINDER_DEFAULT_ADDR, 0x06, 0x03, 0x77};
+	char command[] = { HARVBOT_RANGEFINDER_DEFAULT_ADDR, 0x06, 0x03, 0x77 };
 
 	serialPuts(this->m_deviceHandle, (const char*)&command);
 }
 
-void HarvbotRangefinder::stop() 
+void HarvbotRangefinder::stop()
 {
-	char command[] = { HARVBOT_RANGEFINDER_DEFAULT_ADDR, 0x04, 0x02, 0x7A};
+	char command[] = { HARVBOT_RANGEFINDER_DEFAULT_ADDR, 0x04, 0x02, 0x7A };
 
 	serialPuts(this->m_deviceHandle, (const char*)&command);
 }
@@ -74,8 +76,14 @@ void HarvbotRangefinder::turnLaserOn()
 
 	serialPuts(this->m_deviceHandle, (const char*)&command);
 
-	unsigned char* buffer = NULL;
-	int dataAvailable = getResponse(buffer);
+	int dataAvailable = serialDataAvail(this->m_deviceHandle);
+	if (dataAvailable <= 0)
+	{
+		return;
+	}
+
+	unsigned char* buffer = new unsigned char[dataAvailable];
+	getResponse(buffer, dataAvailable);
 
 	bool success = buffer[0] == HARVBOT_RANGEFINDER_DEFAULT_ADDR && buffer[1] == 0x06 && buffer[2] == 0x01;
 
@@ -88,8 +96,14 @@ void HarvbotRangefinder::turnLaserOff()
 
 	serialPuts(this->m_deviceHandle, (const char*)&command);
 
-	unsigned char* buffer = NULL;
-	int dataAvailable = getResponse(buffer);
+	int dataAvailable = serialDataAvail(this->m_deviceHandle);
+	if (dataAvailable <= 0)
+	{
+		return;
+	}
+
+	unsigned char* buffer = new unsigned char[dataAvailable];
+	getResponse(buffer, dataAvailable);
 
 	bool success = buffer[0] == HARVBOT_RANGEFINDER_DEFAULT_ADDR && buffer[1] == 0x06 && buffer[2] == 0x01;
 
@@ -102,8 +116,14 @@ bool HarvbotRangefinder::setRange(HarvbotRangefinderRanges range)
 
 	serialPuts(this->m_deviceHandle, (const char*)&command);
 
-	unsigned char* buffer = NULL;
-	int dataAvailable = getResponse(buffer);
+	int dataAvailable = serialDataAvail(this->m_deviceHandle);
+	if (dataAvailable <= 0)
+	{
+		return false;
+	}
+
+	unsigned char* buffer = new unsigned char[dataAvailable];
+	getResponse(buffer, dataAvailable);
 
 	bool success = buffer[0] == command[0] && buffer[1] == command[1] && buffer[2] == 0x89 && buffer[3] == 0x79;
 
@@ -118,8 +138,14 @@ bool HarvbotRangefinder::setResolution(HarvbotRangefinderResolutions resolution)
 
 	serialPuts(this->m_deviceHandle, (const char*)&command);
 
-	unsigned char* buffer = NULL;
-	int dataAvailable = getResponse(buffer);
+	int dataAvailable = serialDataAvail(this->m_deviceHandle);
+	if (dataAvailable <= 0)
+	{
+		return false;
+	}
+
+	unsigned char* buffer = new unsigned char[dataAvailable];
+	getResponse(buffer, dataAvailable);
 
 	bool success = buffer[0] == command[0] && buffer[1] == command[1] && buffer[2] == 0x8C && buffer[3] == 0x76;
 
@@ -134,8 +160,14 @@ bool HarvbotRangefinder::setFrequency(HarvbotRangefinderFrequencies frequency)
 
 	serialPuts(this->m_deviceHandle, (const char*)&command);
 
-	unsigned char* buffer = NULL;
-	int dataAvailable = getResponse(buffer);
+	int dataAvailable = serialDataAvail(this->m_deviceHandle);
+	if (dataAvailable <= 0)
+	{
+		return false;
+	}
+
+	unsigned char* buffer = new unsigned char[dataAvailable];
+	getResponse(buffer, dataAvailable);
 
 	bool success = buffer[0] == command[0] && buffer[1] == command[1] && buffer[2] == 0x8A && buffer[3] == 0x78;
 
@@ -144,15 +176,8 @@ bool HarvbotRangefinder::setFrequency(HarvbotRangefinderFrequencies frequency)
 	return success;
 }
 
-int HarvbotRangefinder::getResponse(unsigned char* buffer)
+int HarvbotRangefinder::getResponse(unsigned char* buffer, int dataAvailable)
 {
-	int dataAvailable = serialDataAvail(this->m_deviceHandle);
-	if (dataAvailable <= 0)
-	{
-		return -1;
-	}
-
-	buffer = new unsigned char[dataAvailable];
 	for (int i = 0; i < dataAvailable; i++)
 	{
 		buffer[i] = serialGetchar(this->m_deviceHandle);

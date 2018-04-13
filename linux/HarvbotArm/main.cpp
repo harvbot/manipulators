@@ -54,10 +54,10 @@ int main()
 
 	printf("hello from HarvbotArm!\n");
 
-	arm = HarvbotArmFactory::CreateArm2();
+	//arm = HarvbotArmFactory::CreateArm2();
 	rangefinder = new HarvbotRangefinder("/dev/ttyUSB0", 9600);
 
-	arm->goToStartPosition();
+	//arm->goToStartPosition();
 
 	//VideoCapture camera(0);   //0 is the id of video device.0 if you have only one camera.
 	//camera.set(CV_CAP_PROP_BUFFERSIZE, 3); // internal buffer will now store only 3 frames
@@ -67,7 +67,7 @@ int main()
 	//}
 
 	//std::thread(movingThread).detach();
-	//std::thread(measureDistanceThread).detach();
+	std::thread(measureDistanceThread).detach();
 
 	//while (true) {
 	//	
