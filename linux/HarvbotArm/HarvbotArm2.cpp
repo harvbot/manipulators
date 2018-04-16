@@ -25,17 +25,23 @@ HarvbotArm2::~HarvbotArm2() {}
 
 void HarvbotArm2::goToStartPosition()
 {
-	((HarvbotArmCircleNode*)this->nodes[0])->goToStartPosition();
-	((HarvbotArmCircleNode*)this->nodes[2])->goToStartPosition();
-	((HarvbotArmCircleNode*)this->nodes[1])->goToStartPosition();
 	((HarvbotArmScrewNode*)this->nodes[3])->goToStartPosition();
-
-	((HarvbotArmCircleNode*)this->nodes[0])->moveTo(radians(0));
-	((HarvbotArmCircleNode*)this->nodes[1])->moveTo(radians(90.0f));
-	((HarvbotArmScrewNode*)this->nodes[3])->revolution(true);
+	((HarvbotArmScrewNode*)this->nodes[3])->close();
 	runToPosition();
 
-	((HarvbotArmCircleNode*)this->nodes[2])->moveTo(radians(50.0f));
+	//((HarvbotArmCircleNode*)this->nodes[0])->goToStartPosition();
+	((HarvbotArmCircleNode*)this->nodes[2])->goToStartPosition();
+	((HarvbotArmCircleNode*)this->nodes[1])->goToStartPosition();
+
+	//((HarvbotArmCircleNode*)this->nodes[0])->moveTo(radians(0));
+	((HarvbotArmCircleNode*)this->nodes[1])->moveTo(radians(90.0f));
+	runToPosition();
+
+	((HarvbotArmCircleNode*)this->nodes[2])->moveTo(radians(1.0f));
+	runToPosition();
+
+	((HarvbotArmScrewNode*)this->nodes[3])->goToStartPosition();
+	((HarvbotArmScrewNode*)this->nodes[3])->revolution(true);
 	runToPosition();
 }
 
@@ -108,7 +114,7 @@ bool HarvbotArm2::pickObject(float distanceToObject)
 	HarvbotPoint currentPos = getPointerCoords();
 
 	float xElbow = currentPos.x;
-	float zElbow = currentPos.y;
+	float zElbow = currentPos.z;
 
 	float xClaw, zClaw;
 
