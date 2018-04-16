@@ -31,15 +31,8 @@
 
 #define PI 3.14159265
 
-float radians(float x)
-{
-	return PI * (x / 180);
-}
-
-float degrees(float x)
-{
-	return x * 180 / PI;
-}
+#define radians(x) PI * (x / 180.0)
+#define degrees(x) x * 180.0 / PI
 
 enum HarvbotArmNodeIdentifiers
 {

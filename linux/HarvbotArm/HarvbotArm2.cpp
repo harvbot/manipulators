@@ -16,10 +16,9 @@ HarvbotArm2::HarvbotArm2()
 	this->nodes = new HarvbotArmNode*[4];
 
 	this->nodes[0] = new HarvbotArmStepperCircleNode(Bedplate, HARVBOT_ARM_SX_STEP, HARVBOT_ARM_SX_DIR, HARVBOT_ARM_SX_END, 3200, radians(0), radians(-180), radians(180), 200, HARVBOT_ARM_SX_RATIO);
-	this->nodes[1] = new HarvbotArmStepperCircleNode(Shoulder, HARVBOT_ARM_SY_STEP, HARVBOT_ARM_SY_DIR, HARVBOT_ARM_SY_END, 2400, radians(0), radians(85), radians(180), 200, HARVBOT_ARM_SY_RATIO);
-	this->nodes[2] = new HarvbotArmStepperCircleNode(Elbow, HARVBOT_ARM_SZ_STEP, HARVBOT_ARM_SZ_DIR, HARVBOT_ARM_SZ_END, 800, radians(0), radians(85), radians(90), 200, HARVBOT_ARM_SZ_RATIO);
+	this->nodes[1] = new HarvbotArmStepperCircleNode(Shoulder, HARVBOT_ARM_SY_STEP, HARVBOT_ARM_SY_DIR, HARVBOT_ARM_SY_END, 2400, radians(0), radians(0), radians(180), 200, HARVBOT_ARM_SY_RATIO);
+	this->nodes[2] = new HarvbotArmStepperCircleNode(Elbow, HARVBOT_ARM_SZ_STEP, HARVBOT_ARM_SZ_DIR, HARVBOT_ARM_SZ_END, 800, radians(0), radians(0), radians(90), 200, HARVBOT_ARM_SZ_RATIO);
 	this->nodes[3] = new HarvbotArmStepperScrewNode(Claw, HARVBOT_ARM_SJ_STEP, HARVBOT_ARM_SJ_DIR, HARVBOT_ARM_SJ_END, 1600, 0, 200, 8, HARVBOT_ARM_SJ_RATIO);
-	//this->goToStartPosition();
 }
 
 HarvbotArm2::~HarvbotArm2() {}
@@ -31,9 +30,9 @@ void HarvbotArm2::goToStartPosition()
 	((HarvbotArmCircleNode*)this->nodes[1])->goToStartPosition();
 	((HarvbotArmScrewNode*)this->nodes[3])->goToStartPosition();
 
-	((HarvbotArmCircleNode*)this->nodes[0])->move(0);
-	((HarvbotArmCircleNode*)this->nodes[1])->move(60);
-	((HarvbotArmCircleNode*)this->nodes[2])->move(25);
+	((HarvbotArmCircleNode*)this->nodes[0])->moveTo(radians(0));
+	((HarvbotArmCircleNode*)this->nodes[1])->moveTo(radians(70));
+	((HarvbotArmCircleNode*)this->nodes[2])->moveTo(radians(0));
 
 	runToPosition();
 }
@@ -135,10 +134,10 @@ bool HarvbotArm2::pickObject(float distanceToObject)
 void HarvbotArm2::printNodesPositions()
 {
 	printf("Bedplate: %f, Shoulder: %f, Elbow: %f, Claw: %f\n",
-		((HarvbotArmCircleNode*)this->nodes[0])->currentPosition(),
-		((HarvbotArmCircleNode*)this->nodes[1])->currentPosition(),
-		((HarvbotArmCircleNode*)this->nodes[2])->currentPosition(),
-		((HarvbotArmScrewNode*)this->nodes[3])->currentPosition());
+		degrees(((HarvbotArmCircleNode*)this->nodes[0])->currentPosition()),
+		degrees(((HarvbotArmCircleNode*)this->nodes[1])->currentPosition()),
+		degrees(((HarvbotArmCircleNode*)this->nodes[2])->currentPosition()),
+		degrees(((HarvbotArmScrewNode*)this->nodes[3])->currentPosition()));
 }
 
 void HarvbotArm2::printPointerPositions()

@@ -81,9 +81,13 @@ void HarvbotArmStepperCircleNode::goToStartPosition()
 {
 	do
 	{
-		move(-1);
+		int steps = round(-1 * this->m_maxStepCount * this->m_reductorGear / (2.0 * PI));
+		this->stepper->move(steps);
+
 		run();
 	} while (!this->stepper->isTerminated());
+
+	setCurrentPosition(getMinPos());
 }
 
 float HarvbotArmStepperCircleNode::getAnglePerStep()

@@ -55,7 +55,7 @@ class HarvbotArm {
 
 		virtual HarvbotPoint getPointerCoords() = 0;
 
-		virtual bool setPointerCoords(HarvbotPoint point);
+		virtual bool setPointerCoords(HarvbotPoint point) = 0;
 
 		virtual bool pickObject(float distanceToObject) = 0;
 

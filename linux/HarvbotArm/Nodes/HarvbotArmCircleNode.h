@@ -16,6 +16,10 @@ class HarvbotArmCircleNode : public HarvbotArmNode {
 
 		HarvbotArmNodeTypes getType();
 
+		virtual float getMinPos();
+
+		virtual float getMaxPos();
+
 		virtual float currentPosition();
 
 		virtual float move(float pos);

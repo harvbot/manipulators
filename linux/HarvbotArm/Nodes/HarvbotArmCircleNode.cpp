@@ -13,6 +13,16 @@ HarvbotArmCircleNode::HarvbotArmCircleNode(HarvbotArmNodeIdentifiers identifier,
 HarvbotArmCircleNode::~HarvbotArmCircleNode(){
 }
 
+float HarvbotArmCircleNode::getMinPos()
+{
+	return m_minPos;
+}
+
+float HarvbotArmCircleNode::getMaxPos()
+{
+	return m_maxPos;
+}
+
 HarvbotArmNodeTypes HarvbotArmCircleNode::getType()
 {
 	return Circle;
