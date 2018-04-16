@@ -94,3 +94,12 @@ void HarvbotArm::stop()
 		this->nodes[i]->stop();
 	}
 }
+
+bool HarvbotArm::setPointerCoords2(float x, float y, float z)
+{
+	HarvbotPoint p;
+	p.x = x;
+	p.y = y;
+	p.z = z;
+	return setPointerCoords(p);
+}
