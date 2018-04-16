@@ -31,9 +31,9 @@ float HarvbotArmStepperScrewNode::rotate(float steps)
 	{
 		destinationPos = 0;
 	}
-	else if (this->currentPosition() + steps >= this->m_maxFullRotaionCount * this->m_maxStepsCount * this->m_reductorGear)
+	else if (this->currentPosition() + steps >= this->m_maxRevolutionsCount * this->m_stepsPerRevolution * this->m_reductorGear)
 	{
-		destinationPos = this->m_maxFullRotaionCount * this->m_maxStepsCount * this->m_reductorGear;
+		destinationPos = this->m_maxRevolutionsCount * this->m_stepsPerRevolution * this->m_reductorGear;
 	}
 	else
 	{

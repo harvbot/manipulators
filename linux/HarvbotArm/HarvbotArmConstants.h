@@ -1,6 +1,8 @@
 #ifndef HarvbotArmConstants_H_
 #define HarvbotArmConstants_H_
 
+#include <math.h>
+
 // Max full rotation
 #define HARVBOT_ARM_CLAW_MAX_FULL_ROTATION 28
 
@@ -29,10 +31,8 @@
 #define HARVBOT_ARM_2_SHOULDER      135.0
 #define HARVBOT_ARM_2_ELBOW			120.0
 
-#define PI 3.14159265
-
-#define radians(x) PI * (x / 180.0)
-#define degrees(x) x * 180.0 / PI
+#define radians(x) M_PI * (x / 180.0)
+#define degrees(x) x * 180.0 / M_PI
 
 enum HarvbotArmNodeIdentifiers
 {

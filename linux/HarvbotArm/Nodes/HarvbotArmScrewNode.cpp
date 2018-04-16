@@ -2,12 +2,12 @@
 #include "HarvbotArmNode.h"
 #include "HarvbotArmScrewNode.h"
 
-HarvbotArmScrewNode::HarvbotArmScrewNode(HarvbotArmNodeIdentifiers identifier, float pos, int maxStepsCount, int maxFullRotaionCount, int reductorGear) 
+HarvbotArmScrewNode::HarvbotArmScrewNode(HarvbotArmNodeIdentifiers identifier, float pos, int stepsPerRevolution, int maxRevolutionsCount, int reductorGear)
 	: HarvbotArmNode(identifier)
 {
 	this->m_pos = pos;
-	this->m_maxStepsCount = maxStepsCount;
-	this->m_maxFullRotaionCount = maxFullRotaionCount;
+	this->m_stepsPerRevolution = stepsPerRevolution;
+	this->m_maxRevolutionsCount = maxRevolutionsCount;
 	this->m_reductorGear = reductorGear;
 }
 
@@ -21,9 +21,9 @@ float HarvbotArmScrewNode::rotate(float steps)
 	{
 		this->m_pos = 0;
 	}
-	else if(this->m_pos + steps >= this->m_maxFullRotaionCount * this->m_maxStepsCount * this->m_reductorGear)
+	else if(this->m_pos + steps >= this->m_maxRevolutionsCount * this->m_stepsPerRevolution * this->m_reductorGear)
 	{
-		this->m_pos = this->m_maxFullRotaionCount * this->m_maxStepsCount * this->m_reductorGear;
+		this->m_pos = this->m_maxRevolutionsCount * this->m_stepsPerRevolution * this->m_reductorGear;
 	}
 	else
 	{
@@ -33,25 +33,25 @@ float HarvbotArmScrewNode::rotate(float steps)
 	return this->m_pos;
 }
 
-float HarvbotArmScrewNode::revolution(int direction) {
+float HarvbotArmScrewNode::revolution(bool direction) {
 
-	if(direction == 1)
+	if(direction)
 	{
-		return this->rotate(this->m_maxStepsCount * this->m_reductorGear);
+		return this->rotate(this->m_stepsPerRevolution * this->m_reductorGear);
 	}
 	else
 	{
-		return this->rotate(-this->m_maxStepsCount * this->m_reductorGear);
+		return this->rotate(-this->m_stepsPerRevolution * this->m_reductorGear);
 	}
 }
 
 float HarvbotArmScrewNode::getCurrentAngle()
 {
 	// Calculate the number of revolutions which were done on screw.
-	int fullRotation = round(this->m_pos) / (this->m_maxStepsCount * this->m_reductorGear);
+	int fullRotation = round(this->m_pos) / (this->m_stepsPerRevolution * this->m_reductorGear);
 	
 	// Get the position on current revolution.
-	float pos = this->m_pos - fullRotation * this->m_maxStepsCount * this->m_reductorGear;
+	float pos = this->m_pos - fullRotation * this->m_stepsPerRevolution * this->m_reductorGear;
 
 	float anglePerStep = this->getAnglePerStep();
 
@@ -61,7 +61,7 @@ float HarvbotArmScrewNode::getCurrentAngle()
 
 float HarvbotArmScrewNode::getAnglePerStep()
 {
-	return 360.0 / (this->m_maxStepsCount  * this->m_reductorGear);
+	return ((2.0*M_PI) / (this->m_stepsPerRevolution * this->m_reductorGear));
 }
 
 HarvbotArmNodeTypes HarvbotArmScrewNode::getType()
@@ -79,4 +79,14 @@ float HarvbotArmScrewNode::setCurrentPosition(float pos)
 	this->m_pos = pos;
 
 	return this->m_pos;
+}
+
+void HarvbotArmScrewNode::open()
+{
+	rotate(-currentPosition());
+}
+
+void HarvbotArmScrewNode::close()
+{
+	rotate(m_maxRevolutionsCount * this->m_stepsPerRevolution * this->m_reductorGear - currentPosition());
 }

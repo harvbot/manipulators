@@ -2,8 +2,8 @@
 #define HarvbotArmStepperScrewNode_H_
 
 #include "../Steppers/HarvbotTerminableStepper.h"
-#include "HarvbotArmScrewNode.h"
 #include "../HarvbotArmConstants.h"
+#include "HarvbotArmScrewNode.h"
 
 class  HarvbotArmStepperScrewNode : public HarvbotArmScrewNode {
 	private:

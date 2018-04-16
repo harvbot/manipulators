@@ -18,20 +18,21 @@ HarvbotArm2::HarvbotArm2()
 	this->nodes[0] = new HarvbotArmStepperCircleNode(Bedplate, HARVBOT_ARM_SX_STEP, HARVBOT_ARM_SX_DIR, HARVBOT_ARM_SX_END, 3200, radians(0), radians(-180), radians(180), 200, HARVBOT_ARM_SX_RATIO);
 	this->nodes[1] = new HarvbotArmStepperCircleNode(Shoulder, HARVBOT_ARM_SY_STEP, HARVBOT_ARM_SY_DIR, HARVBOT_ARM_SY_END, 2200, radians(20), radians(20), radians(180), 200, HARVBOT_ARM_SY_RATIO);
 	this->nodes[2] = new HarvbotArmStepperCircleNode(Elbow, HARVBOT_ARM_SZ_STEP, HARVBOT_ARM_SZ_DIR, HARVBOT_ARM_SZ_END, 800, radians(0), radians(0), radians(90), 200, HARVBOT_ARM_SZ_RATIO);
-	this->nodes[3] = new HarvbotArmStepperScrewNode(Claw, HARVBOT_ARM_SJ_STEP, HARVBOT_ARM_SJ_DIR, HARVBOT_ARM_SJ_END, 1600, 0, 200, 8, HARVBOT_ARM_SJ_RATIO);
+	this->nodes[3] = new HarvbotArmStepperScrewNode(Claw, HARVBOT_ARM_SJ_STEP, HARVBOT_ARM_SJ_DIR, HARVBOT_ARM_SJ_END, 1600, 0, 200, 7, HARVBOT_ARM_SJ_RATIO);
 }
 
 HarvbotArm2::~HarvbotArm2() {}
 
 void HarvbotArm2::goToStartPosition()
 {
-	//((HarvbotArmCircleNode*)this->nodes[0])->goToStartPosition();
+	((HarvbotArmCircleNode*)this->nodes[0])->goToStartPosition();
 	((HarvbotArmCircleNode*)this->nodes[2])->goToStartPosition();
 	((HarvbotArmCircleNode*)this->nodes[1])->goToStartPosition();
-	//((HarvbotArmScrewNode*)this->nodes[3])->goToStartPosition();
+	((HarvbotArmScrewNode*)this->nodes[3])->goToStartPosition();
 
-	//((HarvbotArmCircleNode*)this->nodes[0])->moveTo(radians(0));
+	((HarvbotArmCircleNode*)this->nodes[0])->moveTo(radians(0));
 	((HarvbotArmCircleNode*)this->nodes[1])->moveTo(radians(90.0f));
+	((HarvbotArmScrewNode*)this->nodes[3])->revolution(true);
 	runToPosition();
 
 	((HarvbotArmCircleNode*)this->nodes[2])->moveTo(radians(50.0f));
@@ -48,8 +49,8 @@ HarvbotPoint HarvbotArm2::getPointerCoords()
 	HarvbotPoint pointer;
 
 	float q1 = this->getBedplate()->currentPosition();
-	float q2 = PI - this->getShoulder()->currentPosition();
-	float q3 = PI - (PI /2 - this->getElbow()->currentPosition());
+	float q2 = M_PI - this->getShoulder()->currentPosition();
+	float q3 = M_PI - (M_PI /2 - this->getElbow()->currentPosition());
 
 	float a1 = HARVBOT_ARM_2_BEDPLATE;
 	float a2 = HARVBOT_ARM_2_SHOULDER;
@@ -79,14 +80,14 @@ bool HarvbotArm2::setPointerCoords(HarvbotPoint point)
 	x = x / cos(q1);
 
 	float b = sqrt(x*x + z * z);
-	float q2 = PI - asin(x/b) - asin((a2*a2 + b*b - a3*a3) / (2 * b*a2));
-	float q3 = asin(((a2*a2) + (a3*a3) - (b*b)) / (2 * a2*a3));
+	float q2 = M_PI - asin(x/b) - asin((a2*a2 + b*b - a3*a3) / (2 * b*a2));
+	float q3 = M_PI_2 + asin(((a2*a2) + (a3*a3) - (b*b)) / (2 * a2*a3));
 
 	this->getBedplate()->moveTo(q1);
-	this->getShoulder()->moveTo(PI-q2);
+	this->getShoulder()->moveTo(M_PI - q2);
 	runToPosition();
 
-	this->getElbow()->moveTo(q3);
+	this->getElbow()->moveTo(q3 - M_PI_2);
 	runToPosition();
 }
 
@@ -130,6 +131,12 @@ bool HarvbotArm2::pickObject(float distanceToObject)
 		p.z = zClaw;
 
 		setPointerCoords(p);
+
+		runToPosition();
+
+		((HarvbotArmScrewNode*)this->nodes[3])->close();
+
+		runToPosition();
 	}
 }
 

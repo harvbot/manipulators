@@ -8,8 +8,8 @@
 class HarvbotArmScrewNode : public HarvbotArmNode {
 	protected: 
 		float m_pos;
-		int m_maxStepsCount;
-		int m_maxFullRotaionCount;
+		int m_stepsPerRevolution;
+		int m_maxRevolutionsCount;
         int m_reductorGear;
 
 		virtual float setCurrentPosition(float pos);
@@ -17,13 +17,17 @@ class HarvbotArmScrewNode : public HarvbotArmNode {
 		HarvbotArmScrewNode(
             HarvbotArmNodeIdentifiers identifier, 
             float pos, 
-            int maxStepsCount, 
-            int maxFullRotaionCount=HARVBOT_ARM_CLAW_MAX_FULL_ROTATION,
+            int stepsPerRevolution,
+            int maxRevolutionsCount=HARVBOT_ARM_CLAW_MAX_FULL_ROTATION,
             int reductorGear=1);
 
 		~HarvbotArmScrewNode();
 
         HarvbotArmNodeTypes getType();
+
+		virtual void open();
+
+		virtual void close();
 
         /**
             Rotates the screew on specified number of steps.
@@ -34,7 +38,7 @@ class HarvbotArmScrewNode : public HarvbotArmNode {
         /**
             Makes one whole revolution in specified direction.
         */
-		virtual float revolution(int direction);
+		virtual float revolution(bool direction);
 
 		/**
 		Gets the current angle.
