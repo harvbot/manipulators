@@ -31,7 +31,7 @@ void HarvbotArm2::goToStartPosition()
 	//((HarvbotArmScrewNode*)this->nodes[3])->goToStartPosition();
 
 	//((HarvbotArmCircleNode*)this->nodes[0])->moveTo(radians(0));
-	((HarvbotArmCircleNode*)this->nodes[1])->moveTo(radians(10.0f));
+	((HarvbotArmCircleNode*)this->nodes[1])->moveTo(radians(90.0f));
 	runToPosition();
 
 	((HarvbotArmCircleNode*)this->nodes[2])->moveTo(radians(50.0f));
