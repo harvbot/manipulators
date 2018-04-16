@@ -101,15 +101,17 @@ bool HarvbotArm2::pickObject(float distanceToObject)
 {
 	if (distanceToObject == 0) return false;
 
-	float alpha = this->getShoulder()->currentPosition();
-	float betta = this->getElbow()->currentPosition();
-	float a = HARVBOT_ARM_2_BEDPLATE;
-	float b = HARVBOT_ARM_2_SHOULDER;
-	float c = HARVBOT_ARM_2_ELBOW;
+	float q1 = this->getBedplate()->currentPosition();
+	float q2 = M_PI - this->getShoulder()->currentPosition();
+	float q3 = M_PI - (M_PI / 2 - this->getElbow()->currentPosition());
+
+	float a1 = HARVBOT_ARM_2_BEDPLATE;
+	float a2 = HARVBOT_ARM_2_SHOULDER;
+	float a3 = HARVBOT_ARM_2_ELBOW;
 
 	float xShoulder, zShoulder;
-	xShoulder = b * cos(alpha + betta);
-	zShoulder = b * sin(alpha + betta);
+	xShoulder = a2 * cos(q2);
+	zShoulder = a2 * sin(q2) + a1;
 
 	HarvbotPoint currentPos = getPointerCoords();
 
@@ -124,9 +126,18 @@ bool HarvbotArm2::pickObject(float distanceToObject)
 	}
 	else
 	{
-		float cost = c / (xElbow - xShoulder);
-		float sint = c / (zElbow - zShoulder);
+		float cost = 0;
+		if (round(xElbow - xShoulder) != 0)
+		{
+			cost = a3 / (xElbow - xShoulder);
+		}
 
+		float sint = 0;
+		if(round(zElbow - zShoulder) != 0)
+		{ 
+			sint = a3 / (zElbow - zShoulder);
+		}
+		
 		// target position of claw
 		xClaw = xElbow + distanceToObject * cost;
 		zClaw = zElbow + distanceToObject * sint;
@@ -134,7 +145,7 @@ bool HarvbotArm2::pickObject(float distanceToObject)
 		HarvbotPoint p;
 		p.x = xClaw;
 		p.y = currentPos.y;
-		p.z = zClaw;
+		p.z = currentPos.z;
 
 		setPointerCoords(p);
 

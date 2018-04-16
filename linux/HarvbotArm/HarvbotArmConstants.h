@@ -34,6 +34,8 @@
 #define radians(x) M_PI * (x / 180.0)
 #define degrees(x) x * 180.0 / M_PI
 
+#define round4(x) (x * 10000.0) / 10000.0
+
 enum HarvbotArmNodeIdentifiers
 {
     Undefined = -1,

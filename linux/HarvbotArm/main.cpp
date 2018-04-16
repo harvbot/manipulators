@@ -61,9 +61,9 @@ int main()
 
 	arm->goToStartPosition();
 
-	arm->setPointerCoords2(120.0f, 0.0f, 305.0f);
+	//arm->setPointerCoords2(120.0f, 0.0f, 305.0f);
 
-	arm->pickObject(100);
+	arm->pickObject(50);
 
 	//VideoCapture camera(0);   //0 is the id of video device.0 if you have only one camera.
 	//camera.set(CV_CAP_PROP_BUFFERSIZE, 3); // internal buffer will now store only 3 frames
