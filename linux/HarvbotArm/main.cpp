@@ -54,8 +54,10 @@ int main()
 
 	printf("hello from HarvbotArm!\n");
 
-	//arm = HarvbotArmFactory::CreateArm2();
 	rangefinder = new HarvbotRangefinder("/dev/ttyUSB0", 9600);
+
+	arm = HarvbotArmFactory::CreateArm2();
+	arm->pickObject();
 
 	//arm->goToStartPosition();
 
@@ -67,7 +69,7 @@ int main()
 	//}
 
 	//std::thread(movingThread).detach();
-	std::thread(measureDistanceThread).detach();
+	//std::thread(measureDistanceThread).detach();
 
 	//while (true) {
 	//	

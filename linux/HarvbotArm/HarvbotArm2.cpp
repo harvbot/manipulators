@@ -47,105 +47,88 @@ HarvbotPoint HarvbotArm2::getPointerCoords()
 {
 	HarvbotPoint pointer;
 
-	float alpha = this->getShoulder()->currentPosition() *  PI / 180.0;
-	float betta = this->getElbow()->currentPosition() *  PI / 180.0;
-	float gamma = this->getBedplate()->currentPosition() *  PI / 180.0;
-	float a = HARVBOT_ARM_2_BEDPLATE;
-	float b = HARVBOT_ARM_2_SHOULDER;
-	float c = HARVBOT_ARM_2_ELBOW;
+	float q1 = this->getBedplate()->currentPosition();
+	float q2 = this->getShoulder()->currentPosition();
+	float q3 = PI - this->getElbow()->currentPosition();
 
-	float t = (c*cos(betta) - b) / cos(alpha);
-	float m = pow(b, 2) + pow(c, 2) - 2 * b * c * cos(betta);
-	float d = 4 * (pow(m, 2) / pow(cos(alpha), 2) - pow(t, 2));
+	float a1 = HARVBOT_ARM_2_BEDPLATE;
+	float a2 = HARVBOT_ARM_2_SHOULDER;
+	float a3 = HARVBOT_ARM_2_ELBOW;
 
-	pointer.x = (-2 * t * tan(alpha) + sqrt(d))*pow(cos(alpha), 2) / 2.0;
-	pointer.y = pointer.x * tan(alpha) + a + t;
-	pointer.z = pointer.x * sin(gamma);
+	pointer.x = (a2*cos(q2) + a3*cos(q2-q3))*cos(q1);
+	pointer.y = (a2*sin(q2) + a3*sin(q2-q3))*sin(q1);
+	pointer.z = a2*sin(q2) + a3*sin(q2-q3) + a1;
 
 	return pointer;
+}
+
+bool HarvbotArm2::setPointerCoords(HarvbotPoint point)
+{
+	float x = point.x;
+	float y = point.y;
+	float z = point.z;
+
+	float a1 = HARVBOT_ARM_2_BEDPLATE;
+	float a2 = HARVBOT_ARM_2_SHOULDER;
+	float a3 = HARVBOT_ARM_2_ELBOW;
+
+	z = z - a1;
+
+	float q1 = asin(y / z);
+
+	x = x / cos(q1);
+
+	float b = sqrt(x*x + z * z);
+	float q2 = PI - asin(x/b) - asin((a2*a2 + b*b - a3*a3) / (2 * b*a2));
+	float q3 = PI / 2.0 + asin(((a2*a2) + (a3*a3) - (b*b)) / (2 * a2*a3));
+
+	this->getBedplate()->move(q1);
+	this->getShoulder()->move(q2);
+	this->getElbow()->move(PI-q3);
+
+	runToPosition();
 }
 
 bool HarvbotArm2::pickObject(float distanceToObject)
 {
 	if (distanceToObject == 0) return false;
 
-	float alpha = this->getShoulder()->currentPosition() *  PI / 180.0;
-	float betta = this->getElbow()->currentPosition() *  PI / 180.0;
+	float alpha = this->getShoulder()->currentPosition();
+	float betta = this->getElbow()->currentPosition();
 	float a = HARVBOT_ARM_2_BEDPLATE;
 	float b = HARVBOT_ARM_2_SHOULDER;
 	float c = HARVBOT_ARM_2_ELBOW;
 
-	float xC = HARVBOT_ARM_2_SHOULDER * sin(alpha);
-	float yC = HARVBOT_ARM_2_BEDPLATE - HARVBOT_ARM_2_SHOULDER*cos(alpha);
+	float xShoulder, zShoulder;
+	xShoulder = b * cos(alpha + betta);
+	zShoulder = b * sin(alpha + betta);
 
-	HarvbotPoint dPoint = getPointerCoords();
-	float xD = dPoint.x;
-	float yD = dPoint.y;
+	HarvbotPoint currentPos = getPointerCoords();
 
-	float xE, yE;
+	float xElbow = currentPos.x;
+	float zElbow = currentPos.y;
 
-	if (xC == xD)
+	float xClaw, zClaw;
+
+	if (zElbow == zShoulder)
 	{
-		xE = xD;
-		if (yD > yC)
-		{
-			yE = yD + distanceToObject;
-		}
-		else
-		{
-			yE = yC + distanceToObject;
-		}
+		xClaw = xElbow + distanceToObject;
 	}
 	else
 	{
-		float k = (yD - yC) / (xD - xC);
-		float s = k * xC - yC;
-		float p = 1 + k * k;
-		float q = -2 * (xD + k * (s + yD));
+		float cost = c / (xElbow - xShoulder);
+		float sint = c / (zElbow - zShoulder);
 
-		float r = pow(xD, 2) + pow((s + yD), 2) - pow(distanceToObject, 2);
-		float d = pow(q, 2) - 4 * p*r;
+		// target position of claw
+		xClaw = xElbow + distanceToObject * cost;
+		zClaw = zElbow + distanceToObject * sint;
 
-		float xE1 = (-q + sqrt(d)) / (2 * p);
-		float xE2 = (-q - sqrt(d)) / (2 * p);
+		HarvbotPoint p;
+		p.x = xClaw;
+		p.y = currentPos.y;
+		p.z = zClaw;
 
-		if (xE1 >= xD && xD >= xC)
-		{
-			xE = xE1;
-		}
-		else if (xE1 <= xD && xD <= xC)
-		{
-			xE = xE1;
-		}
-		else if (xE2 >= xD && xD >= xC)
-		{
-			xE = xE2;
-		}
-		else if (xE2 <= xD && xD <= xC)
-		{
-			xE = xE2;
-		}
-
-		yE = k * xE - s;
-
-		float t2 = pow(c, 2) - pow(xE, 2) - pow(b, 2) - pow(yE, 2) + 2 * a * yE - pow(a, 2);
-		float p2 = pow((yE - a), 2) + pow(xE, 2);
-		float q2 = -t2 * (yE - a) / b;
-
-		float r2 = pow(t2, 2) / pow(4 * b, 2) - pow(xE, 2);
-		float d2 = pow(q2, 2) - 4 * p2*r2;
-
-		float targetBetta = acos((pow(b, 2) + pow(c, 2) - pow(a, 2) + 2 * a*yE - pow(xE, 2) - pow(yE, 2)) / (2 * b*c));
-		
-		float targetAlpha1 = acos((-q2 - sqrt(d2)) / (2 * p2));
-		float targetAlpha2 = acos((-q2 + sqrt(d2)) / (2 * p2));
-
-		float targetAlpha = abs(targetAlpha1 - alpha) < abs(targetAlpha2 - alpha) ? targetAlpha1 : targetAlpha2;
-
-		this->getShoulder()->moveTo(targetAlpha);
-		this->getElbow()->moveTo(targetBetta);
-
-		this->runToPosition();
+		setPointerCoords(p);
 	}
 }
 
