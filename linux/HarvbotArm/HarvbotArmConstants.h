@@ -26,7 +26,7 @@
 #define HARVBOT_ARM_SJ_RATIO        1 * 4
 
 #define HARVBOT_ARM_2_BEDPLATE      170.0
-#define HARVBOT_ARM_2_SHOULDER      170.0
+#define HARVBOT_ARM_2_SHOULDER      135.0
 #define HARVBOT_ARM_2_ELBOW			120.0
 
 #define PI 3.14159265
