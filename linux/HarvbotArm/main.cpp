@@ -15,9 +15,10 @@ using namespace std;
 #define CAMERA_FRAME_WIDTH 640
 #define CAMERA_FRAME_HEIGHT 480
 #define MIN_CONTOUR_SIZE 60
-#define CENTERING_THRESHOLD 10
+#define CENTERING_THRESHOLD 15
 
 bool exitFromApp = false;
+bool pickInProgress = false;
 float distanceToObject = 0;
 HarvbotArm2* arm;
 HarvbotRangefinder* rangefinder;
@@ -28,8 +29,15 @@ void movingThread()
 	while (!exitFromApp)
 	{
 		locker.lock();
-		arm->runToPosition();
-		//arm->printPointerPositions();
+		if (pickInProgress)
+		{
+			arm->pickObject(distanceToObject);
+			pickInProgress = false;
+		}
+		else
+		{
+			arm->runToPosition();
+		}
 		locker.unlock();
 	}
 }
@@ -42,7 +50,7 @@ void measureDistanceThread()
 		float distanceValue = rangefinder->read();
 		if (distanceValue != -1)
 		{
-			distanceToObject = distanceValue;
+			distanceToObject = distanceValue * 1000;
 			printf("Distance to object: %f\n", distanceToObject);
 		}
 	}
@@ -57,118 +65,120 @@ int main()
 	rangefinder = new HarvbotRangefinder("/dev/ttyUSB0", 9600);
 
 	arm = HarvbotArmFactory::CreateArm2();
-	//arm->pickObject();
+	//arm->goToStartPosition();
 
-	arm->goToStartPosition();
+	VideoCapture camera(0);   //0 is the id of video device.0 if you have only one camera.
+	camera.set(CV_CAP_PROP_BUFFERSIZE, 3); // internal buffer will now store only 3 frames
 
-	//arm->setPointerCoords2(120.0f, 0.0f, 305.0f);
+	if (!camera.isOpened()) { //check if video device has been initialised
+		printf("Cannot open camera\n");
+	}
 
-	arm->pickObject(50);
+	std::thread(movingThread).detach();
+	std::thread(measureDistanceThread).detach();
 
-	//VideoCapture camera(0);   //0 is the id of video device.0 if you have only one camera.
-	//camera.set(CV_CAP_PROP_BUFFERSIZE, 3); // internal buffer will now store only 3 frames
+	while (true) {
+		
+		Mat cameraFrame;
+		camera.read(cameraFrame);
 
-	//if (!camera.isOpened()) { //check if video device has been initialised
-	//	printf("Cannot open camera\n");
-	//}
+		Mat imgHSV;
+		cvtColor(cameraFrame, imgHSV, COLOR_BGR2HSV);
 
-	//std::thread(movingThread).detach();
-	//std::thread(measureDistanceThread).detach();
+		Mat imgThresholded;
+		inRange(imgHSV, Scalar(10, 70, 70), Scalar(20, 255, 255), imgThresholded);
 
-	//while (true) {
-	//	
-	//	Mat cameraFrame;
-	//	camera.read(cameraFrame);
+		vector<vector<Point>> contours;
+		vector<Vec4i> hierarchy;
+		findContours(imgThresholded,
+			contours,
+			hierarchy,
+			CV_RETR_TREE,
+			CV_CHAIN_APPROX_SIMPLE,
+			Point(0, 0));
 
-	//	Mat imgHSV;
-	//	cvtColor(cameraFrame, imgHSV, COLOR_BGR2HSV);
+		vector<vector<Point>> contours_poly(contours.size());
+		Rect whole;
+		for (int i = 0; i < contours.size(); i++)
+		{
+			approxPolyDP(Mat(contours[i]), contours_poly[i], 3, true);
+			Rect rect = boundingRect(Mat(contours_poly[i]));
+			if (rect.size().width > MIN_CONTOUR_SIZE && rect.size().height > MIN_CONTOUR_SIZE)
+			{
+				if (whole.size().width > 0 && whole.size().height > 0)
+				{
+					whole = whole | rect;
+				}
+				else
+				{
+					whole = rect;
+				}
+			}
+		}
 
-	//	Mat imgThresholded;
-	//	inRange(imgHSV, Scalar(10, 70, 70), Scalar(20, 255, 255), imgThresholded);
+		if (whole.size().width > MIN_CONTOUR_SIZE && whole.size().height > MIN_CONTOUR_SIZE)
+		{
+			rectangle(cameraFrame, whole.tl(), whole.br(), Scalar(0, 255, 0), 2, 8, 0);
 
-	//	vector<vector<Point>> contours;
-	//	vector<Vec4i> hierarchy;
-	//	findContours(imgThresholded,
-	//		contours,
-	//		hierarchy,
-	//		CV_RETR_TREE,
-	//		CV_CHAIN_APPROX_SIMPLE,
-	//		Point(0, 0));
+			char buffer[500];
+			sprintf(buffer, "Distance to object %f\n", distanceToObject);
+			putText(cameraFrame, buffer, Point(0, 25), FONT_HERSHEY_SIMPLEX, 0.5, Scalar(0, 255, 0), 2);
 
-	//	vector<vector<Point>> contours_poly(contours.size());
-	//	Rect whole;
-	//	for (int i = 0; i < contours.size(); i++)
-	//	{
-	//		approxPolyDP(Mat(contours[i]), contours_poly[i], 3, true);
-	//		Rect rect = boundingRect(Mat(contours_poly[i]));
-	//		if (rect.size().width > MIN_CONTOUR_SIZE && rect.size().height > MIN_CONTOUR_SIZE)
-	//		{
-	//			if (whole.size().width > 0 && whole.size().height > 0)
-	//			{
-	//				whole = whole | rect;
-	//			}
-	//			else
-	//			{
-	//				whole = rect;
-	//			}
-	//		}
-	//	}
+			int wholeCenterX = whole.x + whole.width / 2;
+			int wholeCenterY = whole.y + whole.height / 2;
 
-	//	if (whole.size().width > MIN_CONTOUR_SIZE && whole.size().height > MIN_CONTOUR_SIZE)
-	//	{
-	//		rectangle(cameraFrame, whole.tl(), whole.br(), Scalar(0, 255, 0), 2, 8, 0);
+			float diffCenterX = wholeCenterX - CAMERA_FRAME_WIDTH / 2;
+			float moveAngleX = 0;
+			if (diffCenterX < -CENTERING_THRESHOLD)
+			{
+				moveAngleX = radians(0.5);
+			}
+			if (diffCenterX > CENTERING_THRESHOLD)
+			{
+				moveAngleX = radians(-0.5);
+			}
 
-	//		char buffer[500];
-	//		sprintf(buffer, "Distance to object %f\n", distanceToObject);
-	//		putText(cameraFrame, buffer, Point(0, 25), FONT_HERSHEY_SIMPLEX, 0.5, Scalar(0, 255, 0), 2);
+			float diffCenterY = wholeCenterY - CAMERA_FRAME_HEIGHT / 2;
+			float moveAngleY = 0;
+			if (diffCenterY < -CENTERING_THRESHOLD)
+			{
+				moveAngleY = radians(-0.5);
+			}
+			if (diffCenterY > CENTERING_THRESHOLD)
+			{
+				moveAngleY = radians(0.5);
+			}
 
-	//		int wholeCenterX = whole.x + whole.width / 2;
-	//		int wholeCenterY = whole.y + whole.height / 2;
+			if (!pickInProgress)
+			{
+				locker.lock();
+				if (arm->getStatus() == Ready && !pickInProgress)
+				{
+					if (moveAngleY != 0)
+					{
+						arm->getElbow()->move(moveAngleY);
+					}
+					if (moveAngleX != 0)
+					{
+						arm->getBedplate()->move(moveAngleX);
+					}
 
-	//		float diffCenterX = wholeCenterX - CAMERA_FRAME_WIDTH / 2;
-	//		float moveAngleX = 0;
-	//		if (diffCenterX < -CENTERING_THRESHOLD)
-	//		{
-	//			moveAngleX = -0.5;
-	//		}
-	//		if (diffCenterX > CENTERING_THRESHOLD)
-	//		{
-	//			moveAngleX = 0.5;
-	//		}
+					if (moveAngleX == 0 && moveAngleY == 0)
+					{
+						pickInProgress = true;
+					}
+				}
+				locker.unlock();
+			}
+		}
 
-	//		float diffCenterY = wholeCenterY - CAMERA_FRAME_HEIGHT / 2;
-	//		float moveAngleY = 0;
-	//		if (diffCenterY < -CENTERING_THRESHOLD)
-	//		{
-	//			moveAngleY = -0.5;
-	//		}
-	//		if (diffCenterY > CENTERING_THRESHOLD)
-	//		{
-	//			moveAngleY = 0.5;
-	//		}
-
-	//		locker.lock();
-	//		if (arm->getStatus() == Ready)
-	//		{
-	//			if (moveAngleY != 0)
-	//			{
-	//				arm->getElbow()->move(moveAngleY);
-	//			}
-	//			if (moveAngleX != 0)
-	//			{
-	//				arm->getBedplate()->move(moveAngleX);
-	//			}
-	//		}
-	//		locker.unlock();
-	//	}
-
-	//	imshow("cam", cameraFrame);
-	//	if (waitKey(30) >= 0)
-	//	{
-	//		exitFromApp = true;
-	//		break;
-	//	}
-	//}
+		imshow("cam", cameraFrame);
+		if (waitKey(30) >= 0)
+		{
+			exitFromApp = true;
+			break;
+		}
+	}
 
 	rangefinder->stop();
 
