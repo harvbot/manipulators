@@ -32,6 +32,7 @@ void movingThread()
 		if (pickInProgress)
 		{
 			arm->pickObject(distanceToObject);
+			exitFromApp = true;
 			//pickInProgress = false;
 		}
 		else
@@ -65,6 +66,8 @@ int main()
 	rangefinder = new HarvbotRangefinder("/dev/ttyUSB0", 9600);
 
 	arm = HarvbotArmFactory::CreateArm2();
+	arm->getClaw()->goToStartPosition();
+	arm->runToPosition();
 	//arm->goToStartPosition();
 
 	VideoCapture camera(0);   //0 is the id of video device.0 if you have only one camera.
@@ -77,7 +80,7 @@ int main()
 	std::thread(movingThread).detach();
 	std::thread(measureDistanceThread).detach();
 
-	while (true) {
+	while (!exitFromApp) {
 		
 		Mat cameraFrame;
 		camera.read(cameraFrame);

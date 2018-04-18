@@ -28,7 +28,7 @@
 #define HARVBOT_ARM_SJ_RATIO        1 * 4
 
 #define HARVBOT_ARM_2_BEDPLATE      170.0
-#define HARVBOT_ARM_2_SHOULDER      135.0
+#define HARVBOT_ARM_2_SHOULDER      125.0
 #define HARVBOT_ARM_2_ELBOW			120.0
 
 #define radians(x) M_PI * (x / 180.0)
