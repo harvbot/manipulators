@@ -86,7 +86,7 @@ bool HarvbotArm2::setPointerCoords(HarvbotPoint point)
 	x = x / cos(q1);
 
 	float b = sqrt(x*x + z * z);
-	float q2 = M_PI - asin(x/b) - asin((a2*a2 + b*b - a3*a3) / (2 * b*a2));
+	float q2 = asin(x/b) - asin((a2*a2 + b*b - a3*a3) / (2 * b*a2));
 	float q3 = M_PI_2 + asin(((a2*a2) + (a3*a3) - (b*b)) / (2 * a2*a3));
 
 	this->getBedplate()->moveTo(q1);
@@ -151,7 +151,7 @@ bool HarvbotArm2::pickObject(float distanceToObject)
 
 		runToPosition();
 
-		((HarvbotArmScrewNode*)this->nodes[3])->close();
+		getClaw()->close();
 
 		runToPosition();
 	}

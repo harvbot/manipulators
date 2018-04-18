@@ -32,7 +32,7 @@ void movingThread()
 		if (pickInProgress)
 		{
 			arm->pickObject(distanceToObject);
-			pickInProgress = false;
+			//pickInProgress = false;
 		}
 		else
 		{
@@ -50,7 +50,7 @@ void measureDistanceThread()
 		float distanceValue = rangefinder->read();
 		if (distanceValue != -1)
 		{
-			distanceToObject = distanceValue * 1000;
+			distanceToObject = distanceValue * 100;
 			printf("Distance to object: %f\n", distanceToObject);
 		}
 	}
