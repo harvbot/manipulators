@@ -47,7 +47,7 @@ class HarvbotArm {
 		*/
 		HarvbotNodeStatuses getStatus();
 
-		bool run();
+		virtual bool run();
 
 		void runToPosition();
 

@@ -18,6 +18,8 @@ class HarvbotArm2 : public HarvbotArm {
 
 		void goToStartPosition();
 
+		bool run();
+
 		HarvbotPoint getPointerCoords();
 
 		bool setPointerCoords(HarvbotPoint point);

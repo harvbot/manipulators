@@ -66,7 +66,10 @@ int main()
 	arm = HarvbotArmFactory::CreateArm2();
 	//arm->getClaw()->goToStartPosition();
 	//arm->runToPosition();
-	arm->goToStartPosition();
+	//arm->goToStartPosition();
+	arm->getShoulder()->moveTo(90);
+	arm->getElbow()->moveTo(180);
+	arm->runToPosition();
 
 	VideoCapture camera(0);   //0 is the id of video device.0 if you have only one camera.
 	camera.set(CV_CAP_PROP_BUFFERSIZE, 3); // internal buffer will now store only 3 frames
