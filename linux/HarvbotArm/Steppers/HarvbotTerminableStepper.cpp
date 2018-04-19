@@ -3,48 +3,37 @@
 #include <stdio.h>
 #include <pthread.h>
 #include "HarvbotTerminableStepper.h"
+#include "Stoppers/HarvbotTerminalStopper.h"
 
 HarvbotTerminableStepper::HarvbotTerminableStepper(uint8_t stepPin, uint8_t dirPin, uint8_t terminalPin) : HarvbotStepper(stepPin, dirPin)
 {
-	_terminalPin = terminalPin;
-	_terminalPressed = false;
-	_terminalPressedDir = false;
-
-	if (_terminalPin > 0)
+	_stopper = NULL;
+	if (terminalPin > 0)
 	{
-		pinMode(_terminalPin, INPUT);
+		_stopper = new HarvbotTerminalStopper(terminalPin, false);
+	}
+}
+
+HarvbotTerminableStepper::~HarvbotTerminableStepper()
+{
+	if (_stopper != NULL)
+	{
+		delete _stopper;
 	}
 }
 
 void HarvbotTerminableStepper::step(long step)
 {
-	if (_terminalPin != 0)
+	if (_stopper != NULL)
 	{
-		int endVal = digitalRead(_terminalPin);
-		if (endVal == LOW)
+		if (_stopper->isTerminated())
 		{
-			if (_terminalPressed)
+			if (_stopper->blockedDirection() == direction())
 			{
-				if (_terminalPressedDir == direction())
-				{
-					stop();
-					moveTo(currentPosition());
-					return;
-				}
-			}
-			else
-			{
-				// Stop movement
-				_terminalPressed = true;
-				_terminalPressedDir = direction();
+				stop();
 				moveTo(currentPosition());
 				return;
 			}
-
-		}
-		else
-		{
-			_terminalPressed = false;
 		}
 	}
 
@@ -53,7 +42,7 @@ void HarvbotTerminableStepper::step(long step)
 
 bool HarvbotTerminableStepper::isTerminated()
 {
-	return _terminalPressed;
+	return _stopper->isTerminated();
 }
 
 void HarvbotTerminableStepper::runTillTerminal(bool direction)

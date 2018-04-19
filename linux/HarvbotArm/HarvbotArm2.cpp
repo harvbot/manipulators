@@ -25,23 +25,22 @@ HarvbotArm2::~HarvbotArm2() {}
 
 void HarvbotArm2::goToStartPosition()
 {
-	((HarvbotArmScrewNode*)this->nodes[3])->goToStartPosition();
-	((HarvbotArmScrewNode*)this->nodes[3])->close();
+	getClaw()->goToStartPosition();
+	getClaw()->close();
 	runToPosition();
 
-	//((HarvbotArmCircleNode*)this->nodes[0])->goToStartPosition();
-	((HarvbotArmCircleNode*)this->nodes[2])->goToStartPosition();
-	((HarvbotArmCircleNode*)this->nodes[1])->goToStartPosition();
+	//getBedplate()->goToStartPosition();
+	getElbow()->goToStartPosition();
+	getShoulder()->goToStartPosition();
 
-	//((HarvbotArmCircleNode*)this->nodes[0])->moveTo(radians(0));
-	((HarvbotArmCircleNode*)this->nodes[1])->moveTo(radians(90.0f));
+	//getBedplate()->moveTo(radians(0.0f));
+	getShoulder()->moveTo(radians(90.0f));
 	runToPosition();
 
-	((HarvbotArmCircleNode*)this->nodes[2])->moveTo(radians(1.0f));
+	getElbow()->moveTo(radians(0.0f));
 	runToPosition();
 
-	((HarvbotArmScrewNode*)this->nodes[3])->goToStartPosition();
-	((HarvbotArmScrewNode*)this->nodes[3])->revolution(true);
+	getClaw()->goToStartPosition();
 	runToPosition();
 }
 
@@ -93,7 +92,11 @@ bool HarvbotArm2::setPointerCoords(HarvbotPoint point)
 		q2 = asin(x / b) - asin((a2*a2 + b * b - a3 * a3) / (2 * b*a2));
 	}
 
-	this->getBedplate()->moveTo(q1);
+	printPointerPositions();
+	printf("x: %f, y: %f, z: %f\n", x, y, z);
+	printf("q1=%q1 q2=%f q3=%f\n", degrees(q1), degrees(q2), degrees(q3));
+
+	this->getBedplate()->moveTo(-q1);
 	this->getShoulder()->moveTo(M_PI - q2);
 	runToPosition();
 

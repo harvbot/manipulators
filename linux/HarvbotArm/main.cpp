@@ -33,7 +33,6 @@ void movingThread()
 		{
 			arm->pickObject(distanceToObject);
 			exitFromApp = true;
-			//pickInProgress = false;
 		}
 		else
 		{
@@ -52,7 +51,6 @@ void measureDistanceThread()
 		if (distanceValue != -1)
 		{
 			distanceToObject = distanceValue * 100;
-			printf("Distance to object: %f\n", distanceToObject);
 		}
 	}
 }
@@ -66,9 +64,9 @@ int main()
 	rangefinder = new HarvbotRangefinder("/dev/ttyUSB0", 9600);
 
 	arm = HarvbotArmFactory::CreateArm2();
-	arm->getClaw()->goToStartPosition();
-	arm->runToPosition();
-	//arm->goToStartPosition();
+	//arm->getClaw()->goToStartPosition();
+	//arm->runToPosition();
+	arm->goToStartPosition();
 
 	VideoCapture camera(0);   //0 is the id of video device.0 if you have only one camera.
 	camera.set(CV_CAP_PROP_BUFFERSIZE, 3); // internal buffer will now store only 3 frames
@@ -155,7 +153,7 @@ int main()
 			if (!pickInProgress)
 			{
 				locker.lock();
-				if (arm->getStatus() == Ready && !pickInProgress)
+				if (!pickInProgress && arm->getStatus() == Ready)
 				{
 					if (moveAngleY != 0)
 					{
@@ -166,8 +164,9 @@ int main()
 						arm->getBedplate()->move(moveAngleX);
 					}
 
-					if (moveAngleX == 0 && moveAngleY == 0)
+					if (moveAngleX == 0 && moveAngleY == 0 && distanceToObject > 0)
 					{
+						printf("Picking object at distance %f\n", distanceToObject);
 						pickInProgress = true;
 					}
 				}
