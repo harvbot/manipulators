@@ -33,6 +33,8 @@ class  HarvbotArmStepperScrewNode : public HarvbotArmScrewNode {
 		void runToPosition();
 
 		void stop();
+
+		float distranceToGo();
 };
 
 #endif /* HarvbotArmStepperScrewNode_H_ */

@@ -49,16 +49,36 @@ bool HarvbotArm2::run()
 	float elbowPos = getElbow()->currentPosition();
 
 	// If sholder and elbow angle difference is less the 10 degrees than wait for elbow movement and then run it.
-	if (fabs(elbowPos-shoulderPos - M_PI_2)>radians(45) || getElbow()->getStatus() == Ready)
+	if (getShoulder()->distranceToGo() > 0 && getElbow()->distranceToGo() > 0)
 	{
+		if (elbowPos - shoulderPos + M_PI_2 > radians(0) || getElbow()->getStatus() == Ready)
+		{
+			result = getShoulder()->run() || result;
+		}
+		else
+		{
+			result = getShoulder()->getStatus() == InProcess || result;
+		}
+		result = getElbow()->run() || result;
+	}
+	else if (getShoulder()->distranceToGo() < 0 && getElbow()->distranceToGo() < 0)
+	{
+		if (elbowPos - shoulderPos - M_PI_2 < radians(45) || getElbow()->getStatus() == Ready)
+		{
+			result = getElbow()->run() || result;
+		}
+		else
+		{
+			result = getElbow()->getStatus() == InProcess || result;
+		}
 		result = getShoulder()->run() || result;
 	}
 	else
 	{
-		result = getShoulder()->getStatus() == InProcess || result;
+		result = getShoulder()->run() || result;
+		result = getElbow()->run() || result;
 	}
 
-	result = getElbow()->run() || result;
 	result = getClaw()->run() || result;
 
 	return result;

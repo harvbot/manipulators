@@ -35,6 +35,8 @@ class HarvbotArmNode {
 		virtual void goToStartPosition() = 0;
 
 		virtual void stop() = 0;
+
+		virtual float distranceToGo() = 0;
 };
 
 #endif /* HarvbotArmNode_H_ */

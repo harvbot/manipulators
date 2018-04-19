@@ -54,6 +54,11 @@ HarvbotNodeStatuses HarvbotArmStepperCircleNode::getStatus()
 	return this->stepper->distanceToGo()==0 ? Ready : InProcess;
 }
 
+float HarvbotArmStepperCircleNode::distranceToGo()
+{
+	return this->stepper->distanceToGo() * getAnglePerStep();
+}
+
 bool HarvbotArmStepperCircleNode::run()
 {
 	long stepperPosStart = this->stepper->distanceToGo();

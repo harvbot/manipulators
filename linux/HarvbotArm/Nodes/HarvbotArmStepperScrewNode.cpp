@@ -85,3 +85,8 @@ void HarvbotArmStepperScrewNode::stop()
 {
 	this->stepper->stop();
 }
+
+float HarvbotArmStepperScrewNode::distranceToGo()
+{
+	return this->stepper->distanceToGo();
+}
