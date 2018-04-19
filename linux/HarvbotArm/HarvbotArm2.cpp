@@ -49,7 +49,7 @@ bool HarvbotArm2::run()
 	float elbowPos = getElbow()->currentPosition();
 
 	// If sholder and elbow angle difference is less the 10 degrees than wait for elbow movement and then run it.
-	if (fabs(elbowPos-shoulderPos - M_PI_2)>radians(35) || getElbow()->getStatus() == Ready)
+	if (fabs(elbowPos-shoulderPos - M_PI_2)>radians(45) || getElbow()->getStatus() == Ready)
 	{
 		result = getShoulder()->run() || result;
 	}
@@ -90,6 +90,8 @@ HarvbotPoint HarvbotArm2::getPointerCoords()
 
 bool HarvbotArm2::setPointerCoords(HarvbotPoint point)
 {
+	HarvbotPoint currentPos = getPointerCoords();
+
 	float x = point.x;
 	float y = point.y;
 	float z = point.z;
@@ -100,7 +102,7 @@ bool HarvbotArm2::setPointerCoords(HarvbotPoint point)
 
 	z = z - a1;
 
-	float q1 = asin(y / z);
+	float q1 = currentPos.y != point.y ? asin(y / z) : getBedplate()->currentPosition();
 
 	x = x / cos(q1);
 
