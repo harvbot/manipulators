@@ -64,12 +64,12 @@ int main()
 	rangefinder = new HarvbotRangefinder("/dev/ttyUSB0", 9600);
 
 	arm = HarvbotArmFactory::CreateArm2();
-	//arm->getClaw()->goToStartPosition();
+	arm->goToStartPosition();
 	//arm->runToPosition();
 	//arm->goToStartPosition();
-	arm->getShoulder()->moveTo(90);
+	/*arm->getShoulder()->moveTo(90);
 	arm->getElbow()->moveTo(180);
-	arm->runToPosition();
+	arm->runToPosition();*/
 
 	VideoCapture camera(0);   //0 is the id of video device.0 if you have only one camera.
 	camera.set(CV_CAP_PROP_BUFFERSIZE, 3); // internal buffer will now store only 3 frames
@@ -133,24 +133,32 @@ int main()
 
 			float diffCenterX = wholeCenterX - CAMERA_FRAME_WIDTH / 2;
 			float moveAngleX = 0;
-			if (diffCenterX < -CENTERING_THRESHOLD)
+
+			if (whole.width < CAMERA_FRAME_WIDTH / 2)
 			{
-				moveAngleX = radians(0.5);
-			}
-			if (diffCenterX > CENTERING_THRESHOLD)
-			{
-				moveAngleX = radians(-0.5);
+				if (diffCenterX < -CENTERING_THRESHOLD)
+				{
+					moveAngleX = radians(0.5);
+				}
+				if (diffCenterX > CENTERING_THRESHOLD)
+				{
+					moveAngleX = radians(-0.5);
+				}
 			}
 
 			float diffCenterY = wholeCenterY - CAMERA_FRAME_HEIGHT / 2;
 			float moveAngleY = 0;
-			if (diffCenterY < -CENTERING_THRESHOLD)
+
+			if (whole.height < CAMERA_FRAME_HEIGHT / 2)
 			{
-				moveAngleY = radians(-0.5);
-			}
-			if (diffCenterY > CENTERING_THRESHOLD)
-			{
-				moveAngleY = radians(0.5);
+				if (diffCenterY < -CENTERING_THRESHOLD)
+				{
+					moveAngleY = radians(-0.5);
+				}
+				if (diffCenterY > CENTERING_THRESHOLD)
+				{
+					moveAngleY = radians(0.5);
+				}
 			}
 
 			if (!pickInProgress)
