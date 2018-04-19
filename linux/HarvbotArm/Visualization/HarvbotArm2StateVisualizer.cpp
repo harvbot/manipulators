@@ -39,7 +39,7 @@ void HarvbotArm2StateVisualizer::drawXZ(Mat canvas)
 	xShoulder = (a2 * cos(q2)) * scale;
 	zShoulder = (a2 * sin(q2) + a1) * scale;
 	Point ptShoulder((int)xShoulder + xzStateRect.x + xzStateRect.width / 2, (int)(xzStateRect.y + xzStateRect.height - zShoulder));
-	line(canvas, ptBeadplate1, ptShoulder, Scalar(255, 0, 0), 1, 8, 0);
+	line(canvas, ptBeadplate2, ptShoulder, Scalar(255, 0, 0), 1, 8, 0);
 
 	float xElbow = (a2*cos(q2) + a3 * cos(q2 - q3))*scale;
 	float zElbow = (a2*sin(q2) + a3 * sin(q2 - q3) + a1)*scale;

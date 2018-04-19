@@ -67,7 +67,7 @@ int main()
 	rangefinder = new HarvbotRangefinder("/dev/ttyUSB0", 9600);
 
 	arm = HarvbotArmFactory::CreateArm2();
-	//arm->goToStartPosition();
+	arm->goToStartPosition();
 	//arm->runToPosition();
 	//arm->goToStartPosition();
 
@@ -180,7 +180,7 @@ int main()
 					if (moveAngleX == 0 && moveAngleY == 0 && distanceToObject > 0)
 					{
 						printf("Picking object at distance %f\n", distanceToObject);
-						//pickInProgress = true;
+						pickInProgress = true;
 					}
 				}
 				locker.unlock();

@@ -138,7 +138,7 @@ bool HarvbotArm2::setPointerCoords(HarvbotPoint point)
 	printf("x: %f, y: %f, z: %f\n", x, y, z);
 	printf("q1=%q1 q2=%f q3=%f\n", degrees(q1), degrees(q2), degrees(q3));
 
-	this->getBedplate()->moveTo(-q1);
+	this->getBedplate()->moveTo(q1);
 	this->getShoulder()->moveTo(M_PI - q2);
 	this->getElbow()->moveTo(q3 - M_PI_2);
 }
