@@ -8,6 +8,8 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include "HarvbotArmFactory.h"
 #include "LaserRangefinder/HarvbotRangefinder.h"
+#include "Visualization/HarvbotArm2StateVisualizer.h"
+
 using namespace cv;
 using namespace std;
 
@@ -22,6 +24,7 @@ bool pickInProgress = false;
 float distanceToObject = 0;
 HarvbotArm2* arm;
 HarvbotRangefinder* rangefinder;
+HarvbotArm2StateVisualizer* visualizer;
 std::mutex locker;
 
 void movingThread()
@@ -67,13 +70,8 @@ int main()
 	//arm->goToStartPosition();
 	//arm->runToPosition();
 	//arm->goToStartPosition();
-	arm->getShoulder()->moveTo(90);
-	arm->getElbow()->moveTo(180);
-	arm->runToPosition();
 
-	arm->getShoulder()->moveTo(0);
-	arm->getElbow()->moveTo(0);
-	arm->runToPosition();
+	visualizer = new HarvbotArm2StateVisualizer(arm);
 
 	VideoCapture camera(0);   //0 is the id of video device.0 if you have only one camera.
 	camera.set(CV_CAP_PROP_BUFFERSIZE, 3); // internal buffer will now store only 3 frames
@@ -182,12 +180,15 @@ int main()
 					if (moveAngleX == 0 && moveAngleY == 0 && distanceToObject > 0)
 					{
 						printf("Picking object at distance %f\n", distanceToObject);
-						pickInProgress = true;
+						//pickInProgress = true;
 					}
 				}
 				locker.unlock();
 			}
 		}
+
+		visualizer->drawXY(cameraFrame);
+		visualizer->drawXZ(cameraFrame);
 
 		imshow("cam", cameraFrame);
 		if (waitKey(30) >= 0)

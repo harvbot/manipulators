@@ -66,6 +66,7 @@
   <ItemGroup>
     <ClCompile Include="HarvbotArm.cpp" />
     <ClCompile Include="HarvbotArm2.cpp" />
+    <ClCompile Include="Visualization\HarvbotArm2StateVisualizer.cpp" />
     <ClCompile Include="Steppers\Stoppers\HarvbotTerminalStopper.cpp" />
     <ClCompile Include="Steppers\Stoppers\HarvbotStepperStopper.cpp" />
     <ClCompile Include="LaserRangefinder\HarvbotRangefinder.cpp" />
@@ -84,6 +85,7 @@
   <ItemGroup>
     <ClInclude Include="HarvbotArm.h" />
     <ClInclude Include="HarvbotArm2.h" />
+    <ClInclude Include="Visualization\HarvbotArm2StateVisualizer.h" />
     <ClInclude Include="Steppers\Stoppers\HarvbotTerminalStopper.h" />
     <ClInclude Include="Steppers\Stoppers\HarvbotStepperStopper.h" />
     <ClInclude Include="LaserRangefinder\HarvbotRangefinder.h" />
