@@ -64,6 +64,8 @@
     <RemoteLdToolExe>g++  -pthread</RemoteLdToolExe>
   </PropertyGroup>
   <ItemGroup>
+    <ClCompile Include="Accelerometers\ADXL345.cpp" />
+    <ClCompile Include="Accelerometers\ADXL345PiSPI.cpp" />
     <ClCompile Include="HarvbotArm.cpp" />
     <ClCompile Include="HarvbotArm2.cpp" />
     <ClCompile Include="Visualization\HarvbotArm2StateVisualizer.cpp" />
@@ -83,6 +85,8 @@
     <ClCompile Include="Steppers\HarvbotTerminableStepper.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Accelerometers\ADXL345.hpp" />
+    <ClInclude Include="Accelerometers\ADXL345PiSPI.hpp" />
     <ClInclude Include="HarvbotArm.h" />
     <ClInclude Include="HarvbotArm2.h" />
     <ClInclude Include="Visualization\HarvbotArm2StateVisualizer.h" />
