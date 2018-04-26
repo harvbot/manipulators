@@ -62,6 +62,10 @@ public:
 	uint16_t readRangeSingleMillimeters();
 
 	void stopContinuous();
+
+	void laserOn();
+
+	void laserOff();
 };
 
 #endif /* HarvbotRangefinder_H_ */

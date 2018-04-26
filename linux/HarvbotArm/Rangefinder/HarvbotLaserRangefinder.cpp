@@ -46,10 +46,11 @@ uint16_t HarvbotLaserRangefinder::readRangeSingleMillimeters()
 		{
 			result = 0;
 
-			result += (buffer[3] - 48) * 1000;
-			result += (buffer[4] - 48) * 100;
-			result += (buffer[5] - 48) * 10;
-			result += (buffer[7] - 48);
+			result += (buffer[3] - 48) * 10000;
+			result += (buffer[4] - 48) * 1000;
+			result += (buffer[5] - 48) * 100;
+			result += (buffer[7] - 48) * 10;
+			result += (buffer[8] - 48);
 		}
 	}
 
@@ -78,10 +79,11 @@ uint16_t HarvbotLaserRangefinder::readRangeContinuousMillimeters()
 		{
 			result = 0;
 
-			result += (buffer[3] - 48) * 1000;
-			result += (buffer[4] - 48) * 100;
-			result += (buffer[5] - 48) * 10;
-			result += (buffer[7] - 48);
+			result += (buffer[3] - 48) * 10000;
+			result += (buffer[4] - 48) * 1000;
+			result += (buffer[5] - 48) * 100;
+			result += (buffer[7] - 48) * 10;
+			result += (buffer[8] - 48);
 		}
 	}
 
@@ -271,4 +273,40 @@ uint8_t HarvbotLaserRangefinder::chksum8(const uint8_t *buff, size_t len)
 	}
 
 	return (uint8_t)(0x100 - sum);
+}
+
+void HarvbotLaserRangefinder::laserOn()
+{
+	uint8_t command[] = { HARVBOT_RANGEFINDER_DEFAULT_ADDR, 0x06, 0x05, 0x01 };
+
+	sendCommand(command, 4);
+
+	int dataAvailable = serialDataAvail(this->m_deviceHandle);
+	if (dataAvailable <= 0)
+	{
+		return;
+	}
+
+	uint8_t* buffer = new uint8_t[dataAvailable];
+	getResponse(buffer, dataAvailable);
+
+	delete buffer;
+}
+
+void HarvbotLaserRangefinder::laserOff()
+{
+	uint8_t command[] = { HARVBOT_RANGEFINDER_DEFAULT_ADDR, 0x06, 0x05, 0x00 };
+
+	sendCommand(command, 4);
+
+	int dataAvailable = serialDataAvail(this->m_deviceHandle);
+	if (dataAvailable <= 0)
+	{
+		return;
+	}
+
+	uint8_t* buffer = new uint8_t[dataAvailable];
+	getResponse(buffer, dataAvailable);
+
+	delete buffer;
 }

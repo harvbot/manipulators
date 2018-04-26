@@ -50,12 +50,13 @@ void measureDistanceThread()
 	rangefinder->startContinuous();
 	while (!exitFromApp)
 	{
-		float distanceValue = rangefinder->readRangeSingleMillimeters();
+		float distanceValue = rangefinder->readRangeContinuousMillimeters();
 		if (distanceValue != -1)
 		{
-			distanceToObject = distanceValue * 100;
+			distanceToObject = distanceValue;
 		}
 	}
+	rangefinder->stopContinuous();
 }
 
 int main()
