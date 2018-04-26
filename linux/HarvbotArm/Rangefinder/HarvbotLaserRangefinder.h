@@ -33,10 +33,14 @@ class HarvbotLaserRangefinder: public HarvbotRangefinder {
 private:
 	// Serial port reference.
 	char* m_device;
-	int m_baud;
-	int m_deviceHandle;
+	uint32_t m_baud;
+	uint32_t m_deviceHandle;
 
-	int getResponse(unsigned char* buffer, int dataAvailable);
+	size_t getResponse(unsigned char* buffer, size_t dataAvailable);
+
+	size_t sendCommand(unsigned char* command, size_t len);
+
+	uint8_t chksum8(const unsigned char *buff, size_t len);
 public:
 	HarvbotLaserRangefinder(const char *device, const int baud);
 	~HarvbotLaserRangefinder();
