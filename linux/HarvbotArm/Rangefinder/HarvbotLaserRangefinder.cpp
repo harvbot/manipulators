@@ -1,9 +1,10 @@
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
-#include "HarvbotRangefinder.h"
+#include <math.h>
+#include "HarvbotLaserRangefinder.h"
 
-HarvbotRangefinder::HarvbotRangefinder(const char *device, const int baud)
+HarvbotLaserRangefinder::HarvbotLaserRangefinder(const char *device, const int baud)
 {
 	this->m_device = const_cast<char*>(device);
 	this->m_deviceHandle = serialOpen(this->m_device, baud);
@@ -13,7 +14,7 @@ HarvbotRangefinder::HarvbotRangefinder(const char *device, const int baud)
 	}
 }
 
-HarvbotRangefinder::~HarvbotRangefinder()
+HarvbotLaserRangefinder::~HarvbotLaserRangefinder()
 {
 	if (this->m_deviceHandle > 0)
 	{
@@ -21,7 +22,43 @@ HarvbotRangefinder::~HarvbotRangefinder()
 	}
 }
 
-float HarvbotRangefinder::read()
+uint16_t HarvbotLaserRangefinder::readRangeSingleMillimeters()
+{
+	char command[] = { HARVBOT_RANGEFINDER_DEFAULT_ADDR, 0x06, 0x03, 0x77 };
+
+	serialPuts(this->m_deviceHandle, (const char*)&command);
+
+	int dataAvailable = serialDataAvail(this->m_deviceHandle);
+	if (dataAvailable <= 0)
+	{
+		return -1;
+	}
+
+	unsigned char* buffer = new unsigned char[dataAvailable];
+	getResponse(buffer, dataAvailable);
+
+	uint16_t result = -1;
+
+	if (dataAvailable % 11 == 0)
+	{
+		if (buffer[0] == HARVBOT_RANGEFINDER_DEFAULT_ADDR &&
+			buffer[1] == 0x06 && buffer[2] == 0x83 && buffer[6] == 0x2E)
+		{
+			result = 0;
+
+			result += (buffer[3] - 48) * 1000;
+			result += (buffer[4] - 48) * 100;
+			result += (buffer[5] - 48) * 10;
+			result += (buffer[7] - 48);
+		}
+	}
+
+	delete buffer;
+
+	return result;
+}
+
+uint16_t HarvbotLaserRangefinder::readRangeContinuousMillimeters()
 {
 	int dataAvailable = serialDataAvail(this->m_deviceHandle);
 	if (dataAvailable <= 0)
@@ -32,7 +69,7 @@ float HarvbotRangefinder::read()
 	unsigned char* buffer = new unsigned char[dataAvailable];
 	getResponse(buffer, dataAvailable);
 
-	float result = -1;
+	uint16_t result = -1;
 
 	if (dataAvailable % 11 == 0)
 	{
@@ -41,13 +78,10 @@ float HarvbotRangefinder::read()
 		{
 			result = 0;
 
-			result += (buffer[3] - 48) * 100;
-			result += (buffer[4] - 48) * 10;
-			result += (buffer[5] - 48);
-
-			result += (buffer[7] - 48) * 0.1;
-			result += (buffer[8] - 48) * 0.01;
-			result += (buffer[9] - 48) * 0.001;
+			result += (buffer[3] - 48) * 1000;
+			result += (buffer[4] - 48) * 100;
+			result += (buffer[5] - 48) * 10;
+			result += (buffer[7] - 48);
 		}
 	}
 
@@ -56,21 +90,21 @@ float HarvbotRangefinder::read()
 	return result;
 }
 
-void HarvbotRangefinder::start()
+void HarvbotLaserRangefinder::startContinuous(uint32_t periodMilliseconds)
 {
 	char command[] = { HARVBOT_RANGEFINDER_DEFAULT_ADDR, 0x06, 0x03, 0x77 };
 
 	serialPuts(this->m_deviceHandle, (const char*)&command);
 }
 
-void HarvbotRangefinder::stop()
+void HarvbotLaserRangefinder::stopContinuous()
 {
 	char command[] = { HARVBOT_RANGEFINDER_DEFAULT_ADDR, 0x04, 0x02, 0x7A };
 
 	serialPuts(this->m_deviceHandle, (const char*)&command);
 }
 
-void HarvbotRangefinder::turnLaserOn()
+void HarvbotLaserRangefinder::powerOn()
 {
 	char command[] = { HARVBOT_RANGEFINDER_DEFAULT_ADDR,  0x06, 0x05, 0x01, 0x74 };
 
@@ -90,7 +124,7 @@ void HarvbotRangefinder::turnLaserOn()
 	delete buffer;
 }
 
-void HarvbotRangefinder::turnLaserOff()
+void HarvbotLaserRangefinder::powerOff()
 {
 	char command[] = { HARVBOT_RANGEFINDER_DEFAULT_ADDR,  0x06, 0x05, 0x00, 0x74 };
 
@@ -110,7 +144,7 @@ void HarvbotRangefinder::turnLaserOff()
 	delete buffer;
 }
 
-bool HarvbotRangefinder::setRange(HarvbotRangefinderRanges range)
+bool HarvbotLaserRangefinder::setRange(HarvbotLaserRangefinderRanges range)
 {
 	char command[] = { 0xFA, 0x04, 0x09, range, 0xF4 };
 
@@ -132,7 +166,7 @@ bool HarvbotRangefinder::setRange(HarvbotRangefinderRanges range)
 	return success;
 }
 
-bool HarvbotRangefinder::setResolution(HarvbotRangefinderResolutions resolution)
+bool HarvbotLaserRangefinder::setResolution(HarvbotLaserRangefinderResolutions resolution)
 {
 	char command[] = { 0xFA, 0x04, 0x0C, resolution, 0xF5 };
 
@@ -154,7 +188,7 @@ bool HarvbotRangefinder::setResolution(HarvbotRangefinderResolutions resolution)
 	return success;
 }
 
-bool HarvbotRangefinder::setFrequency(HarvbotRangefinderFrequencies frequency)
+bool HarvbotLaserRangefinder::setFrequency(HarvbotLaserRangefinderFrequencies frequency)
 {
 	char command[] = { 0xFA, 0x04, 0x0A, frequency, 0xF5 };
 
@@ -176,7 +210,7 @@ bool HarvbotRangefinder::setFrequency(HarvbotRangefinderFrequencies frequency)
 	return success;
 }
 
-int HarvbotRangefinder::getResponse(unsigned char* buffer, int dataAvailable)
+int HarvbotLaserRangefinder::getResponse(unsigned char* buffer, int dataAvailable)
 {
 	for (int i = 0; i < dataAvailable; i++)
 	{

@@ -7,7 +7,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include "HarvbotArmFactory.h"
-#include "LaserRangefinder/HarvbotRangefinder.h"
+#include "Rangefinder/HarvbotLaserRangefinder.h"
 #include "Visualization/HarvbotArm2StateVisualizer.h"
 
 using namespace cv;
@@ -23,7 +23,7 @@ bool exitFromApp = false;
 bool pickInProgress = false;
 float distanceToObject = 0;
 HarvbotArm2* arm;
-HarvbotRangefinder* rangefinder;
+HarvbotLaserRangefinder* rangefinder;
 HarvbotArm2StateVisualizer* visualizer;
 std::mutex locker;
 
@@ -64,7 +64,7 @@ int main()
 
 	printf("hello from HarvbotArm!\n");
 
-	rangefinder = new HarvbotRangefinder("/dev/ttyUSB0", 9600);
+	rangefinder = new HarvbotLaserRangefinder("/dev/ttyUSB0", 9600);
 
 	arm = HarvbotArmFactory::CreateArm2();
 	arm->goToStartPosition();
