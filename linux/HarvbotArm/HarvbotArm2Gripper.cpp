@@ -1,6 +1,7 @@
+#include "HarvbotGripper.h"
 #include "HarvbotArm2Gripper.h"
 
-HarvbotArm2Gripper::HarvbotArm2Gripper(HarvbotRecognizer* recognizer) : HarvbotArmGripper(recognizer)
+HarvbotArm2Gripper::HarvbotArm2Gripper(HarvbotRecognizer* recognizer) : HarvbotGripper(recognizer)
 {
 	_arm = new HarvbotArm2();
 	_visualizer = new HarvbotArm2StateVisualizer(_arm);
@@ -15,7 +16,7 @@ HarvbotArm2Gripper::HarvbotArm2Gripper(HarvbotRecognizer* recognizer) : HarvbotA
 
 HarvbotArm2Gripper::~HarvbotArm2Gripper()
 {
-	stopRangefinderMeasurement();
+	stop();
 
 	delete _rangefinder;
 	delete _visualizer;
@@ -24,12 +25,24 @@ HarvbotArm2Gripper::~HarvbotArm2Gripper()
 	delete _measurementLocker;
 }
 
+void HarvbotArm2Gripper::start()
+{
+	startRangefinderMeasurement();
+	startMovementProcessing();
+}
+
+void HarvbotArm2Gripper::stop()
+{
+	stopRangefinderMeasurement();
+	stopMovementProcessing();
+}
+
 void HarvbotArm2Gripper::startRangefinderMeasurement()
 {
 	stopRangefinderMeasurement();
 	this->getRangefinder()->startContinuous();
 	_measurementRun = true;
-	_measurementThread = new thread(measurementThreadFunc);
+	_measurementThread = new thread([this] { this->measurementThreadFunc(); });
 	_measurementThread->detach();
 }
 
@@ -45,7 +58,7 @@ void HarvbotArm2Gripper::startMovementProcessing()
 {
 	stopMovementProcessing();
 	_movementRun = true;
-	_movementThread = new thread(movementThreadFunc);
+	_movementThread = new thread([this] { this->movementThreadFunc(); });
 	_movementThread->detach();
 }
 

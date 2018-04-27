@@ -1,4 +1,5 @@
 #pragma once
+#include <stdio.h>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include "../Spatial/HarvbotRect.h"
@@ -6,6 +7,9 @@
 #include "HarvbotRecognizer.h"
 
 using namespace cv;
+using namespace std;
+
+#define MIN_CONTOUR_SIZE 60
 
 class HarvbotOpenCvColorRecognizer : public HarvbotRecognizer
 {

@@ -14,7 +14,7 @@ HarvbotOpenCvCamera::~HarvbotOpenCvCamera()
 HarvbotFrame* HarvbotOpenCvCamera::read()
 {
 	Mat cameraFrame;
-	camera.read(cameraFrame);
+	_innerCamera->read(cameraFrame);
 
 	return new HarvbotOpenCvFrame(cameraFrame);
 }

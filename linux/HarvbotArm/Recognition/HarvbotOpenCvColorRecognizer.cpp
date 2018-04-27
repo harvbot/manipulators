@@ -14,7 +14,7 @@ HarvbotOpenCvColorRecognizer::~HarvbotOpenCvColorRecognizer()
 HarvbotRect HarvbotOpenCvColorRecognizer::recognize(HarvbotFrame* frame)
 {
 	HarvbotOpenCvFrame* openCvFrame = (HarvbotOpenCvFrame*)frame;
-	Mat cameraFrame = frame->getFrame();
+	Mat cameraFrame = openCvFrame->getFrame();
 
 	Mat imgHSV;
 	cvtColor(cameraFrame, imgHSV, COLOR_BGR2HSV);
@@ -50,5 +50,5 @@ HarvbotRect HarvbotOpenCvColorRecognizer::recognize(HarvbotFrame* frame)
 		}
 	}
 
-	return whole;
+	return HarvbotRect(whole.x, whole.y, whole.width, whole.height);
 }
