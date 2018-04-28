@@ -8,6 +8,9 @@
 using namespace cv;
 using namespace std;
 
+#define CAMERA_FRAME_WIDTH 640
+#define CAMERA_FRAME_HEIGHT 480
+
 class HarvbotOpenCvCamera: public HarvbotCamera
 {
 public:
@@ -17,6 +20,10 @@ public:
 	HarvbotFrame* read();
 
 	bool isOpened();
+
+	unsigned int frameWidth();
+
+	unsigned int frameHeight();
 private:
 	VideoCapture* _innerCamera;
 };

@@ -11,6 +11,9 @@
 
 using namespace std;
 
+#define MIN_CONTOUR_SIZE 60
+#define CENTERING_THRESHOLD 15
+
 class HarvbotArm2Gripper: public HarvbotGripper
 {
 public:
@@ -37,6 +40,10 @@ protected:
 	void startMovementProcessing();
 
 	void stopMovementProcessing();
+
+	void startRecognition();
+
+	void stopRecognition();
 private :
 
 	HarvbotArm2StateVisualizer* _visualizer;
@@ -62,6 +69,14 @@ private :
 	bool _movementRun;
 
 	void movementThreadFunc();
+
+	mutex* _recognizeLocker;
+
+	thread* _recognizeThread;
+
+	bool _recognizeRun;
+
+	void recognizeThreadFunc();
 
 	bool _pickInProgress;
 };

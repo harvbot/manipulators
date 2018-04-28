@@ -1,5 +1,6 @@
 #include <math.h>
 #include "HarvbotArm2StateVisualizer.h"
+#include "../Cameras/HarvbotOpenCvFrame.h"
 
 HarvbotArm2StateVisualizer::HarvbotArm2StateVisualizer(HarvbotArm2* arm)
 {
@@ -8,6 +9,22 @@ HarvbotArm2StateVisualizer::HarvbotArm2StateVisualizer(HarvbotArm2* arm)
 
 HarvbotArm2StateVisualizer::~HarvbotArm2StateVisualizer()
 {
+}
+
+void HarvbotArm2StateVisualizer::render(HarvbotFrame* frame, HarvbotRect rect, unsigned int distanceToObject)
+{
+	Rect whole(rect.x, rect.y, rect.width, rect.height);
+	Mat cameraFrame = ((HarvbotOpenCvFrame*)frame)->getFrame();
+	rectangle(cameraFrame, whole.tl(), whole.br(), Scalar(0, 255, 0), 2, 8, 0);
+
+	char buffer[500];
+	sprintf(buffer, "Distance to object %f\n", distanceToObject);
+	putText(cameraFrame, buffer, Point(0, 25), FONT_HERSHEY_SIMPLEX, 0.5, Scalar(0, 255, 0), 2);
+
+	drawXY(cameraFrame);
+	drawXZ(cameraFrame);
+
+	imshow("cam", cameraFrame);
 }
 
 void HarvbotArm2StateVisualizer::drawXZ(Mat canvas)

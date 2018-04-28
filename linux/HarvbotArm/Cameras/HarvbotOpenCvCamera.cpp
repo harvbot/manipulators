@@ -11,6 +11,16 @@ HarvbotOpenCvCamera::~HarvbotOpenCvCamera()
 {
 }
 
+unsigned int HarvbotOpenCvCamera::frameWidth()
+{
+	return CAMERA_FRAME_WIDTH;
+}
+
+unsigned int HarvbotOpenCvCamera::frameHeight()
+{
+	return CAMERA_FRAME_HEIGHT;
+}
+
 HarvbotFrame* HarvbotOpenCvCamera::read()
 {
 	Mat cameraFrame;

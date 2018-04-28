@@ -12,6 +12,9 @@ HarvbotArm2Gripper::HarvbotArm2Gripper(HarvbotRecognizer* recognizer) : HarvbotG
 
 	_movementThread = NULL;
 	_movementLocker = new mutex();
+
+	_recognizeThread = NULL;
+	_recognizeLocker = new mutex();
 }
 
 HarvbotArm2Gripper::~HarvbotArm2Gripper()
@@ -21,8 +24,15 @@ HarvbotArm2Gripper::~HarvbotArm2Gripper()
 	delete _rangefinder;
 	delete _visualizer;
 	delete _arm;
+
 	delete _measurementThread;
 	delete _measurementLocker;
+
+	delete _movementThread;
+	delete _movementLocker;
+
+	delete _recognizeThread;
+	delete _recognizeLocker;
 }
 
 void HarvbotArm2Gripper::start()
@@ -67,6 +77,21 @@ void HarvbotArm2Gripper::stopMovementProcessing()
 	_movementLocker->lock();
 	_movementRun = false;
 	_movementLocker->unlock();
+}
+
+void HarvbotArm2Gripper::startRecognition()
+{
+	stopMovementProcessing();
+	_recognizeRun = true;
+	_recognizeThread = new thread([this] { this->recognizeThreadFunc(); });
+	_recognizeThread->detach();
+}
+
+void HarvbotArm2Gripper::stopRecognition()
+{
+	_recognizeLocker->lock();
+	_recognizeRun = false;
+	_recognizeLocker->unlock();
 }
 
 HarvbotArm* HarvbotArm2Gripper::getArm()
@@ -127,6 +152,85 @@ void HarvbotArm2Gripper::movementThreadFunc()
 
 		bool dontStop = _movementRun;
 		_movementLocker->unlock();
+
+		if (!dontStop)
+		{
+			break;
+		}
+	}
+}
+
+void HarvbotArm2Gripper::recognizeThreadFunc()
+{
+	while (true)
+	{
+		_recognizeLocker->lock();
+
+		HarvbotCamera* camera = getCamera();
+		HarvbotFrame* frame = camera->read();
+		HarvbotRect rect = getRecognizer()->recognize(frame);
+		if (rect.width > MIN_CONTOUR_SIZE && rect.height > MIN_CONTOUR_SIZE)
+		{
+			int wholeCenterX = rect.x + rect.width / 2;
+			int wholeCenterY = rect.y + rect.height / 2;
+
+			float diffCenterX = wholeCenterX - camera->frameWidth() / 2;
+			float moveAngleX = 0;
+
+			if (rect.width < camera->frameWidth() / 2)
+			{
+				if (diffCenterX < -CENTERING_THRESHOLD)
+				{
+					moveAngleX = radians(0.5);
+				}
+				if (diffCenterX > CENTERING_THRESHOLD)
+				{
+					moveAngleX = radians(-0.5);
+				}
+			}
+
+			float diffCenterY = wholeCenterY - camera->frameHeight() / 2;
+			float moveAngleY = 0;
+
+			if (rect.height < camera->frameHeight() / 2)
+			{
+				if (diffCenterY < -CENTERING_THRESHOLD)
+				{
+					moveAngleY = radians(-0.5);
+				}
+				if (diffCenterY > CENTERING_THRESHOLD)
+				{
+					moveAngleY = radians(0.5);
+				}
+			}
+
+			if (!_pickInProgress)
+			{
+				_movementLocker->lock();
+				if (!_pickInProgress && _arm->getStatus() == Ready)
+				{
+					if (moveAngleY != 0)
+					{
+						_arm->getElbow()->move(moveAngleY);
+					}
+					if (moveAngleX != 0)
+					{
+						_arm->getBedplate()->move(moveAngleX);
+					}
+
+					if (moveAngleX == 0 && moveAngleY == 0 && _distanceToObject > 0)
+					{
+						_pickInProgress = true;
+					}
+				}
+				_movementLocker->unlock();
+			}
+		}
+
+		_visualizer->render(frame, rect, _distanceToObject);
+
+		bool dontStop = _recognizeRun;
+		_recognizeLocker->unlock();
 
 		if (!dontStop)
 		{
