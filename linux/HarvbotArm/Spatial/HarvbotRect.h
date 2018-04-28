@@ -13,5 +13,18 @@ struct HarvbotRect
 	int y;
 	int width;
 	int height;
+
+	bool isEmpty()
+	{
+		return width == 0 && height == 0;
+	}
+
+	void empty()
+	{
+		x = 0;
+		y = 0;
+		width = 0;
+		height = 0;
+	}
 };
 

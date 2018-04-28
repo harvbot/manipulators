@@ -15,6 +15,8 @@ HarvbotArm2Gripper::HarvbotArm2Gripper(HarvbotRecognizer* recognizer) : HarvbotG
 
 	_recognizeThread = NULL;
 	_recognizeLocker = new mutex();
+
+	turnOnVisuaization();
 }
 
 HarvbotArm2Gripper::~HarvbotArm2Gripper()
@@ -226,8 +228,15 @@ void HarvbotArm2Gripper::recognizeThreadFunc()
 				_movementLocker->unlock();
 			}
 		}
+		else
+		{
+			rect.empty();
+		}
 
-		_visualizer->render(frame, rect, _distanceToObject);
+		if (isVisualizationOn())
+		{
+			_visualizer->render(frame, rect, _distanceToObject);
+		}
 
 		bool dontStop = _recognizeRun;
 		_recognizeLocker->unlock();

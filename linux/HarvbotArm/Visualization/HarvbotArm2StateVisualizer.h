@@ -13,9 +13,14 @@ class HarvbotArm2StateVisualizer
 private:
 	HarvbotArm2* _arm;
 	
+	bool _showOnScreen;
 public:
 	HarvbotArm2StateVisualizer(HarvbotArm2* arm);
 	~HarvbotArm2StateVisualizer();
+
+	void turnOnScreen();
+
+	void turnOffScreen();
 
 	void render(HarvbotFrame* frame, HarvbotRect rect, unsigned int distanceToObject);
 	void drawXZ(Mat canvas);

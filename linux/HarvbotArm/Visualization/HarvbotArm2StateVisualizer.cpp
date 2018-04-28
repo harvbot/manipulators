@@ -5,26 +5,43 @@
 HarvbotArm2StateVisualizer::HarvbotArm2StateVisualizer(HarvbotArm2* arm)
 {
 	_arm = arm;
+	_showOnScreen = true;
 }
 
 HarvbotArm2StateVisualizer::~HarvbotArm2StateVisualizer()
 {
 }
 
+void HarvbotArm2StateVisualizer::turnOnScreen()
+{
+	_showOnScreen = true;
+}
+
+void HarvbotArm2StateVisualizer::turnOffScreen()
+{
+	_showOnScreen = false;
+}
+
 void HarvbotArm2StateVisualizer::render(HarvbotFrame* frame, HarvbotRect rect, unsigned int distanceToObject)
 {
-	Rect whole(rect.x, rect.y, rect.width, rect.height);
-	Mat cameraFrame = ((HarvbotOpenCvFrame*)frame)->getFrame();
-	rectangle(cameraFrame, whole.tl(), whole.br(), Scalar(0, 255, 0), 2, 8, 0);
+	if (!rect.isEmpty())
+	{
+		Rect whole(rect.x, rect.y, rect.width, rect.height);
+		Mat cameraFrame = ((HarvbotOpenCvFrame*)frame)->getFrame();
+		rectangle(cameraFrame, whole.tl(), whole.br(), Scalar(0, 255, 0), 2, 8, 0);
 
-	char buffer[500];
-	sprintf(buffer, "Distance to object %f\n", distanceToObject);
-	putText(cameraFrame, buffer, Point(0, 25), FONT_HERSHEY_SIMPLEX, 0.5, Scalar(0, 255, 0), 2);
+		char buffer[500];
+		sprintf(buffer, "Distance to object %f\n", distanceToObject);
+		putText(cameraFrame, buffer, Point(0, 25), FONT_HERSHEY_SIMPLEX, 0.5, Scalar(0, 255, 0), 2);
+	}
 
 	drawXY(cameraFrame);
 	drawXZ(cameraFrame);
 
-	imshow("cam", cameraFrame);
+	if (_showOnScreen)
+	{
+		imshow("cam", cameraFrame);
+	}
 }
 
 void HarvbotArm2StateVisualizer::drawXZ(Mat canvas)
