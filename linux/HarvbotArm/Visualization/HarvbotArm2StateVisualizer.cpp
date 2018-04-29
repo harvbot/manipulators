@@ -24,10 +24,11 @@ void HarvbotArm2StateVisualizer::turnOffScreen()
 
 void HarvbotArm2StateVisualizer::render(HarvbotFrame* frame, HarvbotRect rect, unsigned int distanceToObject)
 {
+	Mat cameraFrame = ((HarvbotOpenCvFrame*)frame)->getFrame();
+
 	if (!rect.isEmpty())
 	{
 		Rect whole(rect.x, rect.y, rect.width, rect.height);
-		Mat cameraFrame = ((HarvbotOpenCvFrame*)frame)->getFrame();
 		rectangle(cameraFrame, whole.tl(), whole.br(), Scalar(0, 255, 0), 2, 8, 0);
 
 		char buffer[500];

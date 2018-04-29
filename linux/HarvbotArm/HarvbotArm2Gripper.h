@@ -52,6 +52,8 @@ private :
 
 	HarvbotLaserRangefinder* _rangefinder;
 
+	HarvbotCamera* _camera;
+
 	unsigned int _distanceToObject;
 
 	mutex* _measurementLocker;

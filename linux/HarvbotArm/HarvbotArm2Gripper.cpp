@@ -1,11 +1,13 @@
 #include "HarvbotGripper.h"
 #include "HarvbotArm2Gripper.h"
+#include "Cameras/HarvbotOpenCvCamera.h"
 
 HarvbotArm2Gripper::HarvbotArm2Gripper(HarvbotRecognizer* recognizer) : HarvbotGripper(recognizer)
 {
 	_arm = new HarvbotArm2();
 	_visualizer = new HarvbotArm2StateVisualizer(_arm);
 	_rangefinder = new HarvbotLaserRangefinder("/dev/ttyUSB0", 9600);
+	_camera = new HarvbotOpenCvCamera();
 
 	_measurementThread = NULL;
 	_measurementLocker = new mutex();
@@ -41,12 +43,14 @@ void HarvbotArm2Gripper::start()
 {
 	startRangefinderMeasurement();
 	startMovementProcessing();
+	startRecognition();
 }
 
 void HarvbotArm2Gripper::stop()
 {
 	stopRangefinderMeasurement();
 	stopMovementProcessing();
+	stopRecognition();
 }
 
 void HarvbotArm2Gripper::startRangefinderMeasurement()
@@ -103,7 +107,7 @@ HarvbotArm* HarvbotArm2Gripper::getArm()
 
 HarvbotCamera* HarvbotArm2Gripper::getCamera()
 {
-	return NULL;
+	return _camera;
 }
 
 HarvbotRangefinder* HarvbotArm2Gripper::getRangefinder()
@@ -146,6 +150,7 @@ void HarvbotArm2Gripper::movementThreadFunc()
 		if (_pickInProgress)
 		{
 			_arm->pickObject(_distanceToObject);
+			_pickInProgress = false;
 		}
 		else
 		{
