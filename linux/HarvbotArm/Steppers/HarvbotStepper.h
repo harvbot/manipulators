@@ -75,6 +75,11 @@ public:
 	uint8_t stepPin();
 
 	uint8_t directionPin();
+
+	unsigned int accelerationPercent();
+
+	void setAccelerationPercent(unsigned int percent);
+
 protected:
 
     typedef enum
@@ -94,6 +99,8 @@ private:
 
     long           _targetPos;     // Steps
 
+	long           _startPos;     // Steps
+
     unsigned int   _engineFrequency;
 
     unsigned int   _pulsePeriod;
@@ -105,6 +112,8 @@ private:
     bool _direction; // 1 == CW
 
 	unsigned int  _lastStepTime;
+
+	unsigned int _accelerationPercent;
 };
 
 #endif 
