@@ -35,6 +35,7 @@
     <ClCompile Include="Cameras\HarvbotOpenCvCamera.cpp" />
     <ClCompile Include="Recognition\HarvbotRecognizer.cpp" />
     <ClCompile Include="Recognition\HarvbotOpenCvColorRecognizer.cpp" />
+    <ClCompile Include="HarvbotGripperObserver.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HarvbotArm.h" />
@@ -81,5 +82,6 @@
     <ClInclude Include="Recognition\HarvbotRecognizer.h" />
     <ClInclude Include="Spatial\HarvbotRect.h" />
     <ClInclude Include="Recognition\HarvbotOpenCvColorRecognizer.h" />
+    <ClInclude Include="HarvbotGripperObserver.h" />
   </ItemGroup>
 </Project>

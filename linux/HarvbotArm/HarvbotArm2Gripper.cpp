@@ -1,5 +1,6 @@
 #include "HarvbotGripper.h"
 #include "HarvbotArm2Gripper.h"
+#include "HarvbotGripperObserver.h"
 #include "Cameras/HarvbotOpenCvCamera.h"
 
 HarvbotArm2Gripper::HarvbotArm2Gripper(HarvbotRecognizer* recognizer) : HarvbotGripper(recognizer)
@@ -150,6 +151,10 @@ void HarvbotArm2Gripper::movementThreadFunc()
 		if (_pickInProgress)
 		{
 			_arm->pickObject(_distanceToObject);
+			for (std::vector<HarvbotGripperObserver*>::iterator it = observers->begin(); it != observers->end(); ++it)
+			{
+				(*it)->ObjectPicked();
+			}
 			_pickInProgress = false;
 		}
 		else

@@ -1,12 +1,15 @@
+#include <algorithm>
 #include "HarvbotGripper.h"
 
 HarvbotGripper::HarvbotGripper(HarvbotRecognizer* recognizer)
 {
 	_recognizer = recognizer;
+	observers = new vector<HarvbotGripperObserver*>();
 }
 
 HarvbotGripper::~HarvbotGripper()
 {
+	delete observers;
 }
 
 HarvbotRecognizer* HarvbotGripper::getRecognizer()
@@ -27,4 +30,14 @@ void HarvbotGripper::turnOffVisuaization()
 bool HarvbotGripper::isVisualizationOn()
 {
 	return _isVisualizationOn;
+}
+
+void HarvbotGripper::attachObserver(HarvbotGripperObserver* observer)
+{
+	observers->push_back(observer);
+}
+
+void HarvbotGripper::detachObserver(HarvbotGripperObserver* observer)
+{
+	remove(observers->begin(), observers->end(), observer);
 }
