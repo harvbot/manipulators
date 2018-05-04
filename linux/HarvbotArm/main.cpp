@@ -30,6 +30,8 @@ int main()
 		{
 			break;
 		}
+
+		delay(300);
 	}
 	gripper->stop();
 

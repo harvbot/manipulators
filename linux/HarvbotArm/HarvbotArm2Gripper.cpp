@@ -88,7 +88,7 @@ void HarvbotArm2Gripper::stopMovementProcessing()
 
 void HarvbotArm2Gripper::startRecognition()
 {
-	stopMovementProcessing();
+	stopRecognition();
 	_recognizeRun = true;
 	_recognizeThread = new thread([this] { this->recognizeThreadFunc(); });
 	_recognizeThread->detach();
