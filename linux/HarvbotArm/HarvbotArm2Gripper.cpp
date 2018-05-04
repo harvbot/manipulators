@@ -151,7 +151,7 @@ void HarvbotArm2Gripper::movementThreadFunc()
 		if (_pickInProgress)
 		{
 			_arm->pickObject(_distanceToObject);
-			for (std::vector<HarvbotGripperObserver*>::iterator it = observers->begin(); it != observers->end(); ++it)
+			for (std::vector<HarvbotGripperObserver*>::iterator it = observers.begin(); it != observers.end(); ++it)
 			{
 				(*it)->ObjectPicked();
 			}

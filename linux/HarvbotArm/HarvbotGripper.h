@@ -36,7 +36,7 @@ class HarvbotGripper
 	protected:
 		HarvbotRecognizer * getRecognizer();
 
-		vector<HarvbotGripperObserver*>* observers;
+		vector<HarvbotGripperObserver*> observers;
 	private:
 		bool _isVisualizationOn;
 

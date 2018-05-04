@@ -104,3 +104,13 @@ void HarvbotArmStepperCircleNode::stop()
 {
 	this->stepper->stop();
 }
+
+unsigned int HarvbotArmStepperCircleNode::accelerationPercent()
+{
+	return this->stepper->accelerationPercent();
+}
+
+void HarvbotArmStepperCircleNode::setAccelerationPercent(unsigned int percent)
+{
+	this->stepper->setAccelerationPercent(percent);
+}

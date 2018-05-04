@@ -40,6 +40,10 @@ class HarvbotArmStepperCircleNode : public HarvbotArmCircleNode {
 		void stop();
 
 		float distranceToGo();
+
+		unsigned int accelerationPercent();
+
+		void setAccelerationPercent(unsigned int percent);
 	private:
 		/**
 		Gets the angle per step.

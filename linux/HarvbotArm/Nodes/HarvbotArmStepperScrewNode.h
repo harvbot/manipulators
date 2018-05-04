@@ -35,6 +35,10 @@ class  HarvbotArmStepperScrewNode : public HarvbotArmScrewNode {
 		void stop();
 
 		float distranceToGo();
+
+		unsigned int accelerationPercent();
+
+		void setAccelerationPercent(unsigned int percent);
 };
 
 #endif /* HarvbotArmStepperScrewNode_H_ */

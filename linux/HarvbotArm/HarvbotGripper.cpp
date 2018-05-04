@@ -4,12 +4,11 @@
 HarvbotGripper::HarvbotGripper(HarvbotRecognizer* recognizer)
 {
 	_recognizer = recognizer;
-	observers = new vector<HarvbotGripperObserver*>();
+	observers = vector<HarvbotGripperObserver*>();
 }
 
 HarvbotGripper::~HarvbotGripper()
 {
-	delete observers;
 }
 
 HarvbotRecognizer* HarvbotGripper::getRecognizer()
@@ -34,10 +33,10 @@ bool HarvbotGripper::isVisualizationOn()
 
 void HarvbotGripper::attachObserver(HarvbotGripperObserver* observer)
 {
-	observers->push_back(observer);
+	observers.push_back(observer);
 }
 
 void HarvbotGripper::detachObserver(HarvbotGripperObserver* observer)
 {
-	remove(observers->begin(), observers->end(), observer);
+	remove(observers.begin(), observers.end(), observer);
 }

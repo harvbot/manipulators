@@ -74,6 +74,7 @@
     <ClCompile Include="HarvbotGripper.cpp" />
     <ClCompile Include="Cameras\HarvbotOpenCvFrame.cpp" />
     <ClCompile Include="Cameras\HarvbotOpenCvCamera.cpp" />
+    <ClCompile Include="HarvbotArm2GripperBacketObserver.cpp" />
     <ClCompile Include="HarvbotGripperObserver.cpp" />
     <ClCompile Include="Recognition\HarvbotOpenCvColorRecognizer.cpp" />
     <ClCompile Include="Recognition\HarvbotRecognizer.cpp" />
@@ -112,6 +113,7 @@
     <ClInclude Include="HarvbotGripper.h" />
     <ClInclude Include="Cameras\HarvbotOpenCvFrame.h" />
     <ClInclude Include="Cameras\HarvbotOpenCvCamera.h" />
+    <ClInclude Include="HarvbotArm2GripperBacketObserver.h" />
     <ClInclude Include="HarvbotGripperObserver.h" />
     <ClInclude Include="Recognition\HarvbotOpenCvColorRecognizer.h" />
     <ClInclude Include="Spatial\HarvbotRect.h" />

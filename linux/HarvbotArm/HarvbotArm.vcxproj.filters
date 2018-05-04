@@ -36,6 +36,7 @@
     <ClCompile Include="Recognition\HarvbotRecognizer.cpp" />
     <ClCompile Include="Recognition\HarvbotOpenCvColorRecognizer.cpp" />
     <ClCompile Include="HarvbotGripperObserver.cpp" />
+    <ClCompile Include="HarvbotArm2GripperBacketObserver.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HarvbotArm.h" />
@@ -46,7 +47,6 @@
     <ClInclude Include="Steppers\HarvbotTerminableStepper.h" />
     <ClInclude Include="Nodes\HarvbotArmCircleNode.h" />
     <ClInclude Include="Nodes\HarvbotArmNode.h" />
-    <ClInclude Include="Nodes\HarvbotArmScrewNode.h" />
     <ClInclude Include="Nodes\HarvbotArmStepperCircleNode.h" />
     <ClInclude Include="Nodes\HarvbotArmStepperScrewNode.h" />
     <ClInclude Include="Protocols\HarvbotArmProtocol.h" />
@@ -83,5 +83,7 @@
     <ClInclude Include="Spatial\HarvbotRect.h" />
     <ClInclude Include="Recognition\HarvbotOpenCvColorRecognizer.h" />
     <ClInclude Include="HarvbotGripperObserver.h" />
+    <ClInclude Include="HarvbotArm2GripperBacketObserver.h" />
+    <ClInclude Include="Nodes\HarvbotArmScrewNode.h" />
   </ItemGroup>
 </Project>

@@ -90,3 +90,13 @@ float HarvbotArmStepperScrewNode::distranceToGo()
 {
 	return this->stepper->distanceToGo();
 }
+
+unsigned int HarvbotArmStepperScrewNode::accelerationPercent()
+{
+	return this->stepper->accelerationPercent();
+}
+
+void HarvbotArmStepperScrewNode::setAccelerationPercent(unsigned int percent)
+{
+	this->stepper->setAccelerationPercent(percent);
+}
