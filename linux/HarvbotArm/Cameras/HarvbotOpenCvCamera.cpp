@@ -9,6 +9,7 @@ HarvbotOpenCvCamera::HarvbotOpenCvCamera(int idx)
 
 HarvbotOpenCvCamera::~HarvbotOpenCvCamera()
 {
+	delete _innerCamera;
 }
 
 unsigned int HarvbotOpenCvCamera::frameWidth()
