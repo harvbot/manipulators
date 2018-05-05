@@ -186,10 +186,13 @@ void HarvbotArm2Gripper::recognizeThreadFunc()
 			int wholeCenterX = rect.x + rect.width / 2;
 			int wholeCenterY = rect.y + rect.height / 2;
 
-			float diffCenterX = wholeCenterX - camera->frameWidth() / 2;
+			int frameWidth = camera->frameWidth() / 2;
+			int frameHeight = camera->frameHeight() / 2;
+
+			float diffCenterX = wholeCenterX - frameWidth / 2;
 			float moveAngleX = 0;
 
-			if (rect.width < camera->frameWidth() / 2)
+			if (rect.width < frameWidth / 2)
 			{
 				if (diffCenterX < -CENTERING_THRESHOLD)
 				{
@@ -201,10 +204,10 @@ void HarvbotArm2Gripper::recognizeThreadFunc()
 				}
 			}
 
-			float diffCenterY = wholeCenterY - camera->frameHeight() / 2;
+			float diffCenterY = wholeCenterY - frameHeight / 2;
 			float moveAngleY = 0;
 
-			if (rect.height < camera->frameHeight() / 2)
+			if (rect.height < frameHeight / 2)
 			{
 				if (diffCenterY < -CENTERING_THRESHOLD)
 				{
