@@ -124,13 +124,14 @@ void HarvbotArm2Gripper::measurementThreadFunc()
 {
 	while (true)
 	{
+		_measurementLocker->lock();
 		float distanceValue = _rangefinder->readRangeContinuousMillimeters();
 		if (distanceValue > 0)
 		{
 			_distanceToObject = distanceValue;
+			printf("Distance to object: %f\n", distanceValue);
 		}
-
-		_measurementLocker->lock();
+		
 		bool dontStop = _measurementRun;
 		_measurementLocker->unlock();
 
@@ -149,10 +150,12 @@ void HarvbotArm2Gripper::movementThreadFunc()
 
 		if (_pickInProgress)
 		{
-			_arm->pickObject(_distanceToObject);
-			for (std::vector<HarvbotGripperObserver*>::iterator it = observers.begin(); it != observers.end(); ++it)
+			if (_arm->pickObject(_distanceToObject))
 			{
-				(*it)->ObjectPicked();
+				for (std::vector<HarvbotGripperObserver*>::iterator it = observers.begin(); it != observers.end(); ++it)
+				{
+					(*it)->ObjectPicked();
+				}
 			}
 			_pickInProgress = false;
 		}
@@ -179,47 +182,49 @@ void HarvbotArm2Gripper::recognizeThreadFunc()
 
 		HarvbotCamera* camera = getCamera();
 		HarvbotFrame* frame = camera->read();
-		HarvbotRect rect = getRecognizer()->recognize(frame);
-		if (rect.width > MIN_CONTOUR_SIZE && rect.height > MIN_CONTOUR_SIZE)
+		HarvbotRect rect;
+		rect.empty();
+		if (!_pickInProgress)
 		{
-			int wholeCenterX = rect.x + rect.width / 2;
-			int wholeCenterY = rect.y + rect.height / 2;
-
-			int frameWidth = camera->frameWidth() / 2;
-			int frameHeight = camera->frameHeight() / 2;
-
-			float diffCenterX = wholeCenterX - frameWidth / 2;
-			float moveAngleX = 0;
-
-			if (rect.width < frameWidth / 2)
+			rect = getRecognizer()->recognize(frame);
+			if (rect.width > MIN_CONTOUR_SIZE && rect.height > MIN_CONTOUR_SIZE)
 			{
-				if (diffCenterX < -CENTERING_THRESHOLD)
-				{
-					moveAngleX = radians(0.5);
-				}
-				if (diffCenterX > CENTERING_THRESHOLD)
-				{
-					moveAngleX = radians(-0.5);
-				}
-			}
+				int wholeCenterX = rect.x + rect.width / 2;
+				int wholeCenterY = rect.y + rect.height / 2;
 
-			float diffCenterY = wholeCenterY - frameHeight / 2;
-			float moveAngleY = 0;
+				int frameWidth = camera->frameWidth() / 2;
+				int frameHeight = camera->frameHeight() / 2;
 
-			if (rect.height < frameHeight / 2)
-			{
-				if (diffCenterY < -CENTERING_THRESHOLD)
-				{
-					moveAngleY = radians(-0.5);
-				}
-				if (diffCenterY > CENTERING_THRESHOLD)
-				{
-					moveAngleY = radians(0.5);
-				}
-			}
+				float diffCenterX = wholeCenterX - frameWidth / 2;
+				float moveAngleX = 0;
 
-			if (!_pickInProgress)
-			{
+				if (rect.width < frameWidth / 2)
+				{
+					if (diffCenterX < -CENTERING_THRESHOLD)
+					{
+						moveAngleX = radians(0.5);
+					}
+					if (diffCenterX > CENTERING_THRESHOLD)
+					{
+						moveAngleX = radians(-0.5);
+					}
+				}
+
+				float diffCenterY = wholeCenterY - frameHeight / 2;
+				float moveAngleY = 0;
+
+				if (rect.height < frameHeight / 2)
+				{
+					if (diffCenterY < -CENTERING_THRESHOLD)
+					{
+						moveAngleY = radians(-0.5);
+					}
+					if (diffCenterY > CENTERING_THRESHOLD)
+					{
+						moveAngleY = radians(0.5);
+					}
+				}
+
 				_movementLocker->lock();
 				if (!_pickInProgress && _arm->getStatus() == Ready)
 				{
@@ -236,16 +241,32 @@ void HarvbotArm2Gripper::recognizeThreadFunc()
 
 					if (moveAngleX == 0 && moveAngleY == 0 && _distanceToObject > 0)
 					{
+						_measurementLocker->lock();
+						float distanceValue = 0;
+						
+						do
+						{
+							distanceValue = _rangefinder->readRangeContinuousMillimeters();
+							if (distanceValue > 0)
+							{
+								_distanceToObject = distanceValue;
+								printf("Distance to object: %f\n", distanceValue);
+							}
+						} while (distanceValue == 0);
+						
 						printf("Picking was started\n");
 						_pickInProgress = true;
+
+						_measurementLocker->unlock();
 					}
 				}
 				_movementLocker->unlock();
+
 			}
-		}
-		else
-		{
-			rect.empty();
+			else
+			{
+				rect.empty();
+			}
 		}
 
 		if (isVisualizationOn())

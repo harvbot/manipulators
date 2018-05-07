@@ -46,11 +46,12 @@ uint16_t HarvbotLaserRangefinder::readRangeSingleMillimeters()
 		{
 			result = 0;
 
-			result += (buffer[3] - 48) * 10000;
-			result += (buffer[4] - 48) * 1000;
-			result += (buffer[5] - 48) * 100;
-			result += (buffer[7] - 48) * 10;
-			result += (buffer[8] - 48);
+			result += (buffer[3] - 48) * 100000;
+			result += (buffer[4] - 48) * 10000;
+			result += (buffer[5] - 48) * 1000;
+			result += (buffer[7] - 48) * 100;
+			result += (buffer[8] - 48) * 10;
+			result += (buffer[9] - 48);
 		}
 	}
 
@@ -79,11 +80,12 @@ uint16_t HarvbotLaserRangefinder::readRangeContinuousMillimeters()
 		{
 			result = 0;
 
-			result += (buffer[3] - 48) * 10000;
-			result += (buffer[4] - 48) * 1000;
-			result += (buffer[5] - 48) * 100;
-			result += (buffer[7] - 48) * 10;
-			result += (buffer[8] - 48);
+			result += (buffer[3] - 48) * 100000;
+			result += (buffer[4] - 48) * 10000;
+			result += (buffer[5] - 48) * 1000;
+			result += (buffer[7] - 48) * 100;
+			result += (buffer[8] - 48) * 10;
+			result += (buffer[9] - 48);
 		}
 	}
 

@@ -106,9 +106,9 @@ HarvbotPoint HarvbotArm2::getPointerCoords()
 	float a2 = HARVBOT_ARM_2_SHOULDER;
 	float a3 = HARVBOT_ARM_2_ELBOW;
 
-	pointer.x = round4((a2*cos(q2) + a3*cos(q2-q3))*cos(q1));
-	pointer.y = round4((a2*sin(q2) + a3*sin(q2-q3))*sin(q1));
-	pointer.z = round4(a2*sin(q2) + a3*sin(q2-q3) + a1);
+	pointer.x = (a2*cosf(q2) + a3*cosf(q2-q3))*cosf(q1);
+	pointer.y = (a2*sinf(q2) + a3*sinf(q2-q3))*sinf(q1);
+	pointer.z = a2*sinf(q2) + a3*sinf(q2-q3) + a1;
 
 	return pointer;
 }
@@ -139,6 +139,11 @@ bool HarvbotArm2::setPointerCoords(HarvbotPoint point)
 		q2 = round4(asin(x / b) - asin((a2*a2 + b * b - a3 * a3) / (2 * b*a2)));
 	}
 
+	if (isnan(q2) || isnan(q3))
+	{
+		return false;
+	}
+
 	printPointerPositions();
 	printf("x: %f, y: %f, z: %f\n", x, y, z);
 	printf("q1=%q1 q2=%f q3=%f\n", degrees(q1), degrees(q2), degrees(q3));
@@ -146,6 +151,8 @@ bool HarvbotArm2::setPointerCoords(HarvbotPoint point)
 	this->getBedplate()->moveTo(q1);
 	this->getShoulder()->moveTo(M_PI - q2);
 	this->getElbow()->moveTo(q3 - M_PI_2);
+
+	return true;
 }
 
 bool HarvbotArm2::pickObject(float distanceToObject)
@@ -160,9 +167,9 @@ bool HarvbotArm2::pickObject(float distanceToObject)
 	float a2 = HARVBOT_ARM_2_SHOULDER;
 	float a3 = HARVBOT_ARM_2_ELBOW;
 
-	float xShoulder, zShoulder;
-	xShoulder = round4(a2 * cos(q2));
-	zShoulder = round4(a2 * sin(q2) + a1);
+	float xShoulder = 0, zShoulder = 0;
+	xShoulder = a2 * cosf(q2);
+	zShoulder = a2 * sinf(q2) + a1;
 
 	HarvbotPoint currentPos = getPointerCoords();
 
@@ -174,6 +181,7 @@ bool HarvbotArm2::pickObject(float distanceToObject)
 	if (zElbow == zShoulder)
 	{
 		xClaw = xElbow + distanceToObject;
+		zClaw = zElbow;
 	}
 	else
 	{
@@ -192,20 +200,25 @@ bool HarvbotArm2::pickObject(float distanceToObject)
 		// target position of claw
 		xClaw = xElbow + distanceToObject * cost;
 		zClaw = zElbow + distanceToObject * sint;
+	}
 
-		HarvbotPoint p;
-		p.x = xClaw;
-		p.y = currentPos.y;
-		p.z = zClaw;
+	HarvbotPoint p;
+	p.x = xClaw;
+	p.y = currentPos.y;
+	p.z = zClaw;
 
-		setPointerCoords(p);
-
+	if (setPointerCoords(p))
+	{
 		runToPosition();
 
 		getClaw()->close();
 
 		runToPosition();
+
+		return true;
 	}
+
+	return false;
 }
 
 void HarvbotArm2::printNodesPositions()

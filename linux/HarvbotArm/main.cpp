@@ -22,8 +22,6 @@ int main()
 	gripper = new HarvbotArm2Gripper(recognizer);
 	observer = new HarvbotArm2GripperBacketObserver((HarvbotArm2*)gripper->getArm());
 
-	observer->ObjectPicked();
-
 	gripper->attachObserver((HarvbotGripperObserver*)observer);
 	gripper->start();
 	while (true) {
