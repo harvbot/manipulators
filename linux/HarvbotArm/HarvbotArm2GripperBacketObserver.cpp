@@ -13,13 +13,14 @@ HarvbotArm2GripperBacketObserver::~HarvbotArm2GripperBacketObserver()
 
 void HarvbotArm2GripperBacketObserver::ObjectPicked()
 {
-	_arm2->getBedplate()->moveTo(-180);
+	_arm2->getShoulder()->moveTo(radians(90));
+	_arm2->getElbow()->moveTo(radians(0));
+	_arm2->getBedplate()->moveTo(radians(-180));
 	_arm2->runToPosition();
 
 	_arm2->getClaw()->open();
 
 	_arm2->getBedplate()->moveTo(0);
-	_arm2->getShoulder()->moveTo(90);
-	_arm2->getElbow()->moveTo(0);
 	_arm2->runToPosition();
+	
 }
