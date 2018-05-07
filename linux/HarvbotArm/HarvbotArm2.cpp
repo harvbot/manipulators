@@ -15,10 +15,10 @@ HarvbotArm2::HarvbotArm2()
 	
 	this->nodes = new HarvbotArmNode*[4];
 
-	this->nodes[0] = new HarvbotArmStepperCircleNode(Bedplate, HARVBOT_ARM_SX_STEP, HARVBOT_ARM_SX_DIR, HARVBOT_ARM_SX_END, 3200, radians(0), radians(-180), radians(180), 200, HARVBOT_ARM_SX_RATIO);
-	this->nodes[1] = new HarvbotArmStepperCircleNode(Shoulder, HARVBOT_ARM_SY_STEP, HARVBOT_ARM_SY_DIR, HARVBOT_ARM_SY_END, 2200, radians(90), radians(30), radians(180), 200, HARVBOT_ARM_SY_RATIO);
-	this->nodes[2] = new HarvbotArmStepperCircleNode(Elbow, HARVBOT_ARM_SZ_STEP, HARVBOT_ARM_SZ_DIR, HARVBOT_ARM_SZ_END, 2200, radians(0), radians(0), radians(80), 200, HARVBOT_ARM_SZ_RATIO);
-	this->nodes[3] = new HarvbotArmStepperScrewNode(Claw, HARVBOT_ARM_SJ_STEP, HARVBOT_ARM_SJ_DIR, HARVBOT_ARM_SJ_END, 1600, 0, 200, 7, HARVBOT_ARM_SJ_RATIO);
+	this->nodes[0] = new HarvbotArmStepperCircleNode(Bedplate, HARVBOT_ARM_SX_STEP, HARVBOT_ARM_SX_DIR, HARVBOT_ARM_SX_END, 4200, radians(0), radians(-180), radians(180), 200, HARVBOT_ARM_SX_RATIO);
+	this->nodes[1] = new HarvbotArmStepperCircleNode(Shoulder, HARVBOT_ARM_SY_STEP, HARVBOT_ARM_SY_DIR, HARVBOT_ARM_SY_END, 4200, radians(90), radians(30), radians(180), 200, HARVBOT_ARM_SY_RATIO);
+	this->nodes[2] = new HarvbotArmStepperCircleNode(Elbow, HARVBOT_ARM_SZ_STEP, HARVBOT_ARM_SZ_DIR, HARVBOT_ARM_SZ_END, 4200, radians(0), radians(0), radians(80), 200, HARVBOT_ARM_SZ_RATIO);
+	this->nodes[3] = new HarvbotArmStepperScrewNode(Claw, HARVBOT_ARM_SJ_STEP, HARVBOT_ARM_SJ_DIR, HARVBOT_ARM_SJ_END, 6000, 0, 200, 7, HARVBOT_ARM_SJ_RATIO);
 
 	((HarvbotArmStepperCircleNode*)this->getBedplate())->setAccelerationPercent(25);
 	((HarvbotArmStepperCircleNode*)this->getShoulder())->setAccelerationPercent(25);
@@ -105,9 +105,9 @@ HarvbotPoint HarvbotArm2::getPointerCoords()
 	float a2 = HARVBOT_ARM_2_SHOULDER;
 	float a3 = HARVBOT_ARM_2_ELBOW;
 
-	pointer.x = (a2*cos(q2) + a3*cos(q2-q3))*cos(q1);
-	pointer.y = (a2*sin(q2) + a3*sin(q2-q3))*sin(q1);
-	pointer.z = a2*sin(q2) + a3*sin(q2-q3) + a1;
+	pointer.x = round4((a2*cos(q2) + a3*cos(q2-q3))*cos(q1));
+	pointer.y = round4((a2*sin(q2) + a3*sin(q2-q3))*sin(q1));
+	pointer.z = round4(a2*sin(q2) + a3*sin(q2-q3) + a1);
 
 	return pointer;
 }
@@ -126,16 +126,16 @@ bool HarvbotArm2::setPointerCoords(HarvbotPoint point)
 
 	z = z - a1;
 
-	float q1 = currentPos.y != point.y ? asin(y / z) : getBedplate()->currentPosition();
+	float q1 = round4(currentPos.y != point.y ? asin(y / z) : getBedplate()->currentPosition());
 
 	x = x / cos(q1);
 
 	float b = sqrt(x*x + z * z);
-	float q2 = M_PI - asin(x/b) - asin((a2*a2 + b*b - a3*a3) / (2 * b*a2));
-	float q3 = M_PI_2 + asin(((a2*a2) + (a3*a3) - (b*b)) / (2 * a2*a3));
+	float q2 = round4(M_PI - asin(x/b) - asin((a2*a2 + b*b - a3*a3) / (2 * b*a2)));
+	float q3 = round4(M_PI_2 + asin(((a2*a2) + (a3*a3) - (b*b)) / (2 * a2*a3)));
 	if (q2 - q3 < M_PI_2)
 	{
-		q2 = asin(x / b) - asin((a2*a2 + b * b - a3 * a3) / (2 * b*a2));
+		q2 = round4(asin(x / b) - asin((a2*a2 + b * b - a3 * a3) / (2 * b*a2)));
 	}
 
 	printPointerPositions();
@@ -160,8 +160,8 @@ bool HarvbotArm2::pickObject(float distanceToObject)
 	float a3 = HARVBOT_ARM_2_ELBOW;
 
 	float xShoulder, zShoulder;
-	xShoulder = a2 * cos(q2);
-	zShoulder = a2 * sin(q2) + a1;
+	xShoulder = round4(a2 * cos(q2));
+	zShoulder = round4(a2 * sin(q2) + a1);
 
 	HarvbotPoint currentPos = getPointerCoords();
 

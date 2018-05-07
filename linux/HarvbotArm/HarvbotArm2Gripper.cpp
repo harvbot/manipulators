@@ -56,7 +56,6 @@ void HarvbotArm2Gripper::stop()
 
 void HarvbotArm2Gripper::startRangefinderMeasurement()
 {
-	stopRangefinderMeasurement();
 	this->getRangefinder()->startContinuous();
 	_measurementRun = true;
 	_measurementThread = new thread([this] { this->measurementThreadFunc(); });
@@ -226,15 +225,18 @@ void HarvbotArm2Gripper::recognizeThreadFunc()
 				{
 					if (moveAngleY != 0)
 					{
+						printf("Move elbow: %f\n", moveAngleY);
 						_arm->getElbow()->move(moveAngleY);
 					}
 					if (moveAngleX != 0)
 					{
+						printf("Move bedplate: %f\n", moveAngleX);
 						_arm->getBedplate()->move(moveAngleX);
 					}
 
 					if (moveAngleX == 0 && moveAngleY == 0 && _distanceToObject > 0)
 					{
+						printf("Picking was started\n");
 						_pickInProgress = true;
 					}
 				}

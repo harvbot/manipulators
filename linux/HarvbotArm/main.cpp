@@ -18,11 +18,11 @@ int main()
 {
 	wiringPiSetup();
 
-
 	recognizer = new HarvbotOpenCvColorRecognizer(Scalar(10, 70, 70), Scalar(20, 255, 255));
 	gripper = new HarvbotArm2Gripper(recognizer);
 	observer = new HarvbotArm2GripperBacketObserver((HarvbotArm2*)gripper->getArm());
 
+	gripper->attachObserver((HarvbotGripperObserver*)observer);
 	gripper->start();
 	while (true) {
 		
