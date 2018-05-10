@@ -34,10 +34,6 @@ public:
 	void stop();
 
 protected:
-	void startRangefinderMeasurement();
-
-	void stopRangefinderMeasurement();
-
 	void startMovementProcessing();
 
 	void stopMovementProcessing();
@@ -56,14 +52,6 @@ private :
 	HarvbotCamera* _camera;
 
 	unsigned int _distanceToObject;
-
-	mutex* _measurementLocker;
-
-	thread* _measurementThread;
-
-	bool _measurementRun;
-
-	void measurementThreadFunc();
 
 	mutex* _movementLocker;
 

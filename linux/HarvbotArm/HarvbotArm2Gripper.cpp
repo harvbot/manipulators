@@ -10,9 +10,6 @@ HarvbotArm2Gripper::HarvbotArm2Gripper(HarvbotRecognizer* recognizer) : HarvbotG
 	_rangefinder = new HarvbotLaserRangefinder("/dev/ttyUSB0", 9600);
 	_camera = new HarvbotOpenCvCamera();
 
-	_measurementThread = NULL;
-	_measurementLocker = new mutex();
-
 	_movementThread = NULL;
 	_movementLocker = new mutex();
 
@@ -30,9 +27,6 @@ HarvbotArm2Gripper::~HarvbotArm2Gripper()
 	delete _visualizer;
 	delete _arm;
 
-	delete _measurementThread;
-	delete _measurementLocker;
-
 	delete _movementThread;
 	delete _movementLocker;
 
@@ -42,32 +36,14 @@ HarvbotArm2Gripper::~HarvbotArm2Gripper()
 
 void HarvbotArm2Gripper::start()
 {
-	startRangefinderMeasurement();
 	startMovementProcessing();
 	startRecognition();
 }
 
 void HarvbotArm2Gripper::stop()
 {
-	stopRangefinderMeasurement();
 	stopMovementProcessing();
 	stopRecognition();
-}
-
-void HarvbotArm2Gripper::startRangefinderMeasurement()
-{
-	this->getRangefinder()->startContinuous();
-	_measurementRun = true;
-	_measurementThread = new thread([this] { this->measurementThreadFunc(); });
-	_measurementThread->detach();
-}
-
-void HarvbotArm2Gripper::stopRangefinderMeasurement()
-{
-	_measurementLocker->lock();
-	_measurementRun = false;
-	_measurementLocker->unlock();
-	this->getRangefinder()->stopContinuous();
 }
 
 void HarvbotArm2Gripper::startMovementProcessing()
@@ -120,28 +96,6 @@ unsigned int HarvbotArm2Gripper::getDistanceMillimeters()
 	return _distanceToObject;
 }
 
-void HarvbotArm2Gripper::measurementThreadFunc()
-{
-	while (true)
-	{
-		_measurementLocker->lock();
-		float distanceValue = _rangefinder->readRangeContinuousMillimeters()-30;
-		if (distanceValue > 0)
-		{
-			_distanceToObject = distanceValue;
-			printf("Distance to object: %f\n", distanceValue);
-		}
-		
-		bool dontStop = _measurementRun;
-		_measurementLocker->unlock();
-
-		if (!dontStop)
-		{
-			break;
-		}
-	}
-}
-
 void HarvbotArm2Gripper::movementThreadFunc()
 {
 	while (true)
@@ -156,6 +110,10 @@ void HarvbotArm2Gripper::movementThreadFunc()
 				{
 					(*it)->ObjectPicked();
 				}
+			}
+			else
+			{
+				printf("Object is too far");
 			}
 			_pickInProgress = false;
 		}
@@ -242,11 +200,11 @@ void HarvbotArm2Gripper::recognizeThreadFunc()
 							_arm->getBedplate()->move(moveAngleX);
 						}
 
-						if (moveAngleX == 0 && moveAngleY == 0 && _distanceToObject > 0)
+						if (moveAngleX == 0 && moveAngleY == 0)
 						{
-							_measurementLocker->lock();
 							float distanceValue = 0;
 
+							_rangefinder->startContinuous();
 							do
 							{
 								distanceValue = _rangefinder->readRangeContinuousMillimeters();
@@ -257,10 +215,9 @@ void HarvbotArm2Gripper::recognizeThreadFunc()
 								}
 							} while (distanceValue == 0);
 
+							_rangefinder->stopContinuous();
 							printf("Picking was started\n");
 							_pickInProgress = true;
-
-							_measurementLocker->unlock();
 						}
 					}
 					_movementLocker->unlock();
