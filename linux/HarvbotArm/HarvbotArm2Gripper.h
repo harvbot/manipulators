@@ -14,6 +14,8 @@ using namespace std;
 
 #define MIN_CONTOUR_SIZE 60
 #define CENTERING_THRESHOLD 15
+#define MOVE_DELTA_X 0.2
+#define MOVE_DELTA_Y 0.3
 
 class HarvbotArm2Gripper: public HarvbotGripper
 {

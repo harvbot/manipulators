@@ -163,28 +163,28 @@ void HarvbotArm2Gripper::recognizeThreadFunc()
 
 					if (diffCenterX < -CENTERING_THRESHOLD)
 					{
-						moveAngleX = radians(0.5);
+						moveAngleX = radians(MOVE_DELTA_X);
 					}
 					if (diffCenterX > CENTERING_THRESHOLD)
 					{
-						moveAngleX = radians(-0.5);
+						moveAngleX = radians(-MOVE_DELTA_X);
 					}
 
-					moveAngleX = moveAngleX * fabs(diffCenterX) / (CENTERING_THRESHOLD * 5.0f);
+					moveAngleX = moveAngleX * ceilf((fabs(diffCenterX) / (CENTERING_THRESHOLD)));
 
 					float diffCenterY = wholeCenterY - frameHeight / 2;
 					float moveAngleY = 0;
 
 					if (diffCenterY < -CENTERING_THRESHOLD)
 					{
-						moveAngleY = radians(-0.5);
+						moveAngleY = radians(-MOVE_DELTA_Y);
 					}
 					if (diffCenterY > CENTERING_THRESHOLD)
 					{
-						moveAngleY = radians(0.5);
+						moveAngleY = radians(MOVE_DELTA_Y);
 					}
 
-					moveAngleY = moveAngleY * fabs(diffCenterY) / (CENTERING_THRESHOLD*5.0f);
+					moveAngleY = moveAngleY * ceilf((fabs(diffCenterY) / (CENTERING_THRESHOLD)));
 
 					_movementLocker->lock();
 					if (!_pickInProgress && _arm->getStatus() == Ready)
@@ -202,18 +202,17 @@ void HarvbotArm2Gripper::recognizeThreadFunc()
 
 						if (moveAngleX == 0 && moveAngleY == 0)
 						{
-							float distanceValue = 0;
-
 							_rangefinder->startContinuous();
-							do
+							for(int i=0;i<10;i++)
 							{
-								distanceValue = _rangefinder->readRangeContinuousMillimeters();
+								float distanceValue = _rangefinder->readRangeContinuousMillimeters();
 								if (distanceValue > 0)
 								{
 									_distanceToObject = distanceValue;
 									printf("Distance to object: %f\n", distanceValue);
+									break;
 								}
-							} while (distanceValue == 0);
+							} 
 
 							_rangefinder->stopContinuous();
 							printf("Picking was started\n");
