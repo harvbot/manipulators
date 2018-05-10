@@ -3,6 +3,7 @@
 #include <iostream>
 #include <thread>
 #include <mutex>
+#include <math.h>
 #include "HarvbotGripper.h"
 #include "HarvbotArm2.h"
 #include "Visualization/HarvbotArm2StateVisualizer.h"

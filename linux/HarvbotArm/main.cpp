@@ -8,6 +8,7 @@
 #include "Recognition/HarvbotOpenCvColorRecognizer.h"
 #include "Visualization/HarvbotArm2StateVisualizer.h"
 #include "HarvbotArm2GripperBacketObserver.h"
+#include "Cameras/HarvbotOpenCvFrame.h"
 
 HarvbotArm2Gripper* gripper;
 HarvbotOpenCvColorRecognizer* recognizer;
@@ -26,7 +27,15 @@ int main()
 	gripper->start();
 	while (true) {
 		
-		if (waitKey() >= 0)
+		HarvbotOpenCvFrame* latestFrame = (HarvbotOpenCvFrame*)observer->latestFrame();
+
+		if (latestFrame != NULL)
+		{
+			Mat frame = latestFrame->getFrame();
+			imshow("harvbot", frame);
+		}
+
+		if (waitKey(25) >= 0)
 		{
 			break;
 		}

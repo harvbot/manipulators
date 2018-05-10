@@ -5,6 +5,7 @@
 HarvbotArm2GripperBacketObserver::HarvbotArm2GripperBacketObserver(HarvbotArm2 * arm2) : HarvbotGripperObserver(arm2)
 {
 	_arm2 = arm2;
+	_frame = NULL;
 }
 
 HarvbotArm2GripperBacketObserver::~HarvbotArm2GripperBacketObserver()
@@ -22,5 +23,14 @@ void HarvbotArm2GripperBacketObserver::ObjectPicked()
 
 	_arm2->getBedplate()->moveTo(0);
 	_arm2->runToPosition();
-	
+}
+
+void HarvbotArm2GripperBacketObserver::ProcessedFrame(HarvbotFrame* frame)
+{
+	_frame = frame;
+}
+
+HarvbotFrame* HarvbotArm2GripperBacketObserver::latestFrame()
+{
+	return _frame;
 }

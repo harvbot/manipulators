@@ -5,21 +5,10 @@
 HarvbotArm2StateVisualizer::HarvbotArm2StateVisualizer(HarvbotArm2* arm)
 {
 	_arm = arm;
-	_showOnScreen = true;
 }
 
 HarvbotArm2StateVisualizer::~HarvbotArm2StateVisualizer()
 {
-}
-
-void HarvbotArm2StateVisualizer::turnOnScreen()
-{
-	_showOnScreen = true;
-}
-
-void HarvbotArm2StateVisualizer::turnOffScreen()
-{
-	_showOnScreen = false;
 }
 
 void HarvbotArm2StateVisualizer::render(HarvbotFrame* frame, HarvbotRect rect, unsigned int distanceToObject)
@@ -38,11 +27,6 @@ void HarvbotArm2StateVisualizer::render(HarvbotFrame* frame, HarvbotRect rect, u
 
 	drawXY(cameraFrame);
 	drawXZ(cameraFrame);
-
-	if (_showOnScreen)
-	{
-		imshow("cam", cameraFrame);
-	}
 }
 
 void HarvbotArm2StateVisualizer::drawXZ(Mat canvas)

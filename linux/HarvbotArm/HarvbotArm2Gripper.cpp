@@ -125,7 +125,7 @@ void HarvbotArm2Gripper::measurementThreadFunc()
 	while (true)
 	{
 		_measurementLocker->lock();
-		float distanceValue = _rangefinder->readRangeContinuousMillimeters();
+		float distanceValue = _rangefinder->readRangeContinuousMillimeters()-30;
 		if (distanceValue > 0)
 		{
 			_distanceToObject = distanceValue;
@@ -180,26 +180,29 @@ void HarvbotArm2Gripper::recognizeThreadFunc()
 	{
 		_recognizeLocker->lock();
 
-		HarvbotCamera* camera = getCamera();
-		HarvbotFrame* frame = camera->read();
-		HarvbotRect rect;
-		rect.empty();
-		if (!_pickInProgress)
+		try
 		{
-			rect = getRecognizer()->recognize(frame);
-			if (rect.width > MIN_CONTOUR_SIZE && rect.height > MIN_CONTOUR_SIZE)
+			HarvbotCamera* camera = getCamera();
+			HarvbotFrame* frame = camera->read();
+			HarvbotRect rect;
+			rect.empty();
+			if (!_pickInProgress)
 			{
-				int wholeCenterX = rect.x + rect.width / 2;
-				int wholeCenterY = rect.y + rect.height / 2;
-
-				int frameWidth = camera->frameWidth() / 2;
-				int frameHeight = camera->frameHeight() / 2;
-
-				float diffCenterX = wholeCenterX - frameWidth / 2;
-				float moveAngleX = 0;
-
-				if (rect.width < frameWidth / 2)
+				rect = getRecognizer()->recognize(frame);
+				
+				if (rect.width > MIN_CONTOUR_SIZE && rect.height > MIN_CONTOUR_SIZE)
 				{
+					printf("Recognition on new frame: x=%d, y=%d, width=%d, height=%d\n", rect.x, rect.y, rect.width, rect.height);
+
+					int wholeCenterX = rect.x + rect.width / 2;
+					int wholeCenterY = rect.y + rect.height / 2;
+
+					int frameWidth = camera->frameWidth();
+					int frameHeight = camera->frameHeight();
+
+					float diffCenterX = wholeCenterX - frameWidth / 2;
+					float moveAngleX = 0;
+
 					if (diffCenterX < -CENTERING_THRESHOLD)
 					{
 						moveAngleX = radians(0.5);
@@ -208,13 +211,12 @@ void HarvbotArm2Gripper::recognizeThreadFunc()
 					{
 						moveAngleX = radians(-0.5);
 					}
-				}
 
-				float diffCenterY = wholeCenterY - frameHeight / 2;
-				float moveAngleY = 0;
+					moveAngleX = moveAngleX * fabs(diffCenterX) / (CENTERING_THRESHOLD * 5.0f);
 
-				if (rect.height < frameHeight / 2)
-				{
+					float diffCenterY = wholeCenterY - frameHeight / 2;
+					float moveAngleY = 0;
+
 					if (diffCenterY < -CENTERING_THRESHOLD)
 					{
 						moveAngleY = radians(-0.5);
@@ -223,55 +225,64 @@ void HarvbotArm2Gripper::recognizeThreadFunc()
 					{
 						moveAngleY = radians(0.5);
 					}
-				}
 
-				_movementLocker->lock();
-				if (!_pickInProgress && _arm->getStatus() == Ready)
-				{
-					if (moveAngleY != 0)
-					{
-						printf("Move elbow: %f\n", moveAngleY);
-						_arm->getElbow()->move(moveAngleY);
-					}
-					if (moveAngleX != 0)
-					{
-						printf("Move bedplate: %f\n", moveAngleX);
-						_arm->getBedplate()->move(moveAngleX);
-					}
+					moveAngleY = moveAngleY * fabs(diffCenterY) / (CENTERING_THRESHOLD*5.0f);
 
-					if (moveAngleX == 0 && moveAngleY == 0 && _distanceToObject > 0)
+					_movementLocker->lock();
+					if (!_pickInProgress && _arm->getStatus() == Ready)
 					{
-						_measurementLocker->lock();
-						float distanceValue = 0;
-						
-						do
+						if (moveAngleY != 0)
 						{
-							distanceValue = _rangefinder->readRangeContinuousMillimeters();
-							if (distanceValue > 0)
+							printf("Move elbow: %f\n", moveAngleY);
+							_arm->getElbow()->move(moveAngleY);
+						}
+						if (moveAngleX != 0)
+						{
+							printf("Move bedplate: %f\n", moveAngleX);
+							_arm->getBedplate()->move(moveAngleX);
+						}
+
+						if (moveAngleX == 0 && moveAngleY == 0 && _distanceToObject > 0)
+						{
+							_measurementLocker->lock();
+							float distanceValue = 0;
+
+							do
 							{
-								_distanceToObject = distanceValue;
-								printf("Distance to object: %f\n", distanceValue);
-							}
-						} while (distanceValue == 0);
-						
-						printf("Picking was started\n");
-						_pickInProgress = true;
+								distanceValue = _rangefinder->readRangeContinuousMillimeters();
+								if (distanceValue > 0)
+								{
+									_distanceToObject = distanceValue;
+									printf("Distance to object: %f\n", distanceValue);
+								}
+							} while (distanceValue == 0);
 
-						_measurementLocker->unlock();
+							printf("Picking was started\n");
+							_pickInProgress = true;
+
+							_measurementLocker->unlock();
+						}
 					}
+					_movementLocker->unlock();
 				}
-				_movementLocker->unlock();
-
+				else
+				{
+					rect.empty();
+				}
 			}
-			else
+
+			if (isVisualizationOn())
 			{
-				rect.empty();
+				_visualizer->render(frame, rect, _distanceToObject);
+			}
+
+			for (std::vector<HarvbotGripperObserver*>::iterator it = observers.begin(); it != observers.end(); ++it)
+			{
+				(*it)->ProcessedFrame(frame);
 			}
 		}
-
-		if (isVisualizationOn())
+		catch (...)
 		{
-			_visualizer->render(frame, rect, _distanceToObject);
 		}
 
 		bool dontStop = _recognizeRun;
