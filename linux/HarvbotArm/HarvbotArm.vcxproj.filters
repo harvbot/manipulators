@@ -12,8 +12,6 @@
     <ClCompile Include="Nodes\HarvbotArmScrewNode.cpp" />
     <ClCompile Include="Nodes\HarvbotArmStepperCircleNode.cpp" />
     <ClCompile Include="Nodes\HarvbotArmStepperScrewNode.cpp" />
-    <ClCompile Include="Protocols\HarvbotArmSerialProtocol.cpp" />
-    <ClCompile Include="Protocols\HarvbotArmProtocol.cpp" />
     <ClCompile Include="Steppers\Stoppers\HarvbotStepperStopper.cpp" />
     <ClCompile Include="Steppers\Stoppers\HarvbotTerminalStopper.cpp" />
     <ClCompile Include="Visualization\HarvbotArm2StateVisualizer.cpp" />
@@ -49,8 +47,6 @@
     <ClInclude Include="Nodes\HarvbotArmNode.h" />
     <ClInclude Include="Nodes\HarvbotArmStepperCircleNode.h" />
     <ClInclude Include="Nodes\HarvbotArmStepperScrewNode.h" />
-    <ClInclude Include="Protocols\HarvbotArmProtocol.h" />
-    <ClInclude Include="Protocols\HarvbotArmSerialProtocol.h" />
     <ClInclude Include="Spatial\HarvbotPoint.h" />
     <ClInclude Include="Steppers\Stoppers\HarvbotStepperStopper.h" />
     <ClInclude Include="Steppers\Stoppers\HarvbotTerminalStopper.h" />

@@ -2,8 +2,11 @@
 #define HarvbotRangefinder_H_
 
 #include <stdint.h>
+#include <cstddef>
 #include <wiringSerial.h>
 #include "HarvbotRangefinder.h"
+
+using namespace std;
 
 #define HARVBOT_RANGEFINDER_DEFAULT_ADDR 0x80
 
