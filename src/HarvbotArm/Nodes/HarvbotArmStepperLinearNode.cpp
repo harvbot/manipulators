@@ -11,7 +11,7 @@ HarvbotArmStepperLinearNode::HarvbotArmStepperLinearNode(
 	unsigned int maxStepsCount,
 	unsigned int maxFullRotaionCount,
 	uint8_t reductorGear)
-	: HarvbotArmStepperLinearNode(identifier, pos, maxStepsCount, maxFullRotaionCount, reductorGear)
+	: HarvbotArmLinearNode(identifier, pos, maxStepsCount, maxFullRotaionCount, reductorGear)
 {
 	this->stepper = new HarvbotTerminableStepper(pinStep, pinDir, pinTerminal);
 	this->stepper->setEngineFrequency(stepperFrequency);

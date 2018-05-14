@@ -3,9 +3,9 @@
 #include "HarvbotArm2.h"
 #include "Nodes/HarvbotArmNode.h"
 #include "Nodes/HarvbotArmCircleNode.h"
-#include "Nodes/HarvbotArmScrewNode.h"
+#include "Nodes/HarvbotArmLinearNode.h"
 #include "Nodes/HarvbotArmStepperCircleNode.h"
-#include "Nodes/HarvbotArmStepperScrewNode.h"
+#include "Nodes/HarvbotArmStepperLinearNode.h"
 #include "HarvbotArmConstants.h"
 
 HarvbotArm2::HarvbotArm2() 
@@ -18,12 +18,12 @@ HarvbotArm2::HarvbotArm2()
 	this->nodes[0] = new HarvbotArmStepperCircleNode(Bedplate, HARVBOT_ARM_SX_STEP, HARVBOT_ARM_SX_DIR, HARVBOT_ARM_SX_END, 4200, radians(0), radians(-180), radians(180), 200, HARVBOT_ARM_SX_RATIO);
 	this->nodes[1] = new HarvbotArmStepperCircleNode(Shoulder, HARVBOT_ARM_SY_STEP, HARVBOT_ARM_SY_DIR, HARVBOT_ARM_SY_END, 4200, radians(90), radians(30), radians(180), 200, HARVBOT_ARM_SY_RATIO);
 	this->nodes[2] = new HarvbotArmStepperCircleNode(Elbow, HARVBOT_ARM_SZ_STEP, HARVBOT_ARM_SZ_DIR, HARVBOT_ARM_SZ_END, 4200, radians(0), radians(0), radians(80), 200, HARVBOT_ARM_SZ_RATIO);
-	this->nodes[3] = new HarvbotArmStepperScrewNode(Claw, HARVBOT_ARM_SJ_STEP, HARVBOT_ARM_SJ_DIR, HARVBOT_ARM_SJ_END, 2000, 0, 200, 7, HARVBOT_ARM_SJ_RATIO);
+	this->nodes[3] = new HarvbotArmStepperLinearNode(Claw, HARVBOT_ARM_SJ_STEP, HARVBOT_ARM_SJ_DIR, HARVBOT_ARM_SJ_END, 2000, 0, 200, 7, HARVBOT_ARM_SJ_RATIO);
 
 	((HarvbotArmStepperCircleNode*)this->getBedplate())->setAccelerationPercent(25);
 	((HarvbotArmStepperCircleNode*)this->getShoulder())->setAccelerationPercent(25);
 	((HarvbotArmStepperCircleNode*)this->getElbow())->setAccelerationPercent(25);
-	((HarvbotArmStepperScrewNode*)this->getClaw())->setAccelerationPercent(40);
+	((HarvbotArmStepperLinearNode*)this->getClaw())->setAccelerationPercent(40);
 }
 
 HarvbotArm2::~HarvbotArm2() {}
@@ -89,9 +89,9 @@ bool HarvbotArm2::run()
 	return result;
 }
 
-HarvbotArmScrewNode* HarvbotArm2::getClaw()
+HarvbotArmLinearNode* HarvbotArm2::getClaw()
 {
-	return (HarvbotArmScrewNode*)this->getNodeByType(Claw);
+	return (HarvbotArmLinearNode*)this->getNodeByType(Claw);
 }
 
 HarvbotPoint HarvbotArm2::getPointerCoords()
@@ -227,7 +227,7 @@ void HarvbotArm2::printNodesPositions()
 		degrees(((HarvbotArmCircleNode*)this->nodes[0])->currentPosition()),
 		degrees(((HarvbotArmCircleNode*)this->nodes[1])->currentPosition()),
 		degrees(((HarvbotArmCircleNode*)this->nodes[2])->currentPosition()),
-		degrees(((HarvbotArmScrewNode*)this->nodes[3])->currentPosition()));
+		degrees(((HarvbotArmLinearNode*)this->nodes[3])->currentPosition()));
 }
 
 void HarvbotArm2::printPointerPositions()

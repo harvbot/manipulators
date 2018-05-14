@@ -6,7 +6,7 @@
 #include "Spatial/HarvbotPoint.h"
 #include "Nodes/HarvbotArmNode.h"
 #include "Nodes/HarvbotArmCircleNode.h"
-#include "Nodes/HarvbotArmScrewNode.h"
+#include "Nodes/HarvbotArmLinearNode.h"
 
 class HarvbotArm2 : public HarvbotArm {
 	public:
@@ -14,7 +14,7 @@ class HarvbotArm2 : public HarvbotArm {
 		
 		~HarvbotArm2();
 
-		HarvbotArmScrewNode* getClaw();
+		HarvbotArmLinearNode* getClaw();
 
 		void goToStartPosition();
 
