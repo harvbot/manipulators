@@ -1,8 +1,7 @@
 #include <math.h>
-#include "HarvbotArmNode.h"
-#include "HarvbotArmScrewNode.h"
+#include "HarvbotArmLinearNode.h"
 
-HarvbotArmScrewNode::HarvbotArmScrewNode(HarvbotArmNodeIdentifiers identifier, float pos, int stepsPerRevolution, int maxRevolutionsCount, int reductorGear)
+HarvbotArmLinearNode::HarvbotArmLinearNode(HarvbotArmNodeIdentifiers identifier, float pos, int stepsPerRevolution, int maxRevolutionsCount, int reductorGear)
 	: HarvbotArmNode(identifier)
 {
 	this->m_pos = pos;
@@ -11,11 +10,11 @@ HarvbotArmScrewNode::HarvbotArmScrewNode(HarvbotArmNodeIdentifiers identifier, f
 	this->m_reductorGear = reductorGear;
 }
 
-HarvbotArmScrewNode::~HarvbotArmScrewNode()
+HarvbotArmLinearNode::~HarvbotArmLinearNode()
 {
 }
 
-float HarvbotArmScrewNode::rotate(float steps) 
+float HarvbotArmLinearNode::rotate(float steps)
 {
 	if(this->m_pos + steps < 0)
 	{
@@ -33,7 +32,7 @@ float HarvbotArmScrewNode::rotate(float steps)
 	return this->m_pos;
 }
 
-float HarvbotArmScrewNode::revolution(bool direction) {
+float HarvbotArmLinearNode::revolution(bool direction) {
 
 	if(direction)
 	{
@@ -45,7 +44,7 @@ float HarvbotArmScrewNode::revolution(bool direction) {
 	}
 }
 
-float HarvbotArmScrewNode::getCurrentAngle()
+float HarvbotArmLinearNode::getCurrentAngle()
 {
 	// Calculate the number of revolutions which were done on screw.
 	int fullRotation = round(this->m_pos) / (this->m_stepsPerRevolution * this->m_reductorGear);
@@ -59,34 +58,34 @@ float HarvbotArmScrewNode::getCurrentAngle()
 	return pos * anglePerStep;
 }
 
-float HarvbotArmScrewNode::getAnglePerStep()
+float HarvbotArmLinearNode::getAnglePerStep()
 {
 	return ((2.0*M_PI) / (this->m_stepsPerRevolution * this->m_reductorGear));
 }
 
-HarvbotArmNodeTypes HarvbotArmScrewNode::getType()
+HarvbotArmNodeTypes HarvbotArmLinearNode::getType()
 {
 	return Screw;
 }
 
-float HarvbotArmScrewNode::currentPosition()
+float HarvbotArmLinearNode::currentPosition()
 {
 	return this->m_pos;
 }
 
-float HarvbotArmScrewNode::setCurrentPosition(float pos)
+float HarvbotArmLinearNode::setCurrentPosition(float pos)
 {
 	this->m_pos = pos;
 
 	return this->m_pos;
 }
 
-void HarvbotArmScrewNode::open()
+void HarvbotArmLinearNode::open()
 {
 	rotate(-currentPosition());
 }
 
-void HarvbotArmScrewNode::close()
+void HarvbotArmLinearNode::close()
 {
 	rotate(m_maxRevolutionsCount * this->m_stepsPerRevolution * this->m_reductorGear - currentPosition());
 }

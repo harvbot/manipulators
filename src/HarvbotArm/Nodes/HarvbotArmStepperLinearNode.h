@@ -1,15 +1,15 @@
-#ifndef HarvbotArmStepperScrewNode_H_
-#define HarvbotArmStepperScrewNode_H_
+#ifndef HarvbotArmStepperLinearNode_H_
+#define HarvbotArmStepperLinearNode_H_
 
 #include "../Steppers/HarvbotTerminableStepper.h"
 #include "../HarvbotArmConstants.h"
-#include "HarvbotArmScrewNode.h"
+#include "HarvbotArmLinearNode.h"
 
-class  HarvbotArmStepperScrewNode : public HarvbotArmScrewNode {
+class  HarvbotArmStepperLinearNode : public HarvbotArmLinearNode {
 	private:
 		HarvbotTerminableStepper* stepper;
 	public:
-		HarvbotArmStepperScrewNode(
+		HarvbotArmStepperLinearNode(
 			HarvbotArmNodeIdentifiers identifier, 
 			uint8_t pinStep,
 			uint8_t pinDir,
@@ -20,7 +20,7 @@ class  HarvbotArmStepperScrewNode : public HarvbotArmScrewNode {
 			unsigned int maxFullRotaionCount=HARVBOT_ARM_CLAW_MAX_FULL_ROTATION,
 			uint8_t reductorGear=1);
 			
-		~HarvbotArmStepperScrewNode();
+		~HarvbotArmStepperLinearNode();
 
 		float rotate(float steps);
 
@@ -41,4 +41,4 @@ class  HarvbotArmStepperScrewNode : public HarvbotArmScrewNode {
 		void setAccelerationPercent(unsigned int percent);
 };
 
-#endif /* HarvbotArmStepperScrewNode_H_ */
+#endif /* HarvbotArmStepperLinearNode_H_ */

@@ -1,9 +1,7 @@
 #include <math.h>
-#include "../HarvbotArmConstants.h"
-#include "HarvbotArmScrewNode.h"
-#include "HarvbotArmStepperScrewNode.h"
+#include "HarvbotArmStepperLinearNode.h"
 
-HarvbotArmStepperScrewNode::HarvbotArmStepperScrewNode(
+HarvbotArmStepperLinearNode::HarvbotArmStepperLinearNode(
 	HarvbotArmNodeIdentifiers identifier, 
 	uint8_t pinStep,
 	uint8_t pinDir,
@@ -13,18 +11,18 @@ HarvbotArmStepperScrewNode::HarvbotArmStepperScrewNode(
 	unsigned int maxStepsCount,
 	unsigned int maxFullRotaionCount,
 	uint8_t reductorGear)
-	: HarvbotArmScrewNode(identifier, pos, maxStepsCount, maxFullRotaionCount, reductorGear)
+	: HarvbotArmStepperLinearNode(identifier, pos, maxStepsCount, maxFullRotaionCount, reductorGear)
 {
 	this->stepper = new HarvbotTerminableStepper(pinStep, pinDir, pinTerminal);
 	this->stepper->setEngineFrequency(stepperFrequency);
 }
 
-HarvbotArmStepperScrewNode::~HarvbotArmStepperScrewNode()
+HarvbotArmStepperLinearNode::~HarvbotArmStepperLinearNode()
 {
 	delete this->stepper;
 }
 
-float HarvbotArmStepperScrewNode::rotate(float steps)
+float HarvbotArmStepperLinearNode::rotate(float steps)
 {
 	int destinationPos = this->currentPosition();
 	if (this->currentPosition() + steps < 0)
@@ -49,18 +47,18 @@ float HarvbotArmStepperScrewNode::rotate(float steps)
 	return this->currentPosition();
 }
 
-HarvbotNodeStatuses HarvbotArmStepperScrewNode::getStatus()
+HarvbotNodeStatuses HarvbotArmStepperLinearNode::getStatus()
 {
 	return this->stepper->distanceToGo()==0 ? Ready : InProcess;
 }
 
-void HarvbotArmStepperScrewNode::goToStartPosition()
+void HarvbotArmStepperLinearNode::goToStartPosition()
 {
 	this->stepper->runTillTerminal(false);
 	setCurrentPosition(0);
 }
 
-bool HarvbotArmStepperScrewNode::run()
+bool HarvbotArmStepperLinearNode::run()
 {
 	long stepperPosStart = this->stepper->distanceToGo();
 	bool result = this->stepper->run();
@@ -75,28 +73,28 @@ bool HarvbotArmStepperScrewNode::run()
 	return result;
 }
 
-void HarvbotArmStepperScrewNode::runToPosition()
+void HarvbotArmStepperLinearNode::runToPosition()
 {
 	while (run())
 		;
 }
 
-void HarvbotArmStepperScrewNode::stop()
+void HarvbotArmStepperLinearNode::stop()
 {
 	this->stepper->stop();
 }
 
-float HarvbotArmStepperScrewNode::distranceToGo()
+float HarvbotArmStepperLinearNode::distranceToGo()
 {
 	return this->stepper->distanceToGo();
 }
 
-unsigned int HarvbotArmStepperScrewNode::accelerationPercent()
+unsigned int HarvbotArmStepperLinearNode::accelerationPercent()
 {
 	return this->stepper->accelerationPercent();
 }
 
-void HarvbotArmStepperScrewNode::setAccelerationPercent(unsigned int percent)
+void HarvbotArmStepperLinearNode::setAccelerationPercent(unsigned int percent)
 {
 	this->stepper->setAccelerationPercent(percent);
 }

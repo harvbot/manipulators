@@ -31,11 +31,11 @@ SRC	= Accelerometers/HarvbotAccelerometer.cpp			 \
     Steppers/Stoppers/HarvbotTerminalStopper.cpp		 \
     Steppers/Stoppers/HarvbotStepperStopper.cpp			 \
     Nodes/HarvbotArmStepperCircleNode.cpp				 \
-    Nodes/HarvbotArmStepperScrewNode.cpp				 \
+    Nodes/HarvbotArmStepperLinearNode.cpp				 \
     Nodes/HarvbotArmCircleNode.cpp						 \
     HarvbotArmFactory.cpp								 \
 	Nodes/HarvbotArmNode.cpp							 \
-    Nodes/HarvbotArmScrewNode.cpp						 \
+    Nodes/HarvbotArmLinearNode.cpp						 \
     Steppers/HarvbotStepper.cpp							 \
     Steppers/HarvbotTerminableStepper.cpp
 	
@@ -66,11 +66,11 @@ HEADERS = Accelerometers/HarvbotAccelerometer.h			 \
     Steppers/Stoppers/HarvbotTerminalStopper.h			 \
     Steppers/Stoppers/HarvbotStepperStopper.h			 \
     Nodes/HarvbotArmStepperCircleNode.h					 \
-    Nodes/HarvbotArmStepperScrewNode.h					 \
+    Nodes/HarvbotArmStepperLinearNode.h					 \
     Nodes/HarvbotArmCircleNode.h						 \
     HarvbotArmFactory.h									 \
 	Nodes/HarvbotArmNode.h								 \
-    Nodes/HarvbotArmScrewNode.h							 \
+    Nodes/HarvbotArmLinearNode.h						 \
     Steppers/HarvbotStepper.h							 \
     Steppers/HarvbotTerminableStepper.h
 

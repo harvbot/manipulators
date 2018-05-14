@@ -1,11 +1,11 @@
-#ifndef HarvbotArmScrewNode_H_
-#define HarvbotArmScrewNode_H_
+#ifndef HarvbotArmLinearNode_H_
+#define HarvbotArmLinearNode_H_
 
 #include <string>
 #include "HarvbotArmNode.h"
 #include "../HarvbotArmConstants.h"
 
-class HarvbotArmScrewNode : public HarvbotArmNode {
+class HarvbotArmLinearNode : public HarvbotArmNode {
 	protected: 
 		float m_pos;
 		int m_stepsPerRevolution;
@@ -14,14 +14,14 @@ class HarvbotArmScrewNode : public HarvbotArmNode {
 
 		virtual float setCurrentPosition(float pos);
 	public:
-		HarvbotArmScrewNode(
+		HarvbotArmLinearNode(
             HarvbotArmNodeIdentifiers identifier, 
             float pos, 
             int stepsPerRevolution,
             int maxRevolutionsCount=HARVBOT_ARM_CLAW_MAX_FULL_ROTATION,
             int reductorGear=1);
 
-		~HarvbotArmScrewNode();
+		~HarvbotArmLinearNode();
 
         HarvbotArmNodeTypes getType();
 
@@ -56,4 +56,4 @@ class HarvbotArmScrewNode : public HarvbotArmNode {
 		virtual float getAnglePerStep();
 };
 
-#endif /* HarvbotArmScrewNode_H_ */
+#endif /* HarvbotArmLinearNode_H_ */
