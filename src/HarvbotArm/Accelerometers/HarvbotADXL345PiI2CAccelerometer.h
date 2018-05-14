@@ -1,4 +1,5 @@
-#pragma once
+#ifndef HarvbotADXL345PiI2CAccelerometer_H_
+#define HarvbotADXL345PiI2CAccelerometer_H_
 
 #include <errno.h>
 #include <stdio.h>
@@ -36,3 +37,5 @@ public:
 private:
 	ADXL345Pi* innerAccel;
 };
+
+#endif /* HarvbotADXL345PiI2CAccelerometer_H_ */

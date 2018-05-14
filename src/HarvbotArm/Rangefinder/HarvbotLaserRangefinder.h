@@ -1,9 +1,8 @@
-#ifndef HarvbotRangefinder_H_
-#define HarvbotRangefinder_H_
+#ifndef HarvbotLaserRangefinder_H_
+#define HarvbotLaserRangefinder_H_
 
 #include <stdint.h>
 #include <cstddef>
-#include <wiringSerial.h>
 #include "HarvbotRangefinder.h"
 
 using namespace std;
@@ -71,4 +70,4 @@ public:
 	void laserOff();
 };
 
-#endif /* HarvbotRangefinder_H_ */
+#endif /* HarvbotLaserRangefinder_H_ */

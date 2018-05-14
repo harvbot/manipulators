@@ -1,4 +1,6 @@
-#pragma once
+#ifndef HarvbotStepperStopper_H_
+#define HarvbotStepperStopper_H_
+
 class HarvbotStepperStopper
 {
 public:
@@ -10,3 +12,4 @@ public:
 	virtual bool blockedDirection() = 0;
 };
 
+#endif /* HarvbotStepperStopper_H_ */

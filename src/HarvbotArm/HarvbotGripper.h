@@ -1,4 +1,6 @@
-#pragma once
+#ifndef HarvbotGripper_H_
+#define HarvbotGripper_H_
+
 #include <vector>
 #include "Cameras/HarvbotCamera.h"
 #include "Rangefinder/HarvbotRangefinder.h"
@@ -43,3 +45,4 @@ class HarvbotGripper
 		HarvbotRecognizer* _recognizer;
 };
 
+#endif /* HarvbotGripper_H_ */

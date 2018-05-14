@@ -1,4 +1,6 @@
-#pragma once
+#ifndef HarvbotCamera_H_
+#define HarvbotCamera_H_
+
 #include "HarvbotFrame.h"
 
 class HarvbotCamera
@@ -16,3 +18,4 @@ public:
 	virtual unsigned int frameHeight() = 0;
 };
 
+#endif /* HarvbotCamera_H_ */

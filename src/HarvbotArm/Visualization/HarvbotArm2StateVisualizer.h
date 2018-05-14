@@ -1,4 +1,6 @@
-#pragma once
+#ifndef HarvbotArm2StateVisualizer_H_
+#define HarvbotArm2StateVisualizer_H_
+
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include "../HarvbotArm2.h"
@@ -22,3 +24,4 @@ public:
 	void drawXY(Mat canvas);
 };
 
+#endif /* HarvbotArm2StateVisualizer_H_ */

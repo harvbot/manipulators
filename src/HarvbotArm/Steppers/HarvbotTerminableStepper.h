@@ -20,4 +20,5 @@ private:
 
 	HarvbotStepperStopper* _stopper;
 };
+
 #endif

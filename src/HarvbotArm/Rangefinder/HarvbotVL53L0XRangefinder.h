@@ -1,4 +1,6 @@
-#pragma once
+#ifndef HarvbotVL53L0XRangefinder_H_
+#define HarvbotVL53L0XRangefinder_H_
+
 #include "HarvbotRangefinder.h"
 #include "../Native/VL53L0XPi.hpp"
 
@@ -23,3 +25,4 @@ private:
 	VL53L0XPi * innerRangefinder;
 };
 
+#endif /* HarvbotVL53L0XRangefinder_H_ */

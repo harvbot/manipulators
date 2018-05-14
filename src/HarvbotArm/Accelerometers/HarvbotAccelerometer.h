@@ -1,4 +1,6 @@
-#pragma once
+#ifndef HarvbotAccelerometer_H_
+#define HarvbotAccelerometer_H_
+
 #include "HarvbotAccelData.h"
 
 class HarvbotAccelerometer
@@ -33,3 +35,4 @@ private:
 	Scale scale;
 };
 
+#endif /* HarvbotAccelerometer_H_ */

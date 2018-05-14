@@ -1,4 +1,6 @@
-#pragma once
+#ifndef HarvbotAccelData_H_
+#define HarvbotAccelData_H_
+
 #include <string>
 #include <stddef.h>
 #include <stdint.h>
@@ -97,3 +99,5 @@ struct HarvbotAccelData
 	float gy();
 	float gz();
 };
+
+#endif /* HarvbotAccelData_H_ */

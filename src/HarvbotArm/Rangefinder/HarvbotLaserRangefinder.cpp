@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+#include <wiringSerial.h>
 #include "HarvbotLaserRangefinder.h"
 
 HarvbotLaserRangefinder::HarvbotLaserRangefinder(const char *device, const int baud)

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef HarvbotOpenCvCamera_H_
+#define HarvbotOpenCvCamera_H_
+
 #include <stdio.h>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -28,3 +30,4 @@ private:
 	VideoCapture* _innerCamera;
 };
 
+#endif /* HarvbotOpenCvCamera_H_ */

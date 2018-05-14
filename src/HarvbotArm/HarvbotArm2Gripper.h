@@ -1,4 +1,6 @@
-#pragma once
+#ifndef HarvbotArm2Gripper_H_
+#define HarvbotArm2Gripper_H_
+
 #include <cstdio>
 #include <iostream>
 #include <thread>
@@ -74,3 +76,4 @@ private :
 	bool _pickInProgress;
 };
 
+#endif /* HarvbotArm2Gripper_H_ */

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef HarvbotArm2GripperBacketObserver_H_
+#define HarvbotArm2GripperBacketObserver_H_
+
 #include "HarvbotArm2.h"
 #include "HarvbotGripperObserver.h"
 #include "Cameras/HarvbotFrame.h"
@@ -20,3 +22,4 @@ private:
 	HarvbotFrame* _frame;
 };
 
+#endif /* HarvbotArm2GripperBacketObserver_H_ */

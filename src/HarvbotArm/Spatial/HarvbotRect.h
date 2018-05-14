@@ -1,4 +1,6 @@
-#pragma once
+#ifndef HarvbotRect_H_
+#define HarvbotRect_H_
+
 struct HarvbotRect
 {
 	HarvbotRect() {};
@@ -28,3 +30,4 @@ struct HarvbotRect
 	}
 };
 
+#endif /* HarvbotRect_H_ */

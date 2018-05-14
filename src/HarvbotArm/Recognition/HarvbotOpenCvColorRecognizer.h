@@ -1,4 +1,6 @@
-#pragma once
+#ifndef HarvbotOpenCvColorRecognizer_H_
+#define HarvbotOpenCvColorRecognizer_H_
+
 #include <stdio.h>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -23,3 +25,4 @@ private:
 	Scalar _highValues;
 };
 
+#endif /* HarvbotOpenCvColorRecognizer_H_ */

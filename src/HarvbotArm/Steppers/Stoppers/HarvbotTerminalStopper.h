@@ -1,4 +1,6 @@
-#pragma once
+#ifndef HarvbotTerminalStopper_H_
+#define HarvbotTerminalStopper_H_
+
 #include "HarvbotStepperStopper.h"
 
 class HarvbotTerminalStopper: public HarvbotStepperStopper
@@ -18,3 +20,4 @@ public:
 	bool blockedDirection();
 };
 
+#endif /* HarvbotTerminalStopper_H_ */
