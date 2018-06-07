@@ -2,12 +2,13 @@
 #include "HarvbotArm2Gripper.h"
 #include "HarvbotGripperObserver.h"
 #include "Cameras/HarvbotOpenCvCamera.h"
+#include "Rangefinder/HarvbotVL53L0XRangefinder.h"
 
 HarvbotArm2Gripper::HarvbotArm2Gripper(HarvbotRecognizer* recognizer) : HarvbotGripper(recognizer)
 {
 	_arm = new HarvbotArm2();
 	_visualizer = new HarvbotArm2StateVisualizer(_arm);
-	_rangefinder = new HarvbotLaserRangefinder("/dev/ttyUSB0", 9600);
+	_rangefinder = new HarvbotVL53L0XRangefinder();
 	_camera = new HarvbotOpenCvCamera();
 
 	_movementThread = NULL;
@@ -230,6 +231,14 @@ void HarvbotArm2Gripper::recognizeThreadFunc()
 			if (isVisualizationOn())
 			{
 				_visualizer->render(frame, rect, _distanceToObject);
+			}
+
+			if (rect.isEmpty())
+			{
+				for (std::vector<HarvbotGripperObserver*>::iterator it = observers.begin(); it != observers.end(); ++it)
+				{
+					(*it)->NoObjectDetected(frame);
+				}
 			}
 
 			for (std::vector<HarvbotGripperObserver*>::iterator it = observers.begin(); it != observers.end(); ++it)

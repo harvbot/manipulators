@@ -4,7 +4,7 @@
 #include "HarvbotRangefinder.h"
 #include "../Native/VL53L0XPi.hpp"
 
-class HarvbotVL53L0XRangefinder
+class HarvbotVL53L0XRangefinder : public HarvbotRangefinder
 {
 public:
 	HarvbotVL53L0XRangefinder(const char* device="/dev/i2c-1");

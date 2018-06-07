@@ -9,7 +9,6 @@
 #include "HarvbotGripper.h"
 #include "HarvbotArm2.h"
 #include "Visualization/HarvbotArm2StateVisualizer.h"
-#include "Rangefinder/HarvbotLaserRangefinder.h"
 #include "Recognition/HarvbotRecognizer.h"
 
 using namespace std;
@@ -51,7 +50,7 @@ private :
 
 	HarvbotArm2* _arm;
 
-	HarvbotLaserRangefinder* _rangefinder;
+	HarvbotRangefinder* _rangefinder;
 
 	HarvbotCamera* _camera;
 

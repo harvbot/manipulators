@@ -15,6 +15,8 @@ public:
 	virtual void ObjectPicked() = 0;
 
 	virtual void ProcessedFrame(HarvbotFrame* frame) = 0;
+
+	virtual void NoObjectDetected(HarvbotFrame* frame) = 0;
 private:
 	HarvbotArm * _arm;
 };

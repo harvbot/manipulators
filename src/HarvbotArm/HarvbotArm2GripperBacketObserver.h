@@ -15,6 +15,8 @@ public:
 
 	void ProcessedFrame(HarvbotFrame* frame);
 
+	void NoObjectDetected(HarvbotFrame* frame);
+
 	HarvbotFrame* latestFrame();
 private:
 	HarvbotArm2 * _arm2;
