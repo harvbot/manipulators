@@ -21,7 +21,7 @@ class HarvbotArmStepperCircleNode : public HarvbotArmCircleNode {
 			float minPos, 
 			float maxPos, 
 			unsigned int maxStepCount,
-			uint8_t reductorGear=1);
+			uint32_t reductorGear=1);
 		~HarvbotArmStepperCircleNode();
 		
 		/**

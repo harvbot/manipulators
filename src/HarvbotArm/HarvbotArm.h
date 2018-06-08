@@ -1,11 +1,11 @@
 #ifndef HarvbotArm_H_
 #define HarvbotArm_H_
 
+#include <stdio.h>
 #include "HarvbotArmConstants.h"
 #include "Spatial/HarvbotPoint.h"
 #include "Nodes/HarvbotArmNode.h"
 #include "Nodes/HarvbotArmCircleNode.h"
-#include "Nodes/HarvbotArmScrewNode.h"
 
 class HarvbotArm {
 	private: 

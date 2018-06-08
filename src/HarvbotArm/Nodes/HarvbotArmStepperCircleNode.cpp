@@ -13,7 +13,7 @@ HarvbotArmStepperCircleNode::HarvbotArmStepperCircleNode(
 	float minPos, 
 	float maxPos,
 	unsigned int maxStepCount,
-	uint8_t reductorGear)
+	uint32_t reductorGear)
 	: HarvbotArmCircleNode(identifier, pos, minPos, maxPos)
 {
 	this->stepper = new HarvbotTerminableStepper(pinStep, pinDir, pinTerminal);
