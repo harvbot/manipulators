@@ -171,6 +171,11 @@ void HarvbotArm2Gripper::recognizeThreadFunc()
 						moveAngleX = radians(-HARVBOT_GREAPER_MOVE_DELTA_X);
 					}
 
+					if (fabs(diffCenterX) > HARVBOT_GREAPER_MIN_CONTOUR_SIZE)
+					{
+						moveAngleX = moveAngleX * 2;
+					}
+
 					float diffCenterY = wholeCenterY - frameHeight / 2;
 					float moveAngleY = 0;
 
@@ -181,6 +186,11 @@ void HarvbotArm2Gripper::recognizeThreadFunc()
 					if (diffCenterY > HARVBOT_GREAPER_CENTERING_THRESHOLD)
 					{
 						moveAngleY = radians(HARVBOT_GREAPER_MOVE_DELTA_Y);
+					}
+
+					if (fabs(diffCenterY) > HARVBOT_GREAPER_MIN_CONTOUR_SIZE)
+					{
+						moveAngleY = moveAngleY * 2;
 					}
 
 					_movementLocker->lock();
