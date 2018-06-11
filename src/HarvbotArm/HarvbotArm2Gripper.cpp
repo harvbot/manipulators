@@ -149,7 +149,7 @@ void HarvbotArm2Gripper::recognizeThreadFunc()
 			{
 				rect = getRecognizer()->recognize(frame);
 				
-				if (rect.width > MIN_CONTOUR_SIZE && rect.height > MIN_CONTOUR_SIZE)
+				if (rect.width > HARVBOT_GREAPER_MIN_CONTOUR_SIZE && rect.height > HARVBOT_GREAPER_MIN_CONTOUR_SIZE)
 				{
 					printf("Recognition on new frame: x=%d, y=%d, width=%d, height=%d\n", rect.x, rect.y, rect.width, rect.height);
 
@@ -162,36 +162,37 @@ void HarvbotArm2Gripper::recognizeThreadFunc()
 					float diffCenterX = wholeCenterX - frameWidth / 2;
 					float moveAngleX = 0;
 
-					if (diffCenterX < -CENTERING_THRESHOLD)
+					if (diffCenterX < -HARVBOT_GREAPER_CENTERING_THRESHOLD)
 					{
-						moveAngleX = radians(MOVE_DELTA_X);
+						moveAngleX = radians(HARVBOT_GREAPER_MOVE_DELTA_X);
 					}
-					if (diffCenterX > CENTERING_THRESHOLD)
+					if (diffCenterX > HARVBOT_GREAPER_CENTERING_THRESHOLD)
 					{
-						moveAngleX = radians(-MOVE_DELTA_X);
+						moveAngleX = radians(-HARVBOT_GREAPER_MOVE_DELTA_X);
 					}
-
-					moveAngleX = moveAngleX * ceilf((fabs(diffCenterX) / (CENTERING_THRESHOLD)));
 
 					float diffCenterY = wholeCenterY - frameHeight / 2;
 					float moveAngleY = 0;
 
-					if (diffCenterY < -CENTERING_THRESHOLD)
+					if (diffCenterY < -HARVBOT_GREAPER_CENTERING_THRESHOLD)
 					{
-						moveAngleY = radians(-MOVE_DELTA_Y);
+						moveAngleY = radians(-HARVBOT_GREAPER_MOVE_DELTA_Y);
 					}
-					if (diffCenterY > CENTERING_THRESHOLD)
+					if (diffCenterY > HARVBOT_GREAPER_CENTERING_THRESHOLD)
 					{
-						moveAngleY = radians(MOVE_DELTA_Y);
+						moveAngleY = radians(HARVBOT_GREAPER_MOVE_DELTA_Y);
 					}
-
-					moveAngleY = moveAngleY * ceilf((fabs(diffCenterY) / (CENTERING_THRESHOLD)));
 
 					_movementLocker->lock();
 					if (!_pickInProgress && _arm->getStatus() == Ready)
 					{
 						if (moveAngleY != 0)
 						{
+							if ((_arm->getElbow()->distranceToGo() < 0 && moveAngleY > 0) || (_arm->getElbow()->distranceToGo() > 0 && moveAngleY < 0))
+							{
+								_arm->getElbow()->stop();
+							}
+
 							if (_arm->getElbow()->getStatus() == Ready)
 							{
 								printf("Move elbow: %f\n", moveAngleY);
@@ -200,6 +201,11 @@ void HarvbotArm2Gripper::recognizeThreadFunc()
 						}
 						if (moveAngleX != 0)
 						{
+							if ((_arm->getBedplate()->distranceToGo() < 0 && moveAngleX > 0) || (_arm->getBedplate()->distranceToGo() > 0 && moveAngleX < 0))
+							{
+								_arm->getBedplate()->stop();
+							}
+
 							if (_arm->getBedplate()->getStatus() == Ready)
 							{
 								printf("Move bedplate: %f\n", moveAngleX);
