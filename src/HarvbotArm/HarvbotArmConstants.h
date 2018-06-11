@@ -11,21 +11,29 @@
 #define HARVBOT_ARM_SX_DIR          5       // 		    18
 #define HARVBOT_ARM_SX_END          6       //    		22
 #define HARVBOT_ARM_SX_RATIO        50 * 32
+#define HARVBOT_ARM_SX_FR	        24000
+#define HARVBOT_ARM_SX_MAX_STEPS    200
 
 #define HARVBOT_ARM_SY_STEP         11      //   		26
 #define HARVBOT_ARM_SY_DIR          0      //    		32
 #define HARVBOT_ARM_SY_END          27  	//			36
 #define HARVBOT_ARM_SY_RATIO        50 * 32
+#define HARVBOT_ARM_SY_FR	        24000
+#define HARVBOT_ARM_SY_MAX_STEPS    200
 
 #define HARVBOT_ARM_SZ_STEP         23		//  		33   
 #define HARVBOT_ARM_SZ_DIR          22      //    		31 
 #define HARVBOT_ARM_SZ_END          21		//			29
 #define HARVBOT_ARM_SZ_RATIO        50 * 32
+#define HARVBOT_ARM_SZ_FR	        24000
+#define HARVBOT_ARM_SZ_MAX_STEPS    200
 
 #define HARVBOT_ARM_SJ_STEP         3       //  		15 
 #define HARVBOT_ARM_SJ_DIR          2       //  		13
 #define HARVBOT_ARM_SJ_END          26		//			27
 #define HARVBOT_ARM_SJ_RATIO        1 * 32
+#define HARVBOT_ARM_SJ_FR	        24000
+#define HARVBOT_ARM_SJ_MAX_STEPS    200
 
 #define HARVBOT_ARM_2_BEDPLATE      170.0
 #define HARVBOT_ARM_2_SHOULDER      125.0

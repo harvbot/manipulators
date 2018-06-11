@@ -192,13 +192,19 @@ void HarvbotArm2Gripper::recognizeThreadFunc()
 					{
 						if (moveAngleY != 0)
 						{
-							printf("Move elbow: %f\n", moveAngleY);
-							_arm->getElbow()->move(moveAngleY);
+							if (_arm->getElbow()->getStatus() == Ready)
+							{
+								printf("Move elbow: %f\n", moveAngleY);
+								_arm->getElbow()->move(moveAngleY);
+							}
 						}
 						if (moveAngleX != 0)
 						{
-							printf("Move bedplate: %f\n", moveAngleX);
-							_arm->getBedplate()->move(moveAngleX);
+							if (_arm->getBedplate()->getStatus() == Ready)
+							{
+								printf("Move bedplate: %f\n", moveAngleX);
+								_arm->getBedplate()->move(moveAngleX);
+							}
 						}
 
 						if (moveAngleX == 0 && moveAngleY == 0)

@@ -15,10 +15,46 @@ HarvbotArm2::HarvbotArm2()
 	
 	this->nodes = new HarvbotArmNode*[4];
 
-	this->nodes[0] = new HarvbotArmStepperCircleNode(Bedplate, HARVBOT_ARM_SX_STEP, HARVBOT_ARM_SX_DIR, HARVBOT_ARM_SX_END, 24000, radians(0), radians(-180), radians(180), 200, HARVBOT_ARM_SX_RATIO);
-	this->nodes[1] = new HarvbotArmStepperCircleNode(Shoulder, HARVBOT_ARM_SY_STEP, HARVBOT_ARM_SY_DIR, HARVBOT_ARM_SY_END, 24000, radians(90), radians(30), radians(180), 200, HARVBOT_ARM_SY_RATIO);
-	this->nodes[2] = new HarvbotArmStepperCircleNode(Elbow, HARVBOT_ARM_SZ_STEP, HARVBOT_ARM_SZ_DIR, HARVBOT_ARM_SZ_END, 24000, radians(0), radians(0), radians(80), 200, HARVBOT_ARM_SZ_RATIO);
-	this->nodes[3] = new HarvbotArmStepperLinearNode(Claw, HARVBOT_ARM_SJ_STEP, HARVBOT_ARM_SJ_DIR, HARVBOT_ARM_SJ_END, 24000, 0, 200, 7, HARVBOT_ARM_SJ_RATIO);
+	this->nodes[0] = new HarvbotArmStepperCircleNode(Bedplate, 
+		HARVBOT_ARM_SX_STEP, 
+		HARVBOT_ARM_SX_DIR, 
+		HARVBOT_ARM_SX_END, 
+		HARVBOT_ARM_SX_FR, 
+		radians(0), 
+		radians(-180), 
+		radians(180), 
+		HARVBOT_ARM_SX_MAX_STEPS,
+		HARVBOT_ARM_SX_RATIO);
+
+	this->nodes[1] = new HarvbotArmStepperCircleNode(Shoulder, 
+		HARVBOT_ARM_SY_STEP, 
+		HARVBOT_ARM_SY_DIR, 
+		HARVBOT_ARM_SY_END, 
+		HARVBOT_ARM_SY_FR, 
+		radians(90),
+		radians(30), 
+		radians(180), 
+		HARVBOT_ARM_SY_MAX_STEPS,
+		HARVBOT_ARM_SY_RATIO);
+	this->nodes[2] = new HarvbotArmStepperCircleNode(Elbow, 
+		HARVBOT_ARM_SZ_STEP, 
+		HARVBOT_ARM_SZ_DIR, 
+		HARVBOT_ARM_SZ_END, 
+		HARVBOT_ARM_SZ_FR, 
+		radians(0), 
+		radians(0), 
+		radians(80), 
+		HARVBOT_ARM_SZ_MAX_STEPS,
+		HARVBOT_ARM_SZ_RATIO);
+	this->nodes[3] = new HarvbotArmStepperLinearNode(Claw, 
+		HARVBOT_ARM_SJ_STEP, 
+		HARVBOT_ARM_SJ_DIR, 
+		HARVBOT_ARM_SJ_END, 
+		HARVBOT_ARM_SJ_FR, 
+		0, 
+		HARVBOT_ARM_SJ_MAX_STEPS,
+		7, 
+		HARVBOT_ARM_SJ_RATIO);
 
 	((HarvbotArmStepperCircleNode*)this->getBedplate())->setAccelerationPercent(25);
 	((HarvbotArmStepperCircleNode*)this->getShoulder())->setAccelerationPercent(25);
