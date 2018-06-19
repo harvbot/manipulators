@@ -35,15 +35,20 @@ void HarvbotArm2GripperBacketObserver::NoObjectDetected(HarvbotFrame* frame)
 {
 	if (_arm2->getStatus() == Ready)
 	{
-		/*if (_arm2->getShoulder()->currentPosition() != 120)
+		if (_arm2->getBedplate()->currentPosition() != 0)
 		{
-			_arm2->getShoulder()->moveTo(radians(120));
+			_arm2->getBedplate()->moveTo(radians(0));
 		}
 
-		if (_arm2->getElbow()->currentPosition() != 45)
+		if (_arm2->getShoulder()->currentPosition() != radians(100))
+		{
+			_arm2->getShoulder()->moveTo(radians(100));
+		}
+
+		if (_arm2->getElbow()->currentPosition() != radians(45))
 		{
 			_arm2->getElbow()->moveTo(radians(45));
-		}*/
+		}
 	}
 }
 

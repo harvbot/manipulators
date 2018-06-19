@@ -167,13 +167,12 @@ bool HarvbotArm2::setPointerCoords(HarvbotPoint point)
 
 	x = x / cos(q1);
 
-	float b = sqrt(x*x + z * z);
-	float q2 = round4(M_PI - asin(x/b) - asin((a2*a2 + b*b - a3*a3) / (2 * b*a2)));
-	float q3 = round4(M_PI_2 + asin(((a2*a2) + (a3*a3) - (b*b)) / (2 * a2*a3)));
-	if (q2 - q3 < M_PI_2)
-	{
-		q2 = round4(asin(x / b) - asin((a2*a2 + b * b - a3 * a3) / (2 * b*a2)));
-	}
+	float cosq3 = (x*x + z * z - a2 * a2 - a3 * a3) / (2 * a2*a3);
+	float sinq3 = sqrt((1 + cosq3 * cosq3));
+	float q3 = M_PI_2 - atan2(sinq3, cosq3);
+	float k1 = a2 + a3 * cosq3;
+	float k2 = a3 * sinq3; 
+	float q2 = M_PI - atan2(z, x) - atan2(k2, k1);
 
 	if (isnan(q2) || isnan(q3))
 	{
@@ -185,8 +184,8 @@ bool HarvbotArm2::setPointerCoords(HarvbotPoint point)
 	printf("q1=%q1 q2=%f q3=%f\n", degrees(q1), degrees(q2), degrees(q3));
 
 	this->getBedplate()->moveTo(q1);
-	this->getShoulder()->moveTo(M_PI - q2);
-	this->getElbow()->moveTo(q3 - M_PI_2);
+	this->getShoulder()->moveTo(q2);
+	this->getElbow()->moveTo(q3);
 
 	return true;
 }
