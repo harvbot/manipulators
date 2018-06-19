@@ -3,6 +3,8 @@
 HarvbotVL53L0XRangefinder::HarvbotVL53L0XRangefinder(const char* device)
 {
 	innerRangefinder = new VL53L0XPi(device);
+	innerRangefinder->init();
+	innerRangefinder->setTimeout(500);
 }
 
 HarvbotVL53L0XRangefinder::~HarvbotVL53L0XRangefinder()

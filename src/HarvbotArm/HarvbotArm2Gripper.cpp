@@ -8,7 +8,7 @@ HarvbotArm2Gripper::HarvbotArm2Gripper(HarvbotRecognizer* recognizer) : HarvbotG
 {
 	_arm = new HarvbotArm2();
 	_visualizer = new HarvbotArm2StateVisualizer(_arm);
-	_rangefinder = new HarvbotVL53L0XRangefinder();
+	_rangefinder = new HarvbotVL53L0XRangefinder("/dev/i2c-5");
 	_camera = new HarvbotOpenCvCamera();
 
 	_movementThread = NULL;
@@ -229,7 +229,7 @@ void HarvbotArm2Gripper::recognizeThreadFunc()
 							for(int i=0;i<10;i++)
 							{
 								float distanceValue = _rangefinder->readRangeContinuousMillimeters();
-								if (distanceValue > 0)
+								if (distanceValue > 0 && distanceValue < 2000)
 								{
 									_distanceToObject = distanceValue;
 									printf("Distance to object: %f\n", distanceValue);
