@@ -49,6 +49,9 @@
 
 #define round4(x) (x * 10000.0) / 10000.0
 
+#define HARVBOT_VL53L0X_I2C "/dev/i2c-5"
+#define HARVBOT_VL53L0X_MAX_DISTANCE 2000
+
 enum HarvbotArmNodeIdentifiers
 {
     Undefined = -1,
