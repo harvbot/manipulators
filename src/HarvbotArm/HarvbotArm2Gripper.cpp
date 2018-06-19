@@ -114,7 +114,7 @@ void HarvbotArm2Gripper::movementThreadFunc()
 			}
 			else
 			{
-				printf("Object is too far");
+				printf("Object is too far\n");
 			}
 			_pickInProgress = false;
 		}
